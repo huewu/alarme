@@ -1,9 +1,11 @@
-#Fun project for 2012 Google Hack Fair in Seoul.
+Alarme - Small Alarm Clcok which can sync with yout phone.
+==========================================================
 
-#Description
+Fun project for 2012 Google Hack Fair in Seoul.
 
-#How to use
+Description
+---------------------------------
 
-#Members
-
+Members
+---------------------------------
 
