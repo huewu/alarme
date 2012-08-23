@@ -12,8 +12,8 @@ Components
 Android clinet application which allow uset to set alram and to sync with alarme clock.
 
 #### Requirement
-Android API 16 (Jellybean)
-NFC connectivty
+1. Android API 16 (Jellybean)
+2. NFC connectivty
 
 #### How to install
 
