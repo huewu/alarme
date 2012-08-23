@@ -5,6 +5,8 @@ Fun project for 2012 Google Hack Fair in Seoul.
 
 Description
 ---------------------------------
+### working on story bard
+  https://github.com/downloads/huewu/alarme/clock_phone_GHF.pdf
 
 Components
 ---------------------------------
