@@ -1,0 +1,9 @@
+[submodule "Arduino-Makefile"]
+	path = Arduino-Makefile
+	url = https://github.com/mjoldfield/Arduino-Makefile.git
+[submodule "WiFly-Shield"]
+	path = WiFly-Shield
+	url = https://github.com/jmr13031/WiFly-Shield.git
+[submodule "Adafruit_NFCShield_I2C"]
+	path = Adafruit_NFCShield_I2C
+	url = https://github.com/adafruit/Adafruit_NFCShield_I2C.git
