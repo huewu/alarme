@@ -26,5 +26,7 @@ ARDUINO_LIBS += WiFly-Shield/src/WiFly
 ARDUINO_LIBS += Wire
 ARDUINO_LIBS += Wire/utility
 ARDUINO_LIBS += Adafruit_NFCShield_I2C
+ARDUINO_LIBS += SoftwareSerial
+ARDUINO_LIBS += Adafruit-Thermal-Printer-Library
 
 include ../Arduino-Makefile/arduino-mk/Arduino.mk 

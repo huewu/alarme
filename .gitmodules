@@ -7,3 +7,6 @@
 [submodule "Adafruit_NFCShield_I2C"]
 	path = Adafruit_NFCShield_I2C
 	url = https://github.com/adafruit/Adafruit_NFCShield_I2C.git
+[submodule "Adafruit-Thermal-Printer-Library"]
+	path = Adafruit-Thermal-Printer-Library
+	url = https://github.com/adafruit/Adafruit-Thermal-Printer-Library.git
