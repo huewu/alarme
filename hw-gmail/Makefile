@@ -28,5 +28,6 @@ ARDUINO_LIBS += Wire/utility
 ARDUINO_LIBS += Adafruit_NFCShield_I2C
 ARDUINO_LIBS += SoftwareSerial
 ARDUINO_LIBS += Adafruit-Thermal-Printer-Library
+ARDUINO_LIBS += ArduinoPusherClient
 
 include ../Arduino-Makefile/arduino-mk/Arduino.mk 

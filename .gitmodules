@@ -10,3 +10,6 @@
 [submodule "Adafruit-Thermal-Printer-Library"]
 	path = Adafruit-Thermal-Printer-Library
 	url = https://github.com/adafruit/Adafruit-Thermal-Printer-Library.git
+[submodule "ArduinoPusherClient"]
+	path = ArduinoPusherClient
+	url = https://github.com/krohling/ArduinoPusherClient.git
