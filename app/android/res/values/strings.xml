@@ -6,4 +6,9 @@
         against another Android device that supports Android Beam to send a
         message.</string>
     <string name="menu_settings">Android Beam settings</string>
+    <string name="turn_alarm_on">Turn alarm on</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="ringtone">Ringtone</string>
+    <string name="repeat">Repeat</string>
+    <string name="time">Time</string>
 </resources>

@@ -17,11 +17,8 @@
 ** limitations under the License.
 */
 -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textView"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/info"
-    android:padding="10dp"
-    android:textSize="18sp"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/workspace"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     />
