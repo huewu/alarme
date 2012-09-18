@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="Chansuk-ui-MacBook-Pro.local" id="0" name="AlarmInfoTest" package="com.huewu.alarme.model" tests="1" time="0.551" timestamp="2012-09-18T07:12:34">
+      <properties>
+          <property name="java.vendor" value="Apple Inc." />
+
+          <property name="sun.java.launcher" value="SUN_STANDARD" />
+
+          <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+
+          <property name="os.name" value="Mac OS X" />
+
+          <property name="sun.boot.class.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsfd.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Resources/Java/JavaRuntimeSupport.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/ui.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/laf.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/sunrsasign.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsse.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jce.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/charsets.jar" />
+
+          <property name="TODAY" value="September 18 2012" />
+
+          <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="ant.home" value="/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730" />
+
+          <property name="java.runtime.version" value="1.6.0_35-b10-428-11M3811" />
+
+          <property name="user.name" value="huewu" />
+
+          <property name="awt.nativeDoubleBuffering" value="true" />
+
+          <property name="build.dir" value="./build/" />
+
+          <property name="user.language" value="ko" />
+
+          <property name="test.report.dir" value="./test-reports/" />
+
+          <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries" />
+
+          <property name="android.project.classpath" value="../android/bin/classes/" />
+
+          <property name="ant.project.default-target" value="test-report-junit" />
+
+          <property name="ant.project.name" value="AndroidProjectTest" />
+
+          <property name="DSTAMP" value="20120918" />
+
+          <property name="java.version" value="1.6.0_35" />
+
+          <property name="user.timezone" value="" />
+
+          <property name="sun.arch.data.model" value="64" />
+
+          <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed" />
+
+          <property name="ant.file.AndroidProjectTest" value="/Users/huewu/Work/alarme/app/android-test/build.xml" />
+
+          <property name="sun.cpu.isalist" value="" />
+
+          <property name="sun.jnu.encoding" value="EUC_KR" />
+
+          <property name="file.encoding.pkg" value="sun.io" />
+
+          <property name="file.separator" value="/" />
+
+          <property name="java.specification.name" value="Java Platform API Specification" />
+
+          <property name="test.html.dir" value="./test-report-html/" />
+
+          <property name="java.class.version" value="50.0" />
+
+          <property name="user.country" value="KR" />
+
+          <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home" />
+
+          <property name="java.vm.info" value="mixed mode" />
+
+          <property name="ant.file" value="/Users/huewu/Work/alarme/app/android-test/build.xml" />
+
+          <property name="os.version" value="10.8.1" />
+
+          <property name="path.separator" value=":" />
+
+          <property name="java.vm.version" value="20.10-b01-428" />
+
+          <property name="ant.library.dir" value="/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib" />
+
+          <property name="java.awt.printerjob" value="apple.awt.CPrinterJob" />
+
+          <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+
+          <property name="awt.toolkit" value="apple.awt.CToolkit" />
+
+          <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="ant.file.type.AndroidProjectTest" value="file" />
+
+          <property name="user.home" value="/Users/huewu" />
+
+          <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
+
+          <property name="java.vendor.url" value="http://www.apple.com/" />
+
+          <property name="java.vm.vendor" value="Apple Inc." />
+
+          <property name="gopherProxySet" value="false" />
+
+          <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+
+          <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/Users/huewu/Work/alarme/app/android-test/junittestcases5259048180832079085.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter,/Users/huewu/Work/alarme/app/android-test/test-reports/IGNORETHIS.txt formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/huewu/Work/alarme/app/android-test/test-reports/IGNORETHIS.xml crashfile=/Users/huewu/Work/alarme/app/android-test/junitvmwatcher147788028932960878.properties propsfile=/Users/huewu/Work/alarme/app/android-test/junit2526977552951971096.properties" />
+
+          <property name="java.class.path" value="/Users/huewu/Work/alarme/app/android-test/build:/Users/huewu/Work/alarme/app/android/bin/classes:/Users/huewu/Work/alarme/app/android-test/libs/junit.jar:/Users/huewu/Work/alarme/app/android-test/libs/hamcrest.jar:/Users/huewu/Work/alarme/app/android-test/libs/robolectric-with-dependencies.jar:/Users/huewu/Work/alarme/app/android-test/libs/android.jar:/Users/huewu/Work/alarme/app/android-test/libs/maps.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant-launcher.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant-junit.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant-junit4.jar" />
+
+          <property name="ant.version" value="Apache Ant(TM) version 1.8.3 compiled on February 26 2012" />
+
+          <property name="TSTAMP" value="1612" />
+
+          <property name="libs.dir" value="./libs/" />
+
+          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+
+          <property name="java.vm.specification.version" value="1.0" />
+
+          <property name="sun.cpu.endian" value="little" />
+
+          <property name="sun.os.patch.level" value="unknown" />
+
+          <property name="java.io.tmpdir" value="/var/folders/pc/9mjz0tbj5dl892gb14vh2tb80000gn/T/" />
+
+          <property name="java.vendor.url.bug" value="http://bugreport.apple.com/" />
+
+          <property name="mrj.build" value="11M3811" />
+
+          <property name="os.arch" value="x86_64" />
+
+          <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment" />
+
+          <property name="java.ext.dirs" value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext" />
+
+          <property name="mrj.version" value="1070.1.6.0_35-428" />
+
+          <property name="user.dir" value="/Users/huewu/Work/alarme/app/android-test" />
+
+          <property name="line.separator" value="&#xa;" />
+
+          <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+
+          <property name="basedir" value="/Users/huewu/Work/alarme/app/android-test" />
+
+          <property name="ant.java.version" value="1.6" />
+
+          <property name="ant.core.lib" value="/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant.jar" />
+
+          <property name="file.encoding" value="EUC_KR" />
+
+          <property name="source.dir" value="../android/tests/" />
+
+          <property name="java.specification.version" value="1.6" />
+
+          <property name="ant.project.invoked-targets" value="test-report-junit" />
+
+      </properties>
+
+      <testcase classname="com.huewu.alarme.model.AlarmInfoTest" name="testConstructor" time="0.503" />
+
+      <system-out><![CDATA[Warning: an error occurred while binding shadow class: ShadowNdefMessage
+Warning: an error occurred while binding shadow class: ShadowNdefRecord
+Warning: an error occurred while binding shadow class: ShadowNfcAdapter
+WARNING: Unable to find path to Android SDK
+]]></system-out>
+
+      <system-err><![CDATA[]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="Chansuk-ui-MacBook-Pro.local" id="1" name="AlameServiceWorkerTest" package="com.huewu.alarme.service" tests="1" time="0.011" timestamp="2012-09-18T07:12:35">
+      <properties>
+          <property name="java.vendor" value="Apple Inc." />
+
+          <property name="sun.java.launcher" value="SUN_STANDARD" />
+
+          <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+
+          <property name="os.name" value="Mac OS X" />
+
+          <property name="sun.boot.class.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsfd.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Resources/Java/JavaRuntimeSupport.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/ui.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/laf.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/sunrsasign.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsse.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jce.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/charsets.jar" />
+
+          <property name="TODAY" value="September 18 2012" />
+
+          <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="ant.home" value="/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730" />
+
+          <property name="java.runtime.version" value="1.6.0_35-b10-428-11M3811" />
+
+          <property name="user.name" value="huewu" />
+
+          <property name="awt.nativeDoubleBuffering" value="true" />
+
+          <property name="build.dir" value="./build/" />
+
+          <property name="user.language" value="ko" />
+
+          <property name="test.report.dir" value="./test-reports/" />
+
+          <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries" />
+
+          <property name="android.project.classpath" value="../android/bin/classes/" />
+
+          <property name="ant.project.default-target" value="test-report-junit" />
+
+          <property name="ant.project.name" value="AndroidProjectTest" />
+
+          <property name="DSTAMP" value="20120918" />
+
+          <property name="java.version" value="1.6.0_35" />
+
+          <property name="user.timezone" value="" />
+
+          <property name="sun.arch.data.model" value="64" />
+
+          <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed" />
+
+          <property name="ant.file.AndroidProjectTest" value="/Users/huewu/Work/alarme/app/android-test/build.xml" />
+
+          <property name="sun.cpu.isalist" value="" />
+
+          <property name="sun.jnu.encoding" value="EUC_KR" />
+
+          <property name="file.encoding.pkg" value="sun.io" />
+
+          <property name="file.separator" value="/" />
+
+          <property name="java.specification.name" value="Java Platform API Specification" />
+
+          <property name="test.html.dir" value="./test-report-html/" />
+
+          <property name="java.class.version" value="50.0" />
+
+          <property name="user.country" value="KR" />
+
+          <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home" />
+
+          <property name="java.vm.info" value="mixed mode" />
+
+          <property name="ant.file" value="/Users/huewu/Work/alarme/app/android-test/build.xml" />
+
+          <property name="os.version" value="10.8.1" />
+
+          <property name="path.separator" value=":" />
+
+          <property name="java.vm.version" value="20.10-b01-428" />
+
+          <property name="ant.library.dir" value="/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib" />
+
+          <property name="java.awt.printerjob" value="apple.awt.CPrinterJob" />
+
+          <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+
+          <property name="awt.toolkit" value="apple.awt.CToolkit" />
+
+          <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="ant.file.type.AndroidProjectTest" value="file" />
+
+          <property name="user.home" value="/Users/huewu" />
+
+          <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
+
+          <property name="java.vendor.url" value="http://www.apple.com/" />
+
+          <property name="java.vm.vendor" value="Apple Inc." />
+
+          <property name="gopherProxySet" value="false" />
+
+          <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+
+          <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner testsfile=/Users/huewu/Work/alarme/app/android-test/junittestcases5259048180832079085.properties filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter,/Users/huewu/Work/alarme/app/android-test/test-reports/IGNORETHIS.txt formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/huewu/Work/alarme/app/android-test/test-reports/IGNORETHIS.xml crashfile=/Users/huewu/Work/alarme/app/android-test/junitvmwatcher147788028932960878.properties propsfile=/Users/huewu/Work/alarme/app/android-test/junit2526977552951971096.properties" />
+
+          <property name="java.class.path" value="/Users/huewu/Work/alarme/app/android-test/build:/Users/huewu/Work/alarme/app/android/bin/classes:/Users/huewu/Work/alarme/app/android-test/libs/junit.jar:/Users/huewu/Work/alarme/app/android-test/libs/hamcrest.jar:/Users/huewu/Work/alarme/app/android-test/libs/robolectric-with-dependencies.jar:/Users/huewu/Work/alarme/app/android-test/libs/android.jar:/Users/huewu/Work/alarme/app/android-test/libs/maps.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant-launcher.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant-junit.jar:/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant-junit4.jar" />
+
+          <property name="ant.version" value="Apache Ant(TM) version 1.8.3 compiled on February 26 2012" />
+
+          <property name="TSTAMP" value="1612" />
+
+          <property name="libs.dir" value="./libs/" />
+
+          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+
+          <property name="java.vm.specification.version" value="1.0" />
+
+          <property name="sun.cpu.endian" value="little" />
+
+          <property name="sun.os.patch.level" value="unknown" />
+
+          <property name="java.io.tmpdir" value="/var/folders/pc/9mjz0tbj5dl892gb14vh2tb80000gn/T/" />
+
+          <property name="java.vendor.url.bug" value="http://bugreport.apple.com/" />
+
+          <property name="mrj.build" value="11M3811" />
+
+          <property name="os.arch" value="x86_64" />
+
+          <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment" />
+
+          <property name="java.ext.dirs" value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext" />
+
+          <property name="mrj.version" value="1070.1.6.0_35-428" />
+
+          <property name="user.dir" value="/Users/huewu/Work/alarme/app/android-test" />
+
+          <property name="line.separator" value="&#xa;" />
+
+          <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+
+          <property name="basedir" value="/Users/huewu/Work/alarme/app/android-test" />
+
+          <property name="ant.java.version" value="1.6" />
+
+          <property name="ant.core.lib" value="/Users/huewu/Work/eclipse/plugins/org.apache.ant_1.8.3.v20120321-1730/lib/ant.jar" />
+
+          <property name="file.encoding" value="EUC_KR" />
+
+          <property name="source.dir" value="../android/tests/" />
+
+          <property name="java.specification.version" value="1.6" />
+
+          <property name="ant.project.invoked-targets" value="test-report-junit" />
+
+      </properties>
+
+      <testcase classname="com.huewu.alarme.service.AlameServiceWorkerTest" name="testBasicResourceValue" time="0.0070" />
+
+      <system-out><![CDATA[]]></system-out>
+
+      <system-err><![CDATA[]]></system-err>
+
+  </testsuite>
+</testsuites>

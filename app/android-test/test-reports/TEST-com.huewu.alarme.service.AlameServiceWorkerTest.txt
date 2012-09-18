@@ -1,0 +1,4 @@
+Testsuite: com.huewu.alarme.service.AlameServiceWorkerTest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.011 sec
+
+Testcase: testBasicResourceValue took 0.007 sec

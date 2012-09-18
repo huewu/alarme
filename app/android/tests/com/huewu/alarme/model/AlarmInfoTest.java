@@ -9,7 +9,7 @@ import com.huewu.alarme.runner.AlarmeTestRunner;
 
 
 @RunWith(AlarmeTestRunner.class)
-public class TestAlarmInfo {
+public class AlarmInfoTest {
 
 	@Test
 	public void testConstructor(){
@@ -17,3 +17,4 @@ public class TestAlarmInfo {
 	}
 
 }//end of class
+	

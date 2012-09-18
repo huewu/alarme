@@ -10,7 +10,7 @@ import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.runner.AlarmeTestRunner;
 
 @RunWith(AlarmeTestRunner.class)
-public class TestAlameServiceWorker {
+public class AlameServiceWorkerTest {
 	
 	@Test
     public void testBasicResourceValue() throws Exception {

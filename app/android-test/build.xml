@@ -10,7 +10,7 @@
 	<property name="android.project.classpath" value="../android/bin/classes/"/>
 	<property name="test.report.dir" value="./test-reports/"/>
 	<property name="test.html.dir" value="./test-report-html/"/>
-	<property name="source.dir" value="./src/"/>	
+	<property name="source.dir" value="../android/tests/"/>	
 
 	<filelist id="android_jars" dir="${libs.dir}">
 		<file name="android.jar"/>
