@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-
 public abstract class JsonRequest<T> {
 
 	public static String HOST = "www.example.com";
