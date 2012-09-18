@@ -2,9 +2,15 @@ package com.huewu.alarme.model;
 
 public class UserInfo {
 	
-	//username(mail account), RID(GCM id for clock), CID(clock id)
-	public String username;
-	public String registerId;	//ID from gcm server. identify a specific phone.
-	public String clockId;
+	public String uid;	//user id
+	public String uname;	//user name
+	public String rid;	//GCM registeration id
+	public String cid;	//clock id.
+	public String msg; //message
+	
+	@Override
+	public String toString() {
+		return String.format("uname=%s&rid=%s&cid=%s", uname, rid, cid);
+	}
 
 }//end of class

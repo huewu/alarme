@@ -10,14 +10,16 @@ import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.runner.AlarmeTestRunner;
 
 @RunWith(AlarmeTestRunner.class)
-public class AlameServiceWorkerTest {
+public class AlameServiceTest {
 	
 	@Test
     public void testBasicResourceValue() throws Exception {
 		assertTrue(true);
     }	
 	
-	public void testCreateUser( UserInfo user ){
+	public void testCreateUser(){
+		//actually send dummy userinfo to server.
+		//check result.		
 	}
 
 	public void testDeleteUser( UserInfo user ){

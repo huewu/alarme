@@ -13,7 +13,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-public class AlarmeServiceWorker extends Service implements IAlarmService, OnAlarmGCMListener {
+public class AlarmeService extends Service implements IAlarmService, OnAlarmGCMListener {
 	
 	private JsonNetworkWorker mNewtorkWorekr = null;
 
