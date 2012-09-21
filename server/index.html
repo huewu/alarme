@@ -1,0 +1,85 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<title>Alarme Server Test Page</title>
+	<link rel='stylesheet' type='text/css' href='css/style.css' />	
+</head>
+<body>		
+	<h1>Alarme Server Test Page</h1>	
+	
+	<div class='testCase'>
+		<h3>User Creation</h3>
+		<input id='uname' type='text' placeholder="user name"/>
+		<input id='rid' type='text' placeholder="registration id"/>
+		<input id='cid' type='text' placeholder="clock id"/>
+		<input id='createUser' type='button' value='create user' />			
+		<div class='result'></div>
+	</div>	
+	
+	<div class='testCase'>
+		<h3>User Removal</h3>
+		<input id='uid' type='text' placeholder="user id"/>
+		<input id='removeUser' type='button' value='remove user' />			
+		<div class='result'></div>
+	</div>	
+	
+	<div class='testCase'>
+		<h3>Users Retrieval</h3>
+		<input id='showUsers' type='button' value='show users' />		
+		<div class='result'></div>
+	</div>
+	
+	<div class='testCase'>
+		<h3>Alarm Setting (PRIVATE or GROUP)</h3>
+		<input id='uid_al' type='text' placeholder="user id"/>
+		<select id='type'>
+			<option value='GROUP'>GROUP</option>    
+			<option value='PRIVATE'>PRIVATE</option>			
+		</select>
+		<input id='member' type='text' placeholder='member, comma separated' />
+		<input id ='alarmTime' type='datetime' placeholder='alarm time'/>
+		<select id='status'>
+			<option value='ON'>ON</option>
+			<option value='OFF'>OFF</option>    
+		</select>		
+		
+		<input id='setAlarm' type='button' value='set alarm' />			
+		<div class='result'></div>
+	</div>
+	
+	<div class='testCase'>
+		<h3>Alarm Removal</h3>
+		<input id='aid' type='text' placeholder="alarm id"/>
+		<input id='removeAlarm' type='button' value='remove alarm' />			
+		<div class='result'></div>
+	</div>		
+	
+	<div class='testCase'>
+		<h3>Alarms Retrieval</h3>
+		<input id='showAlarms' type='button' value='show alarms' />		
+		<div class='result'></div>
+	</div>
+	
+	<div class='testCase'>
+		<h3>Alarm OFF from Phone</h3>
+		<input id='aid_off_phone' type='text' placeholder="alarm id"/>
+		<input id='uid_off_phone' type='text' placeholder="user id"/>
+		
+		<input id='alarmOFFPhone' type='button' value='send alarm OFF' />			
+		<div class='result'></div>
+	</div>	
+
+	<div class='testCase'>
+		<h3>Alarm OFF from Clock</h3>
+		<input id='aid_off_clock' type='text' placeholder="alarm id"/>
+		<input id='cid_off_clock' type='text' placeholder="clock id"/>
+		
+		<input id='alarmOFFClock' type='button' value='send alarm OFF' />			
+		<div class='result'></div>
+	</div>	
+		
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>	
+	<script type="text/javascript" src="js/main.js"></script>	
+</body>
+</html>
