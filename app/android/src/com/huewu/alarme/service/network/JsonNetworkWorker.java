@@ -11,9 +11,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-
 import android.content.Context;
 import android.net.http.HttpResponseCache;
 import android.os.Handler;
@@ -22,8 +19,11 @@ import android.os.Message;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+
 /**
- * JSON Network Worker for Alarme
+ * Json Network Worekr
  * @author huewu
  *
  */
@@ -31,15 +31,16 @@ public class JsonNetworkWorker {
 
 	private static final String TAG = "NetworkWokrer";
 
-	private static final int REQUEST_READY = 101;
-	private static final int REQUEST_WORKING = 102;
-	private static final int REQUEST_FINISHED = 103;
+	protected static final int REQUEST_READY = 101;
+	protected static final int REQUEST_WORKING = 102;
+	protected static final int REQUEST_FINISHED = 103;
 
-	private NetworkMessageHandler mMessageHandler;
-	private boolean mCacheInstalled = false; //every request is sent after this flag is set true.
-	private ExecutorService mWorkerPool = Executors.newFixedThreadPool(3);
+	protected NetworkMessageHandler mMessageHandler;
+	protected boolean mCacheInstalled = false; //every request is sent after this flag is set true.
+	protected ExecutorService mWorkerPool = Executors.newFixedThreadPool(3);
+	protected JsonRequest<?> mLastRequest;
 
-	private class MessageExecutor implements Runnable {
+	protected class MessageExecutor implements Runnable {
 
 		private JsonRequest<?> mReq;
 		public MessageExecutor(JsonRequest<?> req) {
@@ -194,6 +195,7 @@ public class JsonNetworkWorker {
 	}
 
 	private boolean mInitCache = false;
+
 	private synchronized void initHttpCache(Context context){
 
 		if(mInitCache == true)
@@ -218,7 +220,7 @@ public class JsonNetworkWorker {
 		});
 	}
 
-	private class NetworkMessageHandler extends Handler {
+	protected class NetworkMessageHandler extends Handler {
 		public NetworkMessageHandler(Looper mainLooper) {
 			super(mainLooper);
 		}
@@ -255,11 +257,12 @@ public class JsonNetworkWorker {
 			{
 				JsonRequest<?> req = (JsonRequest<?>) msg.obj;
 				//invoke callback.
+				mLastRequest = req;
 				req.notifyOnFinishOrError();
 				break;
 			}
 			}
 		}
-	}//end of inner class
+	}
 
 }// end of class
