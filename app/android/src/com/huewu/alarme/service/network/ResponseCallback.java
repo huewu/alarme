@@ -2,6 +2,7 @@ package com.huewu.alarme.service.network;
 
 
 
+
 public interface ResponseCallback<T> {
 
 	void onBeforeRequest(JsonRequest<T> req);

@@ -1,0 +1,1 @@
+{"aid":"KL_GROUP_1348021106421","type":"GROUP","time":"2012-09-19T02:18:26.421Z","_id":"50592cfa9752bc0200000005","__v":0,"member":[{"uid":"KL","status":"ON","_id":"50592cfa9752bc0200000009"},{"uid":"AA","status":"ON","_id":"50592cfa9752bc0200000008"},{"uid":"BB","status":"ON","_id":"50592cfa9752bc0200000007"},{"uid":"CC","status":"ON","_id":"50592cfa9752bc0200000006"}]}

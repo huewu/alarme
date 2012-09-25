@@ -36,7 +36,7 @@ public class JsonNetworkWorker {
 	protected static final int REQUEST_FINISHED = 103;
 
 	protected NetworkMessageHandler mMessageHandler;
-	protected boolean mCacheInstalled = false; //every request is sent after this flag is set true.
+	protected boolean mCacheInstalled = true; 
 	protected ExecutorService mWorkerPool = Executors.newFixedThreadPool(3);
 	protected JsonRequest<?> mLastRequest;
 
@@ -70,6 +70,7 @@ public class JsonNetworkWorker {
 
 				OutputStream os;
 				if( mReq.data != null ){
+					conn.setDoOutput(true);
 					conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 					os = conn.getOutputStream();
 					os.write(mReq.data);
@@ -141,7 +142,7 @@ public class JsonNetworkWorker {
 
 	public JsonNetworkWorker(Context ctx) {
 		mMessageHandler = new NetworkMessageHandler(ctx.getMainLooper());
-		initHttpCache(ctx);
+		//initHttpCache(ctx);
 	}
 
 	public InputStream getContent(HttpURLConnection conn) throws IOException {

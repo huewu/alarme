@@ -44,7 +44,7 @@ public class UserInfoTest {
 		user.msg = "hello world";
 		
 		//load dummy json file.
-		FileReader fr = new FileReader("../android/tests/dummy_json.txt");
+		FileReader fr = new FileReader("../android/tests/dummy_user_json.txt");
 		BufferedReader br = new BufferedReader(fr);
 		
 		String line = br.readLine();
@@ -72,13 +72,12 @@ public class UserInfoTest {
 	}
 	
 	@Test
-	public void convertToString(){
+	public void convertToPostData(){
 		
 		//user.toBytes();
 		//in order to post this json object to setver it should converted post form style data.
 		String form = "uname=huewu&rid=4321&cid=0000";
-		
-		assertEquals(form, user.toString());
+		assertEquals(form, user.toPostData());
 	}
 
 }//end of class

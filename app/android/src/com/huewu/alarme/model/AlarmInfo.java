@@ -7,15 +7,16 @@ import java.util.Date;
  * @author huewu.yang
  *
  */
-public class AlarmInfo {
+public class AlarmInfo extends JsonModel {
 	
-	public int id = -1;
-	public boolean isGroup = false;
-	public long alarmTime = System.currentTimeMillis();
-	public String message = "";
+	public String aid;
+	public String type;
+	public String time;
+	public AlarmMember[] member;
 	
-	//to json
-	
-	//to content values.
+	@Override
+	public String toPostData() {
+		return "aid=" + aid;
+	}
 
 }//end of class

@@ -6,6 +6,8 @@
 	<classpathentry kind="lib" path="/Users/huewu/Work/alarme/app/android-test/libs/android.jar"/>
 	<classpathentry kind="lib" path="/Users/huewu/Work/alarme/app/android-test/libs/hamcrest.jar"/>
 	<classpathentry kind="lib" path="/Users/huewu/Work/alarme/app/android-test/libs/junit.jar"/>
+	<classpathentry kind="lib" path="/Users/huewu/Work/alarme/app/android-test/libs/disklrucache-1.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/huewu/Work/alarme/app/android-test/libs/httpresponsecache.jar"/>
 	<classpathentry kind="lib" path="/Users/huewu/Work/alarme/app/android-test/libs/maps.jar"/>
 	<classpathentry kind="lib" path="/Users/huewu/Work/alarme/app/android-test/libs/robolectric-with-dependencies.jar"/>
 	<classpathentry kind="output" path="bin"/>

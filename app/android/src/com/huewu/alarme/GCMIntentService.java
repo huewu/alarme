@@ -14,6 +14,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
 	protected void onMessage(Context arg0, Intent arg1) {
+		//should invoke callback method of Alarm Service. 
+		//#1. first bind to alarm service.
+		//#2. second call notify method.
+		
+		//parse message.
 	}
 
 	@Override
@@ -25,6 +30,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onUnregistered(Context arg0, String regID) {
 		//Typically, you should send the regid to the server so it unregisters the device.
+	}
+	
+	private void parseGCMMessage(){
+		
 	}
 
 }//end of class

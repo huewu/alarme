@@ -17,7 +17,7 @@ import com.huewu.alarme.service.AlameServiceTest;
 
 
 @RunWith(AlarmeTestRunner.class)
-public class AlarmInfoTest {
+public class AlarmMemberTest {
 	
 	private String dummy_json = "";
 	//{
@@ -50,15 +50,6 @@ public class AlarmInfoTest {
 	public void testParseFromJson(){
 		
 		Gson gson = new Gson();
-		AlarmInfo alarm = gson.fromJson(dummy_json, AlarmInfo.class);
-		assertEquals("KL_PRIVATE_1348021106421", alarm.aid);
-		assertEquals("PRIVATE", alarm.type);
-		assertEquals("2012-09-19T02:18:26.421Z", alarm.time);
-		assertEquals(1, alarm.member.length);
-		AlarmMember member = alarm.member[0];
-		
-		assertEquals("KL", member.uid);
-		assertEquals("ON", member.status);
 	}
 	
 	@Test

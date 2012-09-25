@@ -1,9 +1,13 @@
 package com.huewu.alarme.service.network;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+
+import com.huewu.alarme.model.UserInfo;
+
 
 public abstract class JsonRequest<T> {
 
@@ -35,6 +39,14 @@ public abstract class JsonRequest<T> {
 		this.method = method;
 		this.url = url;
 	}
+	
+	public JsonRequest( Method method, String url ){
+		this.method = method;
+		try {
+			this.url = new URL(url);
+		} catch (MalformedURLException e) {
+		}
+	}
 
 	public URL getURL() {
 		return url;
@@ -42,6 +54,10 @@ public abstract class JsonRequest<T> {
 
 	public Method getMethod() {
 		return method;
+	}
+	
+	public byte[] getData() {
+		return data;
 	}
 
 	/**
@@ -60,6 +76,14 @@ public abstract class JsonRequest<T> {
 	public void setForceCache(boolean flag) {
 		mForceUseCache = flag;
 	}
+	
+	public void setCallback(ResponseCallback<T> callback) {
+		this.callback = callback;
+	}
+	
+	public void setDecoder(ResponseDecoder<T> decoder) {
+		this.decoder = decoder;
+	}
 
 	public void addResponse( Object obj ){
 		response.add((T) obj);
@@ -68,13 +92,21 @@ public abstract class JsonRequest<T> {
 	public ArrayList<T> getResponse() {
 		return response;
 	}
+	
+	public boolean isCanceled() {
+		return false;
+	}
 
-	public void notifiyOnStart() {
+	////////////////////////////////////////////
+	//Notify Events.
+	////////////////////////////////////////////
+
+	protected void notifiyOnStart() {
 		if(callback != null )
 			callback.onBeforeRequest(this);
 	}
 
-	public void notifyOnFinishOrError() {
+	protected void notifyOnFinishOrError() {
 		if(callback != null){
 			if(exception == null)
 				callback.onFinsh(this);
@@ -83,13 +115,10 @@ public abstract class JsonRequest<T> {
 		}
 	}
 
-	public void notifiyResponse( Object obj) {
+	protected void notifiyResponse( Object obj) {
 		if(callback != null){
 			callback.onResponse(this, (T) obj);
 		}
 	}
-
-	public boolean isCanceled() {
-		return false;
-	}
+	
 }// end of class
