@@ -37,7 +37,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 		//Response Body: JSON
 		//{ userId: unique_string }
 		
-		CreateUserRequest req = RequestFactory.createCreateUserRequest( user, callback );
+		JsonRequest<?> req = RequestFactory.createCreateUserRequest( user, callback );
 		mNewtorkWorekr.sendRequest(req);
 	}
 
@@ -45,11 +45,10 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	public void deleteUser(UserInfo user, ResponseCallback<UserInfo> callback) {
 		//send message to clock server.
 		//DELETE /user/:uid 
-		//Request Body: JSON
-		//{ userId: userId }
 		//Response Body: null
 		
-		mNewtorkWorekr.sendRequest(null);
+		JsonRequest<?> req = RequestFactory.createDeleteUserRequest( user, callback );
+		mNewtorkWorekr.sendRequest(req);
 	}
 
 	@Override

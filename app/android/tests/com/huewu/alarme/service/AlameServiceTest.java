@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +58,36 @@ public class AlameServiceTest {
 		assertNotNull(response.uid);
 	}
 
-	public void testDeleteUser( UserInfo user ){
+	@Test
+	public void testDeleteUser() throws MalformedURLException{
+		
+		//first, create a random name user.
+		Random rand = new Random();
+		
+		MockUserInfoResponseListener listener1 = new MockUserInfoResponseListener();
+		MockUserInfoResponseListener listener2 = new MockUserInfoResponseListener();
+		
+		user.uname = user.uname + rand.nextInt(100);
+		service.createUser(user, listener1);
+		
+		listener1.waitResponse(Constants.DEFAULT_WAIT_TIMEOUT);
+		
+		UserInfo response = listener1.getFinishRequest().getResponse().get(0);
+		assertNotNull(response.uid);
+		
+		//then, delete that user.
+		service.deleteUser(response, listener2);
+		
+		listener2.waitResponse(Constants.DEFAULT_WAIT_TIMEOUT);
+		
+		//test request is created correctly.
+		JsonRequest<UserInfo> beforeReq = listener2.getBeforeRequest();
+		assertEquals(Method.DELETE, beforeReq.getMethod());
+		assertEquals(new URL("http://ghfal.herokuapp.com/user/" + response.uid), beforeReq.getURL());
+		
+		//test response is success.
+		assertNull(listener2.getErrorRequest());
+		assertNotNull(listener2.getFinishRequest());
 	}
 
 	public void testSetAlaram( AlarmInfo alarm ){

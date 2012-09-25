@@ -21,6 +21,15 @@ public class RequestFactory {
 		return req;
 	}
 	
+	public static DeleteUserRequest createDeleteUserRequest(UserInfo user, ResponseCallback<UserInfo> callback) {
+		DeleteUserRequest req = new DeleteUserRequest(user);
+		
+		req.setCallback(callback);
+		req.setDecoder(new UserInfoDecoder());
+		
+		return req;
+	}
+	
 	private static class UserInfoDecoder implements ResponseDecoder<UserInfo>{
 		
 		private Gson gson = new Gson();
