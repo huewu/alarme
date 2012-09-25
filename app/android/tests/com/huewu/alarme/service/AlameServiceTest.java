@@ -10,8 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import android.text.format.Time;
+
 import com.huewu.alarme.Constants;
 import com.huewu.alarme.model.AlarmInfo;
+import com.huewu.alarme.model.AlarmMember;
 import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.runner.AlarmeTestRunner;
 import com.huewu.alarme.service.network.JsonRequest;
@@ -22,15 +25,34 @@ public class AlameServiceTest {
 	
 	private AlarmeService service = null;
 	private UserInfo user = null;
+	private AlarmInfo private_alarm = null;
+	private AlarmInfo group_alarm = null;
 	
 	@Before
 	public void init(){
+		
+		initAlarmService();
+		initDummyUser();
+		initDummyPrivateAlarm();
+	}
+
+	private void initAlarmService() {
 		service = new AlarmeService();
 		service.onCreate();
+	}
+
+	private void initDummyUser() {
 		user = new UserInfo();
 		user.uname = "huewu";
 		user.rid = "443322";
 		user.cid = "12345";
+	}
+
+	private void initDummyPrivateAlarm() {
+		private_alarm = new AlarmInfo();
+		//private_alarm.time = System.currentTimeMillis();
+		private_alarm.type = AlarmInfo.PRIVATE_ALARM;
+		private_alarm.member = new AlarmMember[]{ };
 	}
 
 	@Test
@@ -90,7 +112,9 @@ public class AlameServiceTest {
 		assertNotNull(listener2.getFinishRequest());
 	}
 
-	public void testSetAlaram( AlarmInfo alarm ){
+	@Test
+	public void testSetAlaram(){
+		
 	}
 
 	public void testOffAlaram( AlarmInfo alarm ){

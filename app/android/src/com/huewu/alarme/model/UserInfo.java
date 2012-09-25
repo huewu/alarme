@@ -8,6 +8,16 @@ public class UserInfo extends JsonModel {
 	public String cid;	//clock id.
 	public String msg; //message
 
+	public UserInfo(){
+		
+	}
+	
+	public UserInfo(String uname, String rid, String cid) {
+		this.uname = uname;
+		this.rid = rid;
+		this.cid = cid;
+	}
+
 	@Override
 	public String toPostData() {
 		return String.format("uname=%s&rid=%s&cid=%s", uname, rid, cid);

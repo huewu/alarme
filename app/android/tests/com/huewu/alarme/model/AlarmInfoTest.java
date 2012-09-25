@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,13 @@ public class AlarmInfoTest {
 		
 		br.close();
 		fr.close();
+	}
+	
+	@Test
+	public void constructor(){
+		UserInfo user = new UserInfo();
+		//AlarmInfo alarm = new AlarmInfo(System.currentTimeMillis(), user);
+		SimpleDateFormat format = new SimpleDateFormat();
 	}
 	
 	@Test

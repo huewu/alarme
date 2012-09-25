@@ -9,6 +9,9 @@ import java.util.Date;
  */
 public class AlarmInfo extends JsonModel {
 	
+	public static final String PRIVATE_ALARM = "PRIVATE";
+	public static final String GROUP_ALARM = "GROUP";
+	
 	public String aid;
 	public String type;
 	public String time;

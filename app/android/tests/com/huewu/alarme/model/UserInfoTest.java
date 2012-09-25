@@ -59,6 +59,18 @@ public class UserInfoTest {
 	}
 	
 	@Test
+	public void constructor(){
+		String uname = "huewu";
+		String rid = "12345";
+		String cid = "qqqeee";
+		UserInfo user = new UserInfo(uname, rid, cid);
+
+		assertEquals(uname, user.uname);
+		assertEquals(rid, user.rid);
+		assertEquals(cid, user.cid);
+	}
+	
+	@Test
 	public void parseFromJsonStream(){
 		
 		Gson gson = new Gson();

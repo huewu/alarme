@@ -19,20 +19,13 @@ import com.huewu.alarme.service.AlameServiceTest;
 @RunWith(AlarmeTestRunner.class)
 public class AlarmMemberTest {
 	
-	private String dummy_json = "";
-	//{
-	//"aid":"KL_PRIVATE_1348021106421",
-	//"type":"PRIVATE",
-	//"time":"2012-09-19T02:18:26.421Z",
-	//"_id":"50592c319752bc0200000003",
-	//"__v":0,
-	//"member":[{"uid":"KL","status":"ON","_id":"50592c319752bc0200000004"}]
-	//}
+	private String dummy_json = "";		//{"uid":"KL","status":"ON","_id":"50592cfa9752bc0200000009"}
+	private AlarmMember member = null;		
 	
 	@Before
 	public void init() throws IOException{
 		//load dummy json file.
-		FileReader fr = new FileReader("../android/tests/dummy_private_alarm_json.txt");
+		FileReader fr = new FileReader("../android/tests/dummy_alarm_member_json.txt");
 		BufferedReader br = new BufferedReader(fr);
 
 		String line = br.readLine();
@@ -44,12 +37,20 @@ public class AlarmMemberTest {
 		
 		br.close();
 		fr.close();
+		
+		member = new AlarmMember();
+		member.uid = "huewu";
+		member.status = "OFF";
 	}
 	
 	@Test
 	public void testParseFromJson(){
 		
 		Gson gson = new Gson();
+		AlarmMember member = gson.fromJson(dummy_json, AlarmMember.class);
+
+		assertEquals("KL", member.uid);
+		assertEquals("ON", member.status);
 	}
 	
 	@Test
