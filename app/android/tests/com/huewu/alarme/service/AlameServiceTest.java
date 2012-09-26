@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import org.junit.Before;
@@ -115,6 +116,10 @@ public class AlameServiceTest {
 	@Test
 	public void testSetAlaram(){
 		
+		AlarmInfo alarm = new AlarmInfo();
+		service.setAlaram(alarm, new MockAlarmInfoResponseListener());
+		
+		//should check something.
 	}
 
 	public void testOffAlaram( AlarmInfo alarm ){

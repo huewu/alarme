@@ -25,31 +25,24 @@ public class AlarmePreference {
 		}
 	}
 	
-	public static void clearAuth(Context ctx){
+	public static void setClockID(Context ctx, String cid){
 		Editor edit = getInstance(ctx).edit();
-		edit.remove("auth_token");
-		edit.remove("access_token");
+		edit.putString("cid", cid);
 		edit.commit();
 	}
 	
-	public static String getUserName(Context ctx){
-		return getInstance(ctx).getString("username", "");
+	public static String getClockID(Context ctx){
+		return getInstance(ctx).getString("cid", "");
 	}
-	
-	public static String getUserID(Context ctx){
-		return getInstance(ctx).getString("uid", "");
-	}
-		
-	public static void setUserName(Context ctx, String username){
+			
+	public static void setRegisterID(Context ctx, String rid){
 		Editor edit = getInstance(ctx).edit();
-		edit.putString("username", username);
+		edit.putString("rid", rid);
 		edit.commit();
 	}
 	
-	public static void setUserUserID(Context ctx, String userid){
-		Editor edit = getInstance(ctx).edit();
-		edit.putString("uid", userid);
-		edit.commit();
+	public static String getRegisterID(Context ctx){
+		return getInstance(ctx).getString("rid", "");
 	}
 
 	private AlarmePreference(){}

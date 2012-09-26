@@ -23,4 +23,4 @@ public interface OnAlarmGCMListener {
 	 */
 	void onRequestSetAlarm( GroupAlarmInfo alarm );	//callback.
 
-}
+}//end of interface
