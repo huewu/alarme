@@ -12,11 +12,13 @@
 
 // include the library code:
 #include <LiquidCrystal.h>
-#include <Ethernet.h>
+#include <WiFly.h>
 #include <PusherClient.h>
+#include <Credentials.h>
 
 // function local declarations
 void setup_lcd();
+void setup_wifly();
 void setup_pusherclient();
 void do_lcd();
 void do_pusherclient();
@@ -27,7 +29,6 @@ void dismiss_alarm(String data);
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 // initialize PusherClient using WebSocketClient library
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 PusherClient client;
 
 void setup() {
@@ -42,14 +43,21 @@ void setup_lcd() {
     lcd.print("hello, world!");
 }
 
-void setup_pusherclient() {
-    //Serial.begin(9600);
-    if (Ethernet.begin(mac) == 0) {
-        //Serial.println("Init Ethernet failed");
-        for(;;)
-            ;
+void setup_wifly() {
+    // Serial.begin(9600);
+    WiFly.begin();
+
+    if (!WiFly.join(ssid, passphrase)) {
+        // Serial.println("Association failed.");
+        while (1) {
+            // Hang on failure
+        }
     }
 
+    WiFly.configure(WIFLY_BAUD, 38400);
+}
+
+void setup_pusherclient() {
     if(client.connect("your-api-key-here")) {
         client.bind("set_alarm", set_alarm);
         client.bind("dismiss_alarm", dismiss_alarm);
