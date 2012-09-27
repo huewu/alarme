@@ -1,5 +1,8 @@
 package com.huewu.alarme.db;
 
+import com.google.gson.Gson;
+import com.huewu.alarme.model.UserInfo;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -44,7 +47,24 @@ public class AlarmePreference {
 	public static String getRegisterID(Context ctx){
 		return getInstance(ctx).getString("rid", "");
 	}
+	
+	public static UserInfo getUser(Context ctx) {
+		String userStr = getInstance(ctx).getString("user", "");
+		if( userStr.isEmpty() )
+			return null;
 
+		Gson gson = new Gson();
+		return gson.fromJson(userStr, UserInfo.class);
+	}
+	
+	public static void setUser( Context ctx, UserInfo user ) {
+		Gson gson = new Gson();
+		String jsonStr = gson.toJson(user);
+		Editor editor = getInstance(ctx).edit();
+		editor.putString("user", jsonStr);
+		editor.commit();
+	}
+	
 	private AlarmePreference(){}
 
 }//end of class

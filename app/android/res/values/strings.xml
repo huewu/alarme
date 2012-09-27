@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Beam</string>
+    <string name="app_name">Alarme</string>
     <string name="info">Ensure that Android Beam is enabled by turning it on in
         the system Settings (select the setting icon above), then place this device up
         against another Android device that supports Android Beam to send a

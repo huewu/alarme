@@ -1,8 +1,11 @@
 package com.huewu.alarme;
 
 import com.google.android.gcm.GCMRegistrar;
+import com.huewu.alarme.db.AlarmePreference;
+import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.util.Util;
 import com.huewu.alarme.view.SettingFragment;
+import com.huewu.alarme.view.WelcomeFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -25,12 +28,8 @@ public class Launcher extends FragmentActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.main);
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.add(R.id.workspace, new SettingFragment(), "setting");
-		ft.commit();
-		
 		registerGCM();
+		getActionBar().setSubtitle("Sync your alarm to alarme.");
 	}
 
 	private void registerGCM() {
@@ -48,8 +47,31 @@ public class Launcher extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		
-		String name = Util.getCurrentUserAccount(this);
-		Log.v(TAG, "Hello! " + name);
+		//for initial user. show welcome fragment.
+		
+		//for already registered user, show alarm fragment.
+		
+		UserInfo user = AlarmePreference.getCurrentUser();
+		
+		if( user == null )
+			showWelcomeFragment();
+		else
+			showAlarmFragment();
+		
+	}
+
+	private void showAlarmFragment() {
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		ft.add(R.id.workspace, new SettingFragment(), "setting");
+		ft.commit();
+	}
+
+	private void showWelcomeFragment() {
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		ft.add(R.id.workspace, new WelcomeFragment(), "wlecome");
+		ft.commit();
 	}
 
 	//setting activity.

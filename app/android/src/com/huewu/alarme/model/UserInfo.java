@@ -6,7 +6,6 @@ public class UserInfo extends JsonModel {
 	public String uname;	//user name
 	public String rid;	//GCM registeration id
 	public String cid;	//clock id.
-	public String msg; //message
 
 	public UserInfo(){
 		

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_button_pane_height">45dp</dimen>
+    <dimen name="btn_padding">5dp</dimen>
+    <dimen name="actionbar_height">48dp</dimen>
+    <dimen name="card_divider_height">-5dp</dimen>
+    <dimen name="comment_divider_height">6dp</dimen>
+    <dimen name="comment_thumb_size">60dp</dimen>
+    <dimen name="vingle_btn_height">48dp</dimen>
+    <dimen name="vingle_normal_text">13sp</dimen>
+    <dimen name="vingle_large_text">14sp</dimen>
+    <dimen name="vingle_label_text">16sp</dimen>
+    <dimen name="vingle_big_label_text">20sp</dimen>
+    <dimen name="party_header_thumb_size">60dp</dimen>
+    <dimen name="header_height">120dp</dimen>
+</resources>
