@@ -1,6 +1,6 @@
 package com.huewu.alarme;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import android.content.Intent;
 
 import com.huewu.alarme.db.AlarmePreference;
-import com.huewu.alarme.model.AlarmInfo;
-import com.huewu.alarme.model.GroupAlarmInfo;
 import com.huewu.alarme.runner.AlarmeTestRunner;
 
 @RunWith(AlarmeTestRunner.class)

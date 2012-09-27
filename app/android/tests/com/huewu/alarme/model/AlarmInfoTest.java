@@ -1,21 +1,20 @@
 package com.huewu.alarme.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.gson.Gson;
+import com.huewu.alarme.DummyFactory;
 import com.huewu.alarme.runner.AlarmeTestRunner;
-import com.huewu.alarme.service.AlameServiceTest;
-
 
 @RunWith(AlarmeTestRunner.class)
 public class AlarmInfoTest {
@@ -48,10 +47,22 @@ public class AlarmInfoTest {
 	}
 	
 	@Test
-	public void constructor(){
-		UserInfo user = new UserInfo();
-		//AlarmInfo alarm = new AlarmInfo(System.currentTimeMillis(), user);
-		SimpleDateFormat format = new SimpleDateFormat();
+	public void testConstructor(){
+		UserInfo user = DummyFactory.createDummyUserInfo();
+
+		AlarmInfo alarm = new AlarmInfo(user, 1000);
+		assertEquals("PRIVATE", alarm.type);
+		assertEquals("1970-01-01T09:00:01.000Z", alarm.time);
+		assertEquals(1, alarm.member.length);
+		assertEquals(AlarmMember.STATUS_ON, alarm.member[0].status);
+	}
+	
+	@Test
+	public void testGetters(){
+		UserInfo user = DummyFactory.createDummyUserInfo();
+		
+		AlarmInfo alarm = new AlarmInfo(user, 1000);
+		assertEquals( user, alarm.getOwner() );
 	}
 	
 	@Test
@@ -70,10 +81,24 @@ public class AlarmInfoTest {
 	}
 	
 	@Test
-	public void testToPostData(){
+	public void testToPostData() throws UnsupportedEncodingException{
+		//FIXME member should be renamed to members.
+		//type:PRIVATE
+		//time:1348711260486
+		//member[0][uid]:KL
+		//member[0][status]:ON	
 		
-	}
+		UserInfo user = DummyFactory.createDummyUserInfo();
+		String postStr = String.format("type=%s&time=%s&member[0][uid]=%s&member[0][status]=%s", 
+				URLEncoder.encode("PRIVATE","utf-8"),
+				URLEncoder.encode("1970-01-01T09:00:01.000Z","utf-8"),
+				URLEncoder.encode("xxxx","utf-8"),
+				URLEncoder.encode("ON","utf-8")
+				);
 
+		AlarmInfo alarm = new AlarmInfo(user, 1000);
+		assertEquals( postStr, alarm.toPostData() );
+	}
 
 }//end of class
 	

@@ -7,6 +7,15 @@ public class AlarmMember extends JsonModel {
 	
 	public String uid;
 	public String status;
+	
+	public AlarmMember(){
+		
+	}
+
+	public AlarmMember(UserInfo owner, String status) {
+		this.uid = owner.uid;
+		this.status = status;
+	}
 
 	@Override
 	public String toPostData() {

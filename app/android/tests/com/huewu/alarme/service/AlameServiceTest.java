@@ -1,19 +1,20 @@
 package com.huewu.alarme.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import android.text.format.Time;
-
 import com.huewu.alarme.Constants;
+import com.huewu.alarme.DummyFactory;
 import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.AlarmMember;
 import com.huewu.alarme.model.UserInfo;
@@ -114,12 +115,32 @@ public class AlameServiceTest {
 	}
 
 	@Test
-	public void testSetAlaram(){
+	public void testSetAlaram() throws MalformedURLException{
 		
-		AlarmInfo alarm = new AlarmInfo();
-		service.setAlaram(alarm, new MockAlarmInfoResponseListener());
+		MockAlarmInfoResponseListener listener = new MockAlarmInfoResponseListener();
+
+		UserInfo user = DummyFactory.createDummyUserInfo();
+		AlarmInfo alarm = new AlarmInfo(user, 0);
+		service.setAlaram(alarm, listener);
 		
-		//should check something.
+		listener.waitResponse(Constants.DEFAULT_WAIT_TIMEOUT);
+		
+		JsonRequest<AlarmInfo> beforeReq = listener.getBeforeRequest();
+
+		//check http method.
+		assertEquals(Method.POST, beforeReq.getMethod());
+		
+		//check url.
+		String urlStr = String.format("http://ghfal.herokuapp.com/user/%s/alarm", user.uid);
+		assertEquals(new URL(urlStr), beforeReq.getURL());
+		
+		//check form data.
+		assertArrayEquals(alarm.toPostData().getBytes(), beforeReq.getData());
+		
+		//request should be success.
+		assertNotNull(listener.getFinishRequest());
+		assertNull(listener.getErrorRequest());
+		
 	}
 
 	public void testOffAlaram( AlarmInfo alarm ){

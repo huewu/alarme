@@ -1,10 +1,8 @@
 package com.huewu.alarme.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -12,16 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import com.huewu.alarme.runner.AlarmeTestRunner;
 
 @RunWith(AlarmeTestRunner.class)
 public class UserInfoTest {
 	
-	private static final String TAG = "UserInfoTest";
 	private UserInfo user = null;
 	private String dummy_json = "";
 //	 {
@@ -59,7 +53,7 @@ public class UserInfoTest {
 	}
 	
 	@Test
-	public void constructor(){
+	public void testConstructor(){
 		String uname = "huewu";
 		String rid = "12345";
 		String cid = "qqqeee";

@@ -7,7 +7,7 @@ import com.huewu.alarme.model.UserInfo;
 
 public class DummyFactory {
 	
-	public UserInfo createDummyUserInfo(){
+	public static UserInfo createDummyUserInfo(){
 		UserInfo user = new UserInfo();
 		user.uid = "xxxx";
 		user.uname = "huewu";
@@ -16,17 +16,12 @@ public class DummyFactory {
 		return user;
 	}
 	
-	public AlarmInfo createDummyAlarmInfo(){
-		AlarmInfo alarm = new AlarmInfo();
-		alarm.aid = "xxxx";
-		alarm.time = "2012-09-19T02:18:26.421Z";
-		alarm.type = AlarmInfo.PRIVATE_ALARM;
-		alarm.member = new AlarmMember[]{ createDummyMemberInfo() };
-		
+	public static AlarmInfo createDummyAlarmInfo(){
+		AlarmInfo alarm = new AlarmInfo( createDummyUserInfo(), 5000);
 		return alarm;
 	}
 	
-	public AlarmMember createDummyMemberInfo(){
+	public static AlarmMember createDummyMemberInfo(){
 		AlarmMember member = new AlarmMember();
 		member.uid = createDummyUserInfo().uid;
 		member.status = AlarmMember.STATUS_OFF;

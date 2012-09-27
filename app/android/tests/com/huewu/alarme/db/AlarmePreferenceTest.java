@@ -1,12 +1,10 @@
 package com.huewu.alarme.db;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import android.content.Context;
 
 import com.huewu.alarme.GCMIntentService;
 import com.huewu.alarme.runner.AlarmeTestRunner;

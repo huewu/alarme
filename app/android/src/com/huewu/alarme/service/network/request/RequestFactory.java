@@ -2,6 +2,7 @@ package com.huewu.alarme.service.network.request;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.service.network.ResponseCallback;
 import com.huewu.alarme.service.network.ResponseDecoder;
@@ -30,6 +31,14 @@ public class RequestFactory {
 		return req;
 	}
 	
+	public static SetAlarmRequest createSetAlarmRequest(AlarmInfo alarm, ResponseCallback<AlarmInfo> callback) {
+		SetAlarmRequest req = new SetAlarmRequest(alarm);
+		req.setCallback(callback);
+		req.setDecoder(new AlarmInfoDecoder());
+		
+		return req;
+	}
+	
 	private static class UserInfoDecoder implements ResponseDecoder<UserInfo>{
 		
 		private Gson gson = new Gson();
@@ -37,6 +46,16 @@ public class RequestFactory {
 		@Override
 		public UserInfo decode(JsonReader reader) {
 			return gson.fromJson(reader, UserInfo.class);
+		}
+	}
+	
+	private static class AlarmInfoDecoder implements ResponseDecoder<AlarmInfo>{
+		
+		private Gson gson = new Gson();
+
+		@Override
+		public AlarmInfo decode(JsonReader reader) {
+			return gson.fromJson(reader, AlarmInfo.class);
 		}
 	}
 	

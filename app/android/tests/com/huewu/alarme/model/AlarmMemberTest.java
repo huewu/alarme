@@ -1,9 +1,8 @@
 package com.huewu.alarme.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -12,8 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.gson.Gson;
+import com.huewu.alarme.DummyFactory;
 import com.huewu.alarme.runner.AlarmeTestRunner;
-import com.huewu.alarme.service.AlameServiceTest;
 
 
 @RunWith(AlarmeTestRunner.class)
@@ -41,6 +40,15 @@ public class AlarmMemberTest {
 		member = new AlarmMember();
 		member.uid = "huewu";
 		member.status = "OFF";
+	}
+	
+	@Test
+	public void testConstructor(){
+		UserInfo user = DummyFactory.createDummyUserInfo();
+		AlarmMember member = new AlarmMember( user, AlarmMember.STATUS_OFF );
+		
+		assertEquals(user.uid, member.uid);
+		assertEquals(AlarmMember.STATUS_OFF, member.status);
 	}
 	
 	@Test
