@@ -1,6 +1,7 @@
 package com.huewu.alarme;
 
 import com.google.android.gcm.GCMRegistrar;
+import com.huewu.alarme.util.Util;
 import com.huewu.alarme.view.SettingFragment;
 
 import android.os.Bundle;
@@ -41,6 +42,14 @@ public class Launcher extends FragmentActivity {
 		} else {
 		  Log.v(TAG, "Already registered");
 		}	
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		String name = Util.getCurrentUserAccount(this);
+		Log.v(TAG, "Hello! " + name);
 	}
 
 	//setting activity.

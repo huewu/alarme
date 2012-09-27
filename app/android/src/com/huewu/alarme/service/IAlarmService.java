@@ -35,7 +35,7 @@ public interface IAlarmService {
 	 * create a new group alarm in clock server (this phone is a master)
 	 * @param alarm
 	 */
-	void setGroupAlarm( AlarmInfo alarm, ResponseCallback<AlarmInfo> callback );
+	void setGroupAlarm( AlarmInfo alarm, UserInfo[] members, ResponseCallback<AlarmInfo> callback );
 
 	/**
 	 * update a group alarm info in server (change alarm status of this phone - uid)

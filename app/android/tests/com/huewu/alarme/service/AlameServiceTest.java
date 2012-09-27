@@ -141,17 +141,73 @@ public class AlameServiceTest {
 		assertNotNull(listener.getFinishRequest());
 		assertNull(listener.getErrorRequest());
 		
+		//should get aid. (alarm id)
+		JsonRequest<AlarmInfo> response = listener.getResponseRequest();
+		assertEquals(1, response.getResponse().size());
+		assertNotNull(response.getResponse().get(0).aid);
 	}
 
-	public void testOffAlaram( AlarmInfo alarm ){
+	@Test
+	public void testOffAlaram() throws MalformedURLException{
 		
-	}
-
-	public void testSetGroupAlarm( AlarmInfo alarm ){
+		MockAlarmInfoResponseListener listener = new MockAlarmInfoResponseListener();
 		
+		AlarmInfo alarm = DummyFactory.createDummyAlarmInfo();
+
+		service.offAlaram(alarm, listener);
+		
+		listener.waitResponse(Constants.DEFAULT_WAIT_TIMEOUT);
+		
+		JsonRequest<AlarmInfo> beforeReq = listener.getBeforeRequest();
+		
+		//check http method.
+		assertEquals(Method.PUT, beforeReq.getMethod());
+		
+		//check url
+		String urlStr = String.format("http://ghfal.herokuapp.com/alarm/%s", alarm.aid);
+		assertEquals(new URL(urlStr), beforeReq.getURL());
+		
+		//request should be success.
+		assertNotNull(listener.getFinishRequest());
+		assertNull(listener.getErrorRequest());
 	}
 
-	public void testUpdateGroupAlaram( AlarmInfo alarm ){
+	@Test
+	public void testSetGroupAlarm(){
+		
+		MockAlarmInfoResponseListener listener = new MockAlarmInfoResponseListener();
+
+		UserInfo user1 = DummyFactory.createDummyUserInfo("1");
+		UserInfo user2 = DummyFactory.createDummyUserInfo("2");
+		UserInfo user3 = DummyFactory.createDummyUserInfo("3");
+		AlarmInfo alarm = new AlarmInfo(user, 0);
+
+		service.setGroupAlarm(alarm, new UserInfo[]{user1, user2, user3}, listener);
+		
+		listener.waitResponse(Constants.DEFAULT_WAIT_TIMEOUT);
+
+//		//check http method.
+//		assertEquals(Method.POST, beforeReq.getMethod());
+//		
+//		//check url.
+//		String urlStr = String.format("http://ghfal.herokuapp.com/user/%s/alarm", user.uid);
+//		assertEquals(new URL(urlStr), beforeReq.getURL());
+//		
+//		//check form data.
+//		assertArrayEquals(alarm.toPostData().getBytes(), beforeReq.getData());
+//		
+//		//request should be success.
+//		assertNotNull(listener.getFinishRequest());
+//		assertNull(listener.getErrorRequest());
+//		
+//		//should get aid. (alarm id)
+//		JsonRequest<AlarmInfo> response = listener.getResponseRequest();
+//		assertEquals(1, response.getResponse().size());
+//		assertNotNull(response.getResponse().get(0).aid);
+	}
+
+	@Test
+	public void testUpdateGroupAlaram(){
 		
 	}
 

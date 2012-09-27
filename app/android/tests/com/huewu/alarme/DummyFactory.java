@@ -16,6 +16,15 @@ public class DummyFactory {
 		return user;
 	}
 	
+	public static UserInfo createDummyUserInfo(String seed){
+		UserInfo user = new UserInfo();
+		user.uid = "xxxx";
+		user.uname = "huewu" + seed;
+		user.rid = "1234";
+		user.cid = "4321";
+		return user;
+	}
+	
 	public static AlarmInfo createDummyAlarmInfo(){
 		AlarmInfo alarm = new AlarmInfo( createDummyUserInfo(), 5000);
 		return alarm;

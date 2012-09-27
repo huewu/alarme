@@ -1,7 +1,6 @@
 package com.huewu.alarme.service.network.request;
 
 import com.huewu.alarme.model.AlarmInfo;
-import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.service.network.JsonRequest;
 
 public class SetAlarmRequest extends JsonRequest<AlarmInfo>{

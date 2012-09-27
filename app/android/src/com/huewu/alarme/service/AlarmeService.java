@@ -71,10 +71,13 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 		//PUT /alarm/:aid
 		//Request Body: JSON
 		//{ alarmId: aid, status: off }
+		
+		JsonRequest<?> req = RequestFactory.createOffAlarmRequest( alarm, callback );
+		mNewtorkWorekr.sendRequest(req);
 	}
 
 	@Override
-	public void setGroupAlarm( AlarmInfo alarm, ResponseCallback<AlarmInfo> callback){
+	public void setGroupAlarm( AlarmInfo alarm, UserInfo[] members, ResponseCallback<AlarmInfo> callback){
 		//create new group alarm to clock server.
 		//POST /user/:uid/alarm
 		//Request Body: JSON

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.UserInfo;
+import com.huewu.alarme.service.network.JsonRequest;
 import com.huewu.alarme.service.network.ResponseCallback;
 import com.huewu.alarme.service.network.ResponseDecoder;
 
@@ -36,6 +37,14 @@ public class RequestFactory {
 		req.setCallback(callback);
 		req.setDecoder(new AlarmInfoDecoder());
 		
+		return req;
+	}
+	
+	public static OffAlarmRequest createOffAlarmRequest(AlarmInfo alarm,
+			ResponseCallback<AlarmInfo> callback) {
+		OffAlarmRequest req = new OffAlarmRequest(alarm);
+		req.setCallback(callback);
+		req.setDecoder(new AlarmInfoDecoder());
 		return req;
 	}
 	
