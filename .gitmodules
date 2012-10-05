@@ -10,3 +10,6 @@
 [submodule "ArduinoPusherClient"]
 	path = ArduinoPusherClient
 	url = https://github.com/jinserk/ArduinoPusherClient.git
+[submodule "WiFly-Shield"]
+	path = WiFly-Shield
+	url = https://github.com/jinserk/WiFly-Shield.git
