@@ -19,8 +19,8 @@ import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.AlarmMember;
 import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.runner.AlarmeTestRunner;
-import com.huewu.alarme.service.network.JsonRequest;
-import com.huewu.alarme.service.network.JsonRequest.Method;
+import com.huewu.libs.network.JsonRequest;
+import com.huewu.libs.network.JsonRequest.Method;
 
 @RunWith(AlarmeTestRunner.class)
 public class AlameServiceTest {

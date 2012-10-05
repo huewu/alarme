@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import com.huewu.alarme.model.AlarmInfo;
-import com.huewu.alarme.service.network.JsonRequest;
+import com.huewu.libs.network.JsonRequest;
 
 public class OffAlarmRequest extends JsonRequest<AlarmInfo>{
 	

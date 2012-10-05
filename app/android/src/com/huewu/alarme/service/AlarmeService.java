@@ -3,11 +3,11 @@ package com.huewu.alarme.service;
 import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.GroupAlarmInfo;
 import com.huewu.alarme.model.UserInfo;
-import com.huewu.alarme.service.network.JsonNetworkWorker;
-import com.huewu.alarme.service.network.JsonRequest;
-import com.huewu.alarme.service.network.ResponseCallback;
 import com.huewu.alarme.service.network.request.CreateUserRequest;
 import com.huewu.alarme.service.network.request.RequestFactory;
+import com.huewu.libs.network.JsonNetworkWorker;
+import com.huewu.libs.network.JsonRequest;
+import com.huewu.libs.network.ResponseListener;
 
 import android.app.Service;
 import android.content.Intent;
@@ -29,7 +29,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	}
 		
 	@Override
-	public void createUser(UserInfo user, ResponseCallback<UserInfo> callback) {
+	public void createUser(UserInfo user, ResponseListener callback) {
 		//send message to clock server.
 		//POST /user 
 		//Request Body: JSON
@@ -42,7 +42,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	}
 
 	@Override
-	public void deleteUser(UserInfo user, ResponseCallback<UserInfo> callback) {
+	public void deleteUser(UserInfo user, ResponseListener callback) {
 		//send message to clock server.
 		//DELETE /user/:uid 
 		//Response Body: null
@@ -52,7 +52,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	}
 
 	@Override
-	public void setAlaram(AlarmInfo alarm, ResponseCallback<AlarmInfo> callback){
+	public void setAlaram(AlarmInfo alarm, ResponseListener callback){
 		//send message to clock server.
 		//POST /user/:uid/alarm
 		//Request Body: JSON
@@ -65,7 +65,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	}
 
 	@Override
-	public void offAlaram( AlarmInfo alarm, ResponseCallback<AlarmInfo> callback){
+	public void offAlaram( AlarmInfo alarm, ResponseListener callback){
 		//update alarm status in clock server.
 		//send message to clock server.
 		//PUT /alarm/:aid
@@ -77,7 +77,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	}
 
 	@Override
-	public void setGroupAlarm( AlarmInfo alarm, UserInfo[] members, ResponseCallback<AlarmInfo> callback){
+	public void setGroupAlarm( AlarmInfo alarm, UserInfo[] members, ResponseListener callback){
 		//create new group alarm to clock server.
 		//POST /user/:uid/alarm
 		//Request Body: JSON
@@ -87,7 +87,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	}
 	
 	@Override
-	public void updateGroupAlaram(AlarmInfo alarm, ResponseCallback<AlarmInfo> callback) {
+	public void updateGroupAlaram(AlarmInfo alarm, ResponseListener callback) {
 		mNewtorkWorekr.sendRequest(null);
 	}
 	

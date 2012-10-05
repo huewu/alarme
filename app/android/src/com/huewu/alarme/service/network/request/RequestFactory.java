@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.UserInfo;
-import com.huewu.alarme.service.network.JsonRequest;
-import com.huewu.alarme.service.network.ResponseCallback;
-import com.huewu.alarme.service.network.ResponseDecoder;
+import com.huewu.libs.network.ResponseDecoder;
+import com.huewu.libs.network.ResponseListener;
 
 /**
  * factory class in order to create various request.
@@ -14,36 +13,36 @@ import com.huewu.alarme.service.network.ResponseDecoder;
  */
 public class RequestFactory {
 	
-	public static CreateUserRequest createCreateUserRequest(UserInfo user, ResponseCallback<UserInfo> callback){
+	public static CreateUserRequest createCreateUserRequest(UserInfo user, ResponseListener listener){
 		CreateUserRequest req = new CreateUserRequest(user);
 
-		req.setCallback(callback);
+		req.setResponseListener(listener);
 		req.setDecoder(new UserInfoDecoder());
 		
 		return req;
 	}
 	
-	public static DeleteUserRequest createDeleteUserRequest(UserInfo user, ResponseCallback<UserInfo> callback) {
+	public static DeleteUserRequest createDeleteUserRequest(UserInfo user, ResponseListener listener) {
 		DeleteUserRequest req = new DeleteUserRequest(user);
 		
-		req.setCallback(callback);
+		req.setResponseListener(listener);
 		req.setDecoder(new UserInfoDecoder());
 		
 		return req;
 	}
 	
-	public static SetAlarmRequest createSetAlarmRequest(AlarmInfo alarm, ResponseCallback<AlarmInfo> callback) {
+	public static SetAlarmRequest createSetAlarmRequest(AlarmInfo alarm, ResponseListener listener) {
 		SetAlarmRequest req = new SetAlarmRequest(alarm);
-		req.setCallback(callback);
+		req.setResponseListener(listener);
 		req.setDecoder(new AlarmInfoDecoder());
 		
 		return req;
 	}
 	
 	public static OffAlarmRequest createOffAlarmRequest(AlarmInfo alarm,
-			ResponseCallback<AlarmInfo> callback) {
+			ResponseListener listener) {
 		OffAlarmRequest req = new OffAlarmRequest(alarm);
-		req.setCallback(callback);
+		req.setResponseListener(listener);
 		req.setDecoder(new AlarmInfoDecoder());
 		return req;
 	}

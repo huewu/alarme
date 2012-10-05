@@ -1,9 +1,7 @@
 package com.huewu.alarme.service.network.request;
 
-import java.net.URL;
-
 import com.huewu.alarme.model.UserInfo;
-import com.huewu.alarme.service.network.JsonRequest;
+import com.huewu.libs.network.JsonRequest;
 
 public class DeleteUserRequest extends JsonRequest<UserInfo>{
 

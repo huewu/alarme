@@ -1,15 +1,16 @@
 package com.huewu.alarme.service;
 
 import com.huewu.alarme.model.UserInfo;
-import com.huewu.alarme.service.network.JsonRequest;
-import com.huewu.alarme.service.network.ResponseCallback;
+import com.huewu.libs.network.JsonRequest;
+import com.huewu.libs.network.ResponseListener;
 
-public class MockUserInfoResponseListener implements ResponseCallback<UserInfo>{
+public class MockUserInfoResponseListener implements ResponseListener {
 	
 	private Object mWaitObj = new Object();
 	private JsonRequest<UserInfo> mBeforeRequest = null;
 	private JsonRequest<UserInfo> mResponseRequest = null;
 	private JsonRequest<UserInfo> mFinishRequest = null;
+	private JsonRequest<UserInfo> mRetryRequest = null;
 	private JsonRequest<UserInfo> mErrorRequest = null;
 	
 	public JsonRequest<UserInfo> getBeforeRequest(){
@@ -38,26 +39,33 @@ public class MockUserInfoResponseListener implements ResponseCallback<UserInfo>{
 	}
 
 	@Override
-	public void onBeforeRequest(JsonRequest<UserInfo> req) {
-		mBeforeRequest = req;
+	public void onRequsetReady(JsonRequest<?> req) {
+		mBeforeRequest = (JsonRequest<UserInfo>) req;
 	}
 
 	@Override
-	public void onResponse(JsonRequest<UserInfo> req, UserInfo resp) {
-		mResponseRequest = req;
+	public void onRequestRetrying(JsonRequest<?> req) {
+		mRetryRequest = (JsonRequest<UserInfo>) req;
 	}
 
 	@Override
-	public void onFinsh(JsonRequest<UserInfo> req) {
-		mFinishRequest = req;
-		synchronized (mWaitObj) {
-			mWaitObj.notifyAll();
-		}
+	public void onRequestResponse(JsonRequest<?> req) {
+		mResponseRequest = (JsonRequest<UserInfo>) req;
 	}
 
 	@Override
-	public void onError(JsonRequest<UserInfo> req, Exception exception) {
-		mErrorRequest = req;
+	public void onRequestFinished(JsonRequest<?> req) {
+		mFinishRequest = (JsonRequest<UserInfo>) req;
+		notifiyAll();
+	}
+
+	@Override
+	public void onRequestFailed(JsonRequest<?> req) {
+		mErrorRequest = (JsonRequest<UserInfo>) req;
+		notifiyAll();
+	}
+	
+	private void notifiyAll(){
 		synchronized (mWaitObj) {
 			mWaitObj.notifyAll();
 		}
