@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="green_ink">#51714A</color>
-    <color name="alarme_green">#8888AA</color>
+    <color name="alarme_blue">#8888AA</color>
+    <color name="alarme_grey">#333333</color>
+    <color name="alarme_white">#cccccc</color>
 </resources>

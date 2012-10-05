@@ -18,4 +18,21 @@
         <item name="android:paddingRight">1dp</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
+    
+    <style name="default_widget" parent="android:Widget.Holo">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textColor">@color/alarme_white</item>        
+        <item name="android:textSize">@dimen/header_text</item>
+    </style>
+    
+    
+    
+    <style name="header_text" parent="default_widget">
+    </style>
+    <style name="desc_text" parent="default_widget">
+        <item name="android:textColor">@color/alarme_grey</item>
+        <item name="android:textSize">@dimen/desc_text</item>
+    </style>
 </resources>

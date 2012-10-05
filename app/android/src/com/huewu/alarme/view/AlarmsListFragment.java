@@ -8,28 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SettingFragment extends Fragment {
-	
-	//reference JB alarm setting activity UI.
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+public class AlarmsListFragment extends Fragment{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-		return inflater.inflate(R.layout.setting_frag, null);
+
+		View view = inflater.inflate(R.layout.alarm_frag, null);
+		return view;
 	}
-	
-	//ADD / EDIT / DELETE
-	//Turn alarm on
-	//Time
-	//Repeat
-	//Ringtone
-	//Vibrate
-	//Label
 
 }//end of class

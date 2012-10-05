@@ -10,7 +10,10 @@
     <dimen name="vingle_normal_text">13sp</dimen>
     <dimen name="vingle_large_text">14sp</dimen>
     <dimen name="vingle_label_text">16sp</dimen>
-    <dimen name="vingle_big_label_text">20sp</dimen>
+    <dimen name="header_text">20sp</dimen>
     <dimen name="party_header_thumb_size">60dp</dimen>
     <dimen name="header_height">120dp</dimen>
+    
+    <dimen name="desc_text">16sp</dimen>
+	<dimen name="header_text">20sp</dimen>    
 </resources>
