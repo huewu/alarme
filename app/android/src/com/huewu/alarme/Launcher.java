@@ -51,7 +51,7 @@ public class Launcher extends FragmentActivity {
 		
 		//for already registered user, show alarm fragment.
 		
-		UserInfo user = AlarmePreference.getCurrentUser();
+		UserInfo user = AlarmePreference.getUser(this);
 		
 		if( user == null )
 			showWelcomeFragment();
