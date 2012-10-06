@@ -17,7 +17,7 @@ public class UtilTest {
 	@Test
 	public void testGetTimeString(){
 		String timeStr = Util.getTimeString(0);
-		assertEquals("1970-01-01T09:00:00.000Z", timeStr);
+		assertEquals("1970-01-01T09:00", timeStr);
 	}
 	
 	@Test

@@ -8,7 +8,7 @@ import android.accounts.AccountManager;
 import android.content.Context;
 
 public class Util {
-	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.000Z'");	
+	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");	
 
 	public static String getTimeString(long time){
 		return format.format(new Date(time));
@@ -22,5 +22,6 @@ public class Util {
 	}
 	
 	private Util(){}
+	
 
 }//end of class

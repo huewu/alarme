@@ -52,7 +52,7 @@ public class AlarmInfoTest {
 
 		AlarmInfo alarm = new AlarmInfo(user, 1000);
 		assertEquals("PRIVATE", alarm.type);
-		assertEquals("1970-01-01T09:00:01.000Z", alarm.time);
+		assertEquals("1970-01-01T09:00", alarm.time);
 		assertEquals(1, alarm.member.length);
 		assertEquals(AlarmMember.STATUS_ON, alarm.member[0].status);
 	}
@@ -91,7 +91,7 @@ public class AlarmInfoTest {
 		UserInfo user = DummyFactory.createDummyUserInfo();
 		String postStr = String.format("type=%s&time=%s&member[0][uid]=%s&member[0][status]=%s", 
 				URLEncoder.encode("PRIVATE","utf-8"),
-				URLEncoder.encode("1970-01-01T09:00:01.000Z","utf-8"),
+				URLEncoder.encode("1970-01-01T09:00","utf-8"),
 				URLEncoder.encode("xxxx","utf-8"),
 				URLEncoder.encode("ON","utf-8")
 				);
