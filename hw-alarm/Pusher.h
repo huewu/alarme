@@ -10,16 +10,14 @@
  *  Copyright (c) 2012, all rights reserved.
  */
 
-// include the library code:
-#include <LiquidCrystal.h>
+#ifndef _NETWORK_H_
+#define _NETWORK_H_
+
 #include <PusherClient.h>
 #if WIFLY
     #include <Credentials.h>
 #endif
-#include "SerialDebug.h"
-#include "LcdDisplay.h"
 
-// function local declarations
 #if WIFLY
 void setup_wifly();
 #else
@@ -35,9 +33,6 @@ void set_alarm(String data);
 void dismiss_alarm(String data);
 unsigned long sendNTPpacket(IPAddress& address);
 
-SerialDebug debug;
-LcdDisplay  lcd;
-
 // initialize PusherClient using WebSocketClient library
 PusherClient pusher;
 #if WIFLY
@@ -52,7 +47,7 @@ byte packetBuffer[ NTP_PACKET_SIZE];
 
 void setup() {
     debug.setup();
-    //lcd.setup();
+    //setup_lcd();
 #if WIFLY
     setup_wifly();
 #else
@@ -62,6 +57,15 @@ void setup() {
     setup_googleclient();
     setup_ntpclient();
 }
+
+/*
+void setup_lcd() {
+    // set up the LCD's number of columns and rows: 
+    lcd.begin(16, 2);
+    // Print a message to the LCD.
+    lcd.print("hello, world!");
+}
+*/
 
 #if WIFLY
 void setup_wifly() {
@@ -120,10 +124,18 @@ void setup_ntpclient() {
 }
 
 void loop() {
-    //lcd.loop();
+    //do_lcd();
     do_pusherclient();
     do_googleclient();
     do_ntpclient();
+}
+
+void do_lcd() {
+    // set the cursor to column 0, line 1
+    // (note: line 1 is the second row, since counting begins with 0):
+    lcd.setCursor(0, 1);
+    // print the number of seconds since reset:
+    lcd.print(millis()/1000);
 }
 
 void do_pusherclient() {
@@ -225,3 +237,6 @@ unsigned long sendNTPpacket(IPAddress& address)
     ntp.write(packetBuffer,NTP_PACKET_SIZE);
     ntp.endPacket(); 
 }
+
+#endif //_NETWORK_H_
+
