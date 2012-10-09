@@ -13,3 +13,6 @@
 [submodule "WiFly-Shield"]
 	path = WiFly-Shield
 	url = https://github.com/jinserk/WiFly-Shield.git
+[submodule "Adafruit-RGB-LCD-Shield-Library"]
+	path = Adafruit-RGB-LCD-Shield-Library
+	url = https://github.com/adafruit/Adafruit-RGB-LCD-Shield-Library.git

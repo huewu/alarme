@@ -10,26 +10,22 @@
  *  Copyright (c) 2012, all rights reserved.
  */
 
-#ifndef _PUSHER_H_
-#define _PUSHER_H_
+#ifndef _HIROKU_H_
+#define _HIROKU_H_
 
-#include <PusherClient.h>
+#include "NetClient.h"
 
-class Pusher
+class Hiroku
 {
     private:
-        PusherClient    pc;
+        NetClient   hc;
 
     public:
-        Pusher() {}
-        
-        void init(void);
-        void bind_event(void);
-        void monitor(void);
+        Hiroku() {}
 
-        static void set_alarm(String data);
-        static void dismiss_alarm(String data);
+        void init(void);
+        void get_response(void);
 };
 
-#endif //_PUSHER_H_
+#endif //_HIROKU_H_
 

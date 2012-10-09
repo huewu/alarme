@@ -10,26 +10,25 @@
  *  Copyright (c) 2012, all rights reserved.
  */
 
-#ifndef _PUSHER_H_
-#define _PUSHER_H_
+#ifndef _NETWORK_H_
+#define _NETWORK_H_
 
-#include <PusherClient.h>
+#include <WebSocketClient.h>
 
-class Pusher
+#if WIFLY
+    #include <WiFly.h>
+#else // Ethernet
+    #include <Ethernet.h>
+#endif
+
+class Network
 {
-    private:
-        PusherClient    pc;
-
     public:
-        Pusher() {}
-        
-        void init(void);
-        void bind_event(void);
-        void monitor(void);
+        Network() {}
 
-        static void set_alarm(String data);
-        static void dismiss_alarm(String data);
+        void init(void);
+        bool associate(void);
 };
 
-#endif //_PUSHER_H_
+#endif //_NETWORK_H_
 
