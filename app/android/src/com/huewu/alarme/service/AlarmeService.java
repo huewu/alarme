@@ -11,15 +11,26 @@ import com.huewu.libs.network.ResponseListener;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 
 public class AlarmeService extends Service implements IAlarmService, OnAlarmGCMListener {
 	
 	private JsonNetworkWorker mNewtorkWorekr = null;
+	
+	private LocalBinder mBinder = new LocalBinder();
+
+	public class LocalBinder extends Binder {
+
+		public IAlarmService getService() {
+			return AlarmeService.this;
+		}
+
+	}// end of inner class.
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		return mBinder;
 	}
 	
 	@Override

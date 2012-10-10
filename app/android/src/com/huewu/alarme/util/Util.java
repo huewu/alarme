@@ -3,6 +3,9 @@ package com.huewu.alarme.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.huewu.alarme.db.AlarmePreference;
+import com.huewu.alarme.model.UserInfo;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
@@ -22,6 +25,5 @@ public class Util {
 	}
 	
 	private Util(){}
-	
 
 }//end of class

@@ -10,12 +10,4 @@ import android.view.ViewGroup;
 
 public class FriendsListFragment extends Fragment{
 	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
-		View view = inflater.inflate(R.layout.alarm_frag, null);
-		return view;
-	}
-
 }//end of class

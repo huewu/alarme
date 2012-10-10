@@ -3,7 +3,12 @@ package com.huewu.alarme;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +17,14 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.huewu.alarme.db.AlarmePreference;
+import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.UserInfo;
-import com.huewu.alarme.view.AlarmFragment;
+import com.huewu.alarme.service.AlarmeService;
+import com.huewu.alarme.service.AlarmeService.LocalBinder;
+import com.huewu.alarme.service.IAlarmService;
+import com.huewu.alarme.util.Util;
+import com.huewu.alarme.view.AlarmsListFragment;
+import com.huewu.alarme.view.SetAlarmFragment;
 import com.huewu.alarme.view.IAlarmeUIEvent;
 import com.huewu.alarme.view.SyncFragment;
 import com.huewu.alarme.view.WelcomeFragment;
@@ -24,17 +35,27 @@ import com.huewu.alarme.view.WelcomeFragment;
  * @date 
  *
  */
-public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabListener {
+public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabListener, ServiceConnection {
 	
 	private static final String TAG = "Alarme Launcher";
 	private static final String SENDER_ID = "293378875694";
+	
+	private IAlarmService mService = null;
+	
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.main);
+		initAlarmeService();
+		
 		registerGCM();
+		registerUser();
 		setUpActionbar();
+	}
+
+	private void initAlarmeService() {
+		bindService(new Intent(this, AlarmeService.class), this, Context.BIND_AUTO_CREATE);
 	}
 
 	private void setUpActionbar() {
@@ -72,20 +93,28 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 		//for initial user. show welcome fragment.
 		
 		//for already registered user, show alarm fragment.
-		
-		UserInfo user = AlarmePreference.getUser(this);
-		
-//		if( user == null )
-//			showWelcomeFragment();
-//		else
-			showAlarmFragment();
-		
+		showSetAlarmFragment();
 	}
 
-	private void showAlarmFragment() {
+	private void registerUser() {
+		UserInfo user = AlarmePreference.getUser(this);
+		if( user != null )
+			return;
+		
+		String accountName = Util.getCurrentUserAccount(this);
+		String regId = GCMRegistrar.getRegistrationId(this);
+		String cId = "1234";
+		
+		user = new UserInfo(accountName, regId, cId);
+		mService.createUser(user, null);
+		
+		AlarmePreference.setUser(this, user);
+	}
+
+	private void showSetAlarmFragment() {
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(R.id.workspace, new AlarmFragment(), "setting");
+		ft.replace(R.id.workspace, new SetAlarmFragment(), "setting");
 		ft.commit();
 	}
 
@@ -99,7 +128,7 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 	private void showAlarmsListFragment() {
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(R.id.workspace, new WelcomeFragment(), "wlecome");
+		ft.replace(R.id.workspace, new AlarmsListFragment(), "wlecome");
 		ft.commit();
 	}
 	
@@ -117,27 +146,20 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 	}
 
 	@Override
-	public void onSetAlarm() {
-		// TODO Auto-generated method stub
-		
+	public void onSetAlarm( AlarmInfo alarm ) {
+		Log.v(TAG, "Set Alarm: " + alarm.toPostData());
 	}
 
 	@Override
 	public void onSetGroupAlarm() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onTurnOffAlarm() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onUpdateGroupAlarm() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -150,10 +172,10 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 		
 		switch(pos){
 		case 0:
-			showAlarmFragment();
+			showSetAlarmFragment();
 			break;
 		case 1:
-			showWelcomeFragment();
+			showAlarmsListFragment();
 			break;
 		case 2:
 			break;
@@ -164,26 +186,14 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 	}
 
-	//setting activity.
-	
-	//when touch NFC tag setting activity should be launched.
+	@Override
+	public void onServiceConnected(ComponentName name, IBinder service) {
+		mService = ((LocalBinder)service).getService();	
+	}
 
-	//how it looks like.
-	
-	//clock.
-	
-	//TODO
-	
-	//nfc connectivity.
-	
-	//server connectivity.
-	
-	//set alarm time
-	
-	//show current alarm
-	
-	//snooze / dismiss
-	
-	//check my firends alarm / log
+	@Override
+	public void onServiceDisconnected(ComponentName name) {
+		mService = null;
+	}
 
 }//end of class

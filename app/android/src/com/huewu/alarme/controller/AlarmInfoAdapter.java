@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 public class AlarmInfoAdapter extends ArrayAdapter<AlarmInfo>{
-
-	public AlarmInfoAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
-	}
 	
+	
+	public AlarmInfoAdapter(Context context) {
+		super(context, -1);
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if( convertView == null ){

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/pannel" xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/setting"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	    
+	    <Button android:id="@+id/set_alarm"
+	        style="@style/default_widget"
+	        android:layout_marginTop="10dp"
+		    android:paddingTop="30dp"
+		    android:paddingBottom="30dp"
+		    android:textSize="18sp"
+	        android:text="Add a new alarm"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        />
+	    
+	    <TimePicker android:id="@+id/set_time"
+	        style="@style/default_widget"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        />
+	    	    
+	</LinearLayout>    
+</ScrollView>

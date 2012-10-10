@@ -1,10 +1,12 @@
 package com.huewu.alarme.view;
 
+import com.huewu.alarme.model.AlarmInfo;
+
 public interface IAlarmeUIEvent {
 	
 	void onSyncToClock();
 	
-	void onSetAlarm();
+	void onSetAlarm(AlarmInfo newAlarm);
 	
 	void onSetGroupAlarm();
 	
