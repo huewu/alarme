@@ -4,7 +4,7 @@ import com.huewu.alarme.model.UserInfo;
 import com.huewu.libs.network.JsonRequest;
 import com.huewu.libs.network.ResponseListener;
 
-public class MockUserInfoResponseListener implements ResponseListener {
+public class MockUserInfoResponseListener implements ResponseListener<UserInfo> {
 	
 	private Object mWaitObj = new Object();
 	private JsonRequest<UserInfo> mBeforeRequest = null;
@@ -49,7 +49,7 @@ public class MockUserInfoResponseListener implements ResponseListener {
 	}
 
 	@Override
-	public void onRequestResponse(JsonRequest<?> req) {
+	public void onRequestResponse(JsonRequest<?> req, UserInfo user) {
 		mResponseRequest = (JsonRequest<UserInfo>) req;
 	}
 
@@ -60,7 +60,7 @@ public class MockUserInfoResponseListener implements ResponseListener {
 	}
 
 	@Override
-	public void onRequestFailed(JsonRequest<?> req) {
+	public void onRequestFailed(JsonRequest<?> req, Exception e) {
 		mErrorRequest = (JsonRequest<UserInfo>) req;
 		notifiyAll();
 	}

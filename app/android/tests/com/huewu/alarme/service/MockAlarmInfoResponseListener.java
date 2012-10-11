@@ -10,7 +10,7 @@ import com.huewu.libs.network.RequestEvents.RequestRetryingEvent;
 import com.huewu.libs.network.ResponseListener;
 import com.squareup.otto.Subscribe;
 
-public class MockAlarmInfoResponseListener implements ResponseListener{
+public class MockAlarmInfoResponseListener implements ResponseListener<AlarmInfo>{
 	
 	private Object mWaitObj = new Object();
 	private JsonRequest<AlarmInfo> mBeforeRequest = null;
@@ -55,7 +55,7 @@ public class MockAlarmInfoResponseListener implements ResponseListener{
 	}
 
 	@Override
-	public void onRequestResponse(JsonRequest<?> req) {
+	public void onRequestResponse(JsonRequest<?> req, AlarmInfo alarm) {
 		mResponseRequest = (JsonRequest<AlarmInfo>) req;
 	}
 
@@ -66,7 +66,7 @@ public class MockAlarmInfoResponseListener implements ResponseListener{
 	}
 
 	@Override
-	public void onRequestFailed(JsonRequest<?> req) {
+	public void onRequestFailed(JsonRequest<?> req, Exception e) {
 		mErrorRequest = (JsonRequest<AlarmInfo>) req;
 		notifiyAll();
 	}
