@@ -19,18 +19,18 @@
 class Ntp
 {
     private:
-        EthernetUDP         udp;
+        //EthernetUDP         udp;
 
-        static const int    NTP_PACKET_SIZE = 48;   // NTP time stamp is in the first 48 bytes of the message
-        byte                packetBuffer[NTP_PACKET_SIZE];
+        //static const int    NTP_PACKET_SIZE = 48;   // NTP time stamp is in the first 48 bytes of the message
+        //byte                packetBuffer[NTP_PACKET_SIZE];
 
     public:
         Ntp() {}
 
         void init(void);
-        void update(void);
-        unsigned long query_time(const IPAddress& server);
-        void parse_time(unsigned long secs);
+        static unsigned long sync(void);
+        static void query_time(const IPAddress& server);
+        static void parse_time(unsigned long epoch);
 };
 
 #endif //_NTP_H_

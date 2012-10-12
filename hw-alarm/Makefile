@@ -20,12 +20,14 @@ ARDUINO_PORT = /dev/cu.usb*
 
 ARDUINO_LIBS = Ethernet
 ARDUINO_LIBS += Ethernet/utility
-ARDUINO_LIBS += SPI
-ARDUINO_LIBS += LiquidCrystal
-ARDUINO_LIBS += WiFly-Shield
 ARDUINO_LIBS += Wire
 ARDUINO_LIBS += Wire/utility
+ARDUINO_LIBS += SPI
+#ARDUINO_LIBS += LiquidCrystal
+#ARDUINO_LIBS += WiFly-Shield
+ARDUINO_LIBS += Adafruit-RGB-LCD-Shield-Library
 ARDUINO_LIBS += Adafruit_NFCShield_I2C
 ARDUINO_LIBS += ArduinoPusherClient
+ARDUINO_LIBS += ArduinoTime
 
 include ../Arduino-Makefile/arduino-mk/Arduino.mk 

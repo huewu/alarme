@@ -11,9 +11,11 @@
  */
 
 #include "SerialDebug.h"
+#include "LcdDisplay.h"
 #include "Network.h"
 
 extern SerialDebug  debug;
+extern LcdDisplay   lcd;
 
 void Network::init(void)
 {
@@ -22,6 +24,8 @@ void Network::init(void)
         delay(1000);
     }
     debug.println("Network association is successful.");
+    lcd.select_line(1);
+    lcd.print("Net Connected...");
 }
 
 bool Network::associate(void)

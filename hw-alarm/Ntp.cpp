@@ -11,12 +11,18 @@
  */
 
 #include "SerialDebug.h"
+#include "LcdDisplay.h"
 #include "Ntp.h"
 
 extern SerialDebug  debug;
+extern LcdDisplay   lcd;
 
+EthernetUDP         udp;
 const IPAddress     NTP_SERVER(211,233,84,186);     // kr.pool.ntp.org NTP server
 const unsigned int  PORT = 8888; 
+
+const int           NTP_PACKET_SIZE = 48;   // NTP time stamp is in the first 48 bytes of the message
+byte                packetBuffer[NTP_PACKET_SIZE];
 
 void Ntp::init(void)
 {
@@ -24,9 +30,11 @@ void Ntp::init(void)
         debug.println("UDP connection is failed.");
         delay(1000);
     }
+    //lcd.select_line(1);
+    //lcd.print("NTP synced......");
 }
 
-void Ntp::update(void)
+unsigned long Ntp::sync(void)
 {
     query_time(NTP_SERVER);
     delay(1000);  
@@ -44,11 +52,27 @@ void Ntp::update(void)
         debug.print("Seconds since Jan 1 1900 = " );
         debug.println(secsSince1900);               
 
-        parse_time(secsSince1900);
+        // now convert NTP time into everyday time:
+        // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
+        const unsigned long seventyYears = 2208988800UL;     
+        // subtract seventy years:
+        unsigned long epoch = secsSince1900 - seventyYears;  
+        // print Unix time:
+        debug.print("Unix time = ");
+        debug.println(epoch);                               
+
+        // convert UTC into KST
+        epoch += 3600*9;
+
+        parse_time(epoch);
+
+        return epoch;
     }
+    else
+        return 0;
 }
 
-unsigned long Ntp::query_time(const IPAddress& server)
+void Ntp::query_time(const IPAddress& server)
 {
     // set all bytes in the buffer to 0
     memset(packetBuffer, 0, NTP_PACKET_SIZE); 
@@ -71,20 +95,8 @@ unsigned long Ntp::query_time(const IPAddress& server)
     udp.endPacket(); 
 }
 
-void Ntp::parse_time(unsigned long secs)
+void Ntp::parse_time(unsigned long epoch)
 {
-    // now convert NTP time into everyday time:
-    // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
-    const unsigned long seventyYears = 2208988800UL;     
-    // subtract seventy years:
-    unsigned long epoch = secs - seventyYears;  
-    // print Unix time:
-    debug.print("Unix time = ");
-    debug.println(epoch);                               
-
-    // convert UTC into KST
-    epoch += 3600*9;
-
     // print the hour, minute and second:
     debug.print("The KST time is ");       // UTC is the time at Greenwich Meridian (GMT)
     debug.print((epoch  % 86400L) / 3600); // print the hour (86400 equals secs per day)

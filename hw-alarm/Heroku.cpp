@@ -11,14 +11,14 @@
  */
 
 #include "SerialDebug.h"
-#include "Hiroku.h"
+#include "Heroku.h"
 
 extern SerialDebug  debug;
 
-void Hiroku::init(void)
+void Heroku::init(void)
 {
     while (!hc.connect("google.com", 80)) {
-        debug.println("Hiroku connection is failed.");
+        debug.println("Heroku connection is failed.");
         delay(1000);
     }
     hc.println("GET / HTTP/1.0");
@@ -26,7 +26,7 @@ void Hiroku::init(void)
     delay(1000);
 }
 
-void Hiroku::get_response(void)
+void Heroku::get_response(void)
 {
     if (!hc.available()) return;
 

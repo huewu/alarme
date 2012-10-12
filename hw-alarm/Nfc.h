@@ -10,22 +10,22 @@
  *  Copyright (c) 2012, all rights reserved.
  */
 
-#ifndef _HIROKU_H_
-#define _HIROKU_H_
+#ifndef _NFC_H_
+#define _NFC_H_
 
-#include "NetClient.h"
+#include <Adafruit_NFCShield_I2C.h>
 
-class Hiroku
+class Nfc
 {
     private:
-        NetClient   hc;
+        Adafruit_NFCShield_I2C  dev;
 
     public:
-        Hiroku() {}
+        Nfc();
 
         void init(void);
-        void get_response(void);
+        void test(void);
 };
 
-#endif //_HIROKU_H_
+#endif //_NFC_H_
 

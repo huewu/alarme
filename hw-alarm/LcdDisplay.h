@@ -13,31 +13,31 @@
 #ifndef _LCD_DISPLAY_H_
 #define _LCD_DISPLAY_H_
 
-#include <LiquidCrystal.h>
+#include <Arduino.h>
+#include <Adafruit_RGBLCDShield.h>
 
 class LcdDisplay
 {
     private:
-        LiquidCrystal   lcd_;
+        Adafruit_RGBLCDShield   lcd;
 
     public:
-        LcdDisplay() : lcd_(12, 11, 5, 4, 3, 2) {}
+        LcdDisplay() {}
 
-        void setup()
-        {
-            // set up the LCD's number of columns and rows: 
-            lcd_.begin(16, 2);
-            // Print a message to the LCD.
-            lcd_.print("hello, world!");
-        }
+        void init(void);
+        void test(void);
 
-        void loop() {
-            // set the cursor to column 0, line 1
-            // (note: line 1 is the second row, since counting begins with 0):
-            lcd_.setCursor(0, 1);
-            // print the number of seconds since reset:
-            lcd_.print(millis()/1000);
-        }
+        size_t print(const String& s)         { lcd.print(s); }
+        size_t print(const char* s)           { lcd.print(s); }
+        size_t print(const unsigned char s)   { lcd.print(s); }
+        size_t print(const char s)            { lcd.print(s); }
+        size_t print(const unsigned int s)    { lcd.print(s); }
+        size_t print(const int s)             { lcd.print(s); }
+        size_t print(const unsigned long s)   { lcd.print(s); }
+        size_t print(const long s)            { lcd.print(s); }
+        size_t print(const double s)          { lcd.print(s); }
+
+        void select_line(const byte l)        { lcd.setCursor(0, l); }
 };
 
 #endif //_LCD_DISPLAY_H_
