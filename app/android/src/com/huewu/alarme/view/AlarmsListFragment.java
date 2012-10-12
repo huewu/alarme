@@ -1,16 +1,12 @@
 package com.huewu.alarme.view;
 
-import com.huewu.alarme.R;
 import com.huewu.alarme.controller.AlarmInfoAdapter;
 import com.huewu.alarme.db.AlarmeProvider;
 import com.huewu.alarme.model.AlarmInfo;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 public class AlarmsListFragment extends ListFragment{
 
@@ -43,7 +39,6 @@ public class AlarmsListFragment extends ListFragment{
 		mAdapter.addAll(alarms);
 		
 		//load stored alarm info list.
-		
 		setListAdapter(mAdapter);
 	}
 

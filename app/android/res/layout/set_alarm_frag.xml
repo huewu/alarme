@@ -8,6 +8,19 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
 	    
+	    <DatePicker android:id="@+id/set_date"
+	        style="@style/default_widget"
+	        android:calendarViewShown="false"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        />
+	    	    
+	    <TimePicker android:id="@+id/set_time"
+	        style="@style/default_widget"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        />
+	    
 	    <Button android:id="@+id/set_alarm"
 	        style="@style/default_widget"
 	        android:layout_marginTop="10dp"
@@ -15,12 +28,6 @@
 		    android:paddingBottom="30dp"
 		    android:textSize="18sp"
 	        android:text="Add a new alarm"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        />
-	    
-	    <TimePicker android:id="@+id/set_time"
-	        style="@style/default_widget"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        />

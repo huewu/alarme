@@ -2,6 +2,7 @@ package com.huewu.alarme;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.huewu.alarme.db.AlarmePreference;
@@ -18,6 +19,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		//should invoke callback method of Alarm Service. 
 		//#1. first bind to alarm service.
 		//#2. second call notify method.
+		
+		Log.d(TAG, "GCM Message: " + msg.toString() );
 		
 		//parse message.
 		parseGCMMessage(msg);
@@ -39,7 +42,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	private void parseGCMMessage(Intent msg){
+		String type = msg.getStringExtra("msg");
 		
+		if( type.equals("")){
+			//handle setOffAlarm.
+		}else if( type.equals("")){
+			//handle requestAlarm.
+		}else if( type.equals("")){
+			//handle updateAlarm.
+		}
 	}
 
 }//end of class

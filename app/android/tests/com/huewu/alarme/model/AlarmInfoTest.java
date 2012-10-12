@@ -89,7 +89,7 @@ public class AlarmInfoTest {
 		//member[0][status]:ON	
 		
 		UserInfo user = DummyFactory.createDummyUserInfo();
-		String postStr = String.format("type=%s&time=%s&member[0][uid]=%s&member[0][status]=%s", 
+		String postStr = String.format("type=%s&time=%s&members[0][uid]=%s&members[0][status]=%s", 
 				URLEncoder.encode("PRIVATE","utf-8"),
 				URLEncoder.encode("1970-01-01T09:00","utf-8"),
 				URLEncoder.encode("xxxx","utf-8"),
