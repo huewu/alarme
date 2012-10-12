@@ -1,10 +1,12 @@
 package com.huewu.alarme.view;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import com.huewu.alarme.R;
 import com.huewu.alarme.db.AlarmePreference;
 import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.UserInfo;
-import com.huewu.alarme.util.Util;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 /**
@@ -30,7 +33,8 @@ import android.widget.TimePicker;
 public class SetAlarmFragment extends Fragment{
 	
 	private IAlarmeUIEvent mEventCallback = null;
-	private TimePicker mPicker = null;
+	private TimePicker mTimePicker = null;
+	private DatePicker mDatePicker = null;
 	private Button mSetAlarm = null;
 	
 	@Override
@@ -39,7 +43,8 @@ public class SetAlarmFragment extends Fragment{
 		View view = inflater.inflate(R.layout.set_alarm_frag, null);
 		
 		mSetAlarm = (Button) view.findViewById(R.id.set_alarm);
-		mPicker = (TimePicker) view.findViewById(R.id.set_time);		
+		mTimePicker = (TimePicker) view.findViewById(R.id.set_time);	
+		mDatePicker = (DatePicker) view.findViewById(R.id.set_date);
 		
 		return view;
 	}
@@ -60,17 +65,19 @@ public class SetAlarmFragment extends Fragment{
 			public void onClick(View v) {
 				//create AlarmInfo instance here? yes.
 				
-				Integer hour = mPicker.getCurrentHour();
-				Integer min = mPicker.getCurrentMinute();
+				Integer hour = mTimePicker.getCurrentHour();
+				Integer min = mTimePicker.getCurrentMinute();
+				Integer year = mDatePicker.getYear();
+				Integer day = mDatePicker.getDayOfMonth();
+				Integer month = mDatePicker.getMonth();
 				
-				//conver to ms.
-				int ms = (hour * 60 + min) * 60 * 1000;
-
-				//get user
 				UserInfo user = AlarmePreference.getUser(getActivity());
 				
+				Calendar cal = Calendar.getInstance();
+				cal.set(year, month, day, hour, min, 0);
+				
 				//how to get current user here?
-				AlarmInfo newAlarm = new AlarmInfo(user, ms);
+				AlarmInfo newAlarm = new AlarmInfo(user, cal.getTimeInMillis());
 				mEventCallback.onSetAlarm(newAlarm);
 			}
 		});

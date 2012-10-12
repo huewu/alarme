@@ -13,8 +13,8 @@ public class AlarmeProvider {
 		return mAlarmArray.toArray(new AlarmInfo[]{});
 	}
 	
-	public static void addAlarm( AlarmInfo[] alamrs ){
-		
+	public static void addAlarm( AlarmInfo alarm ){
+		mAlarmArray.add(alarm);
 	}
 	
 	public static void backupAlarms( AlarmInfo[] alarms ){

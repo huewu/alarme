@@ -1,11 +1,17 @@
 package com.huewu.alarme;
 
+import java.util.Calendar;
+
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -17,6 +23,7 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.huewu.alarme.db.AlarmePreference;
+import com.huewu.alarme.db.AlarmeProvider;
 import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.model.UserInfo;
 import com.huewu.alarme.service.AlarmeService;
@@ -28,6 +35,8 @@ import com.huewu.alarme.view.SetAlarmFragment;
 import com.huewu.alarme.view.IAlarmeUIEvent;
 import com.huewu.alarme.view.SyncFragment;
 import com.huewu.alarme.view.WelcomeFragment;
+import com.huewu.libs.network.JsonRequest;
+import com.huewu.libs.network.ResponseListener;
 
 /**
  * 
@@ -50,8 +59,7 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 		initAlarmeService();
 		
 		registerGCM();
-		registerUser();
-		setUpActionbar();
+		//setUpActionbar();
 	}
 
 	private void initAlarmeService() {
@@ -89,33 +97,57 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 		//for initial user. show welcome fragment.
-		
 		//for already registered user, show alarm fragment.
 		showSetAlarmFragment();
 	}
 
 	private void registerUser() {
 		UserInfo user = AlarmePreference.getUser(this);
-		if( user != null )
+		if( user != null ){
+			//user is already registered.
 			return;
+		}
 		
 		String accountName = Util.getCurrentUserAccount(this);
 		String regId = GCMRegistrar.getRegistrationId(this);
 		String cId = "1234";
 		
 		user = new UserInfo(accountName, regId, cId);
-		mService.createUser(user, null);
-		
-		AlarmePreference.setUser(this, user);
+		mService.createUser(user, new ResponseListener<UserInfo>() {
+
+			@Override
+			public void onRequsetReady(JsonRequest<?> req) {
+			}
+
+			@Override
+			public void onRequestRetrying(JsonRequest<?> req) {
+			}
+
+			@Override
+			public void onRequestResponse(JsonRequest<?> req, UserInfo user) {
+				AlarmePreference.setUser(Launcher.this, user);
+			}
+
+			@Override
+			public void onRequestFinished(JsonRequest<?> req) {
+			}
+
+			@Override
+			public void onRequestFailed(JsonRequest<?> req, Exception e) {
+			}
+		});
 	}
 
 	private void showSetAlarmFragment() {
 		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(R.id.workspace, new SetAlarmFragment(), "setting");
-		ft.commit();
+
+		if(fm.findFragmentByTag("setting") == null){
+		
+			FragmentTransaction ft = fm.beginTransaction();
+			ft.replace(R.id.workspace, new SetAlarmFragment(), "setting");
+			ft.commit();
+		}
 	}
 
 	private void showWelcomeFragment() {
@@ -148,6 +180,36 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 	@Override
 	public void onSetAlarm( AlarmInfo alarm ) {
 		Log.v(TAG, "Set Alarm: " + alarm.toPostData());
+		mService.setAlaram(alarm, new ResponseListener<AlarmInfo>() {
+
+			@Override
+			public void onRequsetReady(JsonRequest<?> req) {
+			}
+
+			@Override
+			public void onRequestRetrying(JsonRequest<?> req) {
+			}
+
+			@TargetApi(16)
+			@Override
+			public void onRequestResponse(JsonRequest<?> req, AlarmInfo alarm) {
+				AlarmeProvider.addAlarm(alarm);
+
+				//register alarm job.
+				AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+				PendingIntent pi = PendingIntent.getActivity(Launcher.this, 0, 
+						new Intent(Launcher.this, RingAlarm.class), 0, null);
+				am.set(AlarmManager.RTC_WAKEUP, alarm.getTime(), pi);
+			}
+
+			@Override
+			public void onRequestFinished(JsonRequest<?> req) {
+			}
+
+			@Override
+			public void onRequestFailed(JsonRequest<?> req, Exception e) {
+			}
+		});
 	}
 
 	@Override
@@ -189,6 +251,7 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder service) {
 		mService = ((LocalBinder)service).getService();	
+		registerUser();
 	}
 
 	@Override

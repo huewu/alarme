@@ -49,6 +49,16 @@
                 <data android:mimeType="application/com.example.android.beam" />
             </intent-filter>
         </activity>
+        
+        <activity 
+            android:label="Wake Up!!!"
+            android:theme="@android:style/Theme.Holo.Dialog"
+            android:launchMode="singleInstance"
+            android:name="com.huewu.alarme.RingAlarm"
+            />
+        
+        <service 
+            android:name="com.huewu.alarme.service.AlarmeService"/>
 
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
