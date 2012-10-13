@@ -3,5 +3,7 @@
     <color name="green_ink">#51714A</color>
     <color name="alarme_blue">#8888AA</color>
     <color name="alarme_grey">#333333</color>
+    <color name="alarme_lighter_grey">#666666</color>
     <color name="alarme_white">#cccccc</color>
+    <color name="alarme_darker_white">#999999</color>
 </resources>

@@ -121,7 +121,7 @@ public class AlameServiceTest {
 
 		UserInfo user = DummyFactory.createDummyUserInfo();
 		AlarmInfo alarm = new AlarmInfo(user, 0);
-		service.setAlaram(alarm, listener);
+		service.setAlarm(alarm, listener);
 		
 		listener.waitResponse(Constants.DEFAULT_WAIT_TIMEOUT);
 		

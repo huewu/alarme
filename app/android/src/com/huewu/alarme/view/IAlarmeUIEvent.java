@@ -1,19 +1,21 @@
 package com.huewu.alarme.view;
 
+import java.util.ArrayList;
+
 import com.huewu.alarme.model.AlarmInfo;
 
 public interface IAlarmeUIEvent {
 	
 	void onSelectMember();
 	
-	void onSyncToClock();
+	void onClockRegistered();
 	
 	void onSetAlarm(AlarmInfo newAlarm);
-	
-	void onSetGroupAlarm();
 	
 	void onTurnOffAlarm();
 	
 	void onUpdateGroupAlarm();
+
+	void onAddMembers(ArrayList<String> members);
 
 }//end of interface

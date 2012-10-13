@@ -1,5 +1,7 @@
 package com.huewu.alarme.view;
 
+import java.util.Arrays;
+
 import com.huewu.alarme.controller.AlarmInfoAdapter;
 import com.huewu.alarme.db.AlarmeProvider;
 import com.huewu.alarme.model.AlarmInfo;
@@ -36,6 +38,8 @@ public class AlarmsListFragment extends ListFragment{
 		mAdapter = new AlarmInfoAdapter(getActivity());
 		
 		AlarmInfo[] alarms = AlarmeProvider.loadAlarms();
+		
+		Arrays.sort(alarms);
 		mAdapter.addAll(alarms);
 		
 		//load stored alarm info list.

@@ -10,17 +10,14 @@ import android.content.Context;
 
 public class Util {
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");	
+	private static SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");	
 
 	public static String getTimeString(long time){
 		return format.format(new Date(time));
 	}
 	
-	public static long getTime(String timeStr) {
-		try {
-			return format.parse(timeStr).getTime();
-		} catch (ParseException e) {
-			return 0;
-		}
+	public static String getSimpleTimeString(Date time){
+		return format2.format(time);
 	}
 	
 	public static String getCurrentUserAccount(Context context){

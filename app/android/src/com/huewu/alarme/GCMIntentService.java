@@ -54,6 +54,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		if( type.equals("alarmOFF")){
 			Intent i = new Intent(ACTION_ALARM_OFF);
+			i.putExtras(msg.getExtras());
 			sendBroadcast(i);
 			//handle setOffAlarm.
 		}else if( type.equals("")){

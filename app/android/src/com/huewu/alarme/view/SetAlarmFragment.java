@@ -1,11 +1,13 @@
 package com.huewu.alarme.view;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import com.huewu.alarme.R;
 import com.huewu.alarme.db.AlarmePreference;
 import com.huewu.alarme.model.AlarmInfo;
+import com.huewu.alarme.model.GroupAlarmInfo;
 import com.huewu.alarme.model.UserInfo;
 
 import android.os.Bundle;
@@ -14,9 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TimePicker;
 
 /**
@@ -38,6 +42,8 @@ public class SetAlarmFragment extends Fragment{
 	private DatePicker mDatePicker = null;
 	private Button mSetAlarm = null;
 	private ImageButton mSetGroupAlarm = null;
+	private ListView mMemberList = null;
+	private String[] mMembers = null;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +54,7 @@ public class SetAlarmFragment extends Fragment{
 		mTimePicker = (TimePicker) view.findViewById(R.id.set_time);	
 		mDatePicker = (DatePicker) view.findViewById(R.id.set_date);
 		mSetGroupAlarm = (ImageButton) view.findViewById(R.id.group_alarm);
+		mMemberList = (ListView) view.findViewById(R.id.group_members);
 		return view;
 	}
 	
@@ -58,6 +65,8 @@ public class SetAlarmFragment extends Fragment{
 		if( getActivity() instanceof IAlarmeUIEvent ){
 			initAlarmUIEvent();
 		}
+		
+		mMemberList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1));
 	}
 	
 	private void initAlarmUIEvent() {
@@ -79,8 +88,15 @@ public class SetAlarmFragment extends Fragment{
 				cal.set(year, month, day, hour, min, 0);
 				
 				//how to get current user here?
-				AlarmInfo newAlarm = new AlarmInfo(user, cal.getTimeInMillis());
-				mEventCallback.onSetAlarm(newAlarm);
+				
+				if( mMembers == null || mMembers.length == 0 ){
+					AlarmInfo newAlarm = new AlarmInfo(user, cal.getTimeInMillis());
+					mEventCallback.onSetAlarm(newAlarm);
+				}else{
+					AlarmInfo newAlarm = new AlarmInfo(user, cal.getTimeInMillis());
+					GroupAlarmInfo groupAlarm = new GroupAlarmInfo(newAlarm, mMembers);
+					mEventCallback.onSetAlarm(groupAlarm);
+				}
 			}
 		});
 		
@@ -96,6 +112,13 @@ public class SetAlarmFragment extends Fragment{
 	public void onDestroy() {
 		super.onDestroy();
 		mEventCallback = null;
+	}
+
+	public void updateMembers(ArrayList<String> members) {
+		mMembers = members.toArray(new String[]{});
+		
+		((ArrayAdapter<String>)mMemberList.getAdapter()).clear();
+		((ArrayAdapter<String>)mMemberList.getAdapter()).addAll(members);
 	}
 
 }//end of class

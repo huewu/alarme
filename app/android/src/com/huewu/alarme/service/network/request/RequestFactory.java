@@ -1,11 +1,14 @@
 package com.huewu.alarme.service.network.request;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.huewu.alarme.model.AlarmInfo;
+import com.huewu.alarme.model.GroupAlarmInfo;
 import com.huewu.alarme.model.UserInfo;
+import com.huewu.libs.network.JsonRequest;
 import com.huewu.libs.network.ResponseDecoder;
 import com.huewu.libs.network.ResponseListener;
 
@@ -15,6 +18,8 @@ import com.huewu.libs.network.ResponseListener;
  */
 public class RequestFactory {
 	
+	private static final String TAG = "Request Factory";
+
 	public static CreateUserRequest createCreateUserRequest(UserInfo user, ResponseListener listener){
 		CreateUserRequest req = new CreateUserRequest(user);
 
@@ -38,6 +43,8 @@ public class RequestFactory {
 		req.setResponseListener(listener);
 		req.setDecoder(new AlarmInfoDecoder());
 		
+		Log.v(TAG, "Set Alarm Request: " + alarm.toPostData());
+
 		return req;
 	}
 	

@@ -4,4 +4,9 @@
           android:icon="@drawable/as_list"
           android:showAsAction="ifRoom"
           android:title="@string/menu_settings" />
+    
+    <item android:id="@+id/menu_reset"
+          android:showAsAction="never"
+          android:title="Reset" />
+    
 </menu>

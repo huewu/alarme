@@ -17,6 +17,11 @@ public class AlarmMember extends JsonModel {
 		this.status = status;
 	}
 
+	public AlarmMember(String name, String statusOn) {
+		this.uid = name;
+		this.status = statusOn;
+	}
+
 	@Override
 	public String toPostData() {
 		return null;

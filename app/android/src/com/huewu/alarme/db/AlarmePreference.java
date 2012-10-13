@@ -58,11 +58,18 @@ public class AlarmePreference {
 	}
 	
 	public static void setUser( Context ctx, UserInfo user ) {
-		Gson gson = new Gson();
-		String jsonStr = gson.toJson(user);
-		Editor editor = getInstance(ctx).edit();
-		editor.putString("user", jsonStr);
-		editor.commit();
+		
+		if( user == null ){
+			Editor editor = getInstance(ctx).edit();
+			editor.putString("user", "");
+			editor.commit();
+		}else{
+			Gson gson = new Gson();
+			String jsonStr = gson.toJson(user);
+			Editor editor = getInstance(ctx).edit();
+			editor.putString("user", jsonStr);
+			editor.commit();
+		}
 	}
 	
 	private AlarmePreference(){}
