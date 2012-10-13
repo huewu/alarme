@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Clock</title>
+	<meta charset='utf-8' />
+	<link rel='stylesheet' type='text/css' href='./clock.css' />	
+	
+</head>
+<body>			
+	<div id='beep'></div>
+	<input id='alarmMute' type='button' value='Mute Alarm Beep'></input>
+	
+	<div id = 'clock'>
+		<label>Clock ID: </label>				
+		<input id='cid' type='text' placeholder='cid'></input>
+		
+		<label id='time'>current time is</label>
+		<label id='alarmStatus'></label>
+		
+		<input id='alarmHour' type='text' placeholder='Hour(24)'></input>
+		<input id='alarmMinute' type='text' placeholder='Minute'></input>
+		<input id='alarmSet' type='button' value='Set Alarm'></input>
+		<input id='alarmUnset' type='button' value='Unset Alarm'></input>
+	</div>
+	
+	<script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.min.js'></script>	
+	<script type='text/javascript' src='http://js.pusher.com/1.12/pusher.min.js'></script>
+	<script type='text/javascript' src='./clock.js'></script>	
+</body>
+</html>

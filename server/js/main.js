@@ -4,6 +4,18 @@ $(document).ready(function() {
 	$('#alarmTime').val(new Date().getTime());
 });
 
+$('#setFlags').on('click', function() {
+	var flag = {
+		LOG: $('#log option:selected').val(),
+		GCM: $('#gcm option:selected').val(),
+		PUSHER: $('#pusher option:selected').val()
+	}
+	console.log(flag);
+	$.post('/flag', flag, function(data) {
+	
+	});
+});
+
 $('#createUser').on('click', function() {
 	var self = this;
 	
@@ -51,14 +63,14 @@ $('#showUsers').on('click', function() {
 		}		
 		showResult(self, msg);
 	});
-});		
+});	
 
 $('#setAlarm').on('click', function() {
 	var self = this;
 	
-	var member = [];
+	var members = [];
 	var master = $('#uid_al').val();
-	member.push({ // common, private or group master
+	members.push({ // common, private or group master
 		uid: master,
 		status: 'ON'
 	});
@@ -70,7 +82,7 @@ $('#setAlarm').on('click', function() {
 		var buddies = $('#member').val().replace(/\s/g,'').split(',');
 		var len = buddies.length;
 		for (i = 0; i < len; i++) {
-			member.push({
+			members.push({
 				uid: buddies[i],
 				status: 'ON'
 			});
@@ -80,7 +92,7 @@ $('#setAlarm').on('click', function() {
 	var alarm = {
 		type: alarmType,
 		time: $('#alarmTime').val(),
-		member: member
+		members: members
 	}
 	
 	$.post('/user/' + master + '/alarm', alarm, function(data) {
@@ -141,6 +153,18 @@ $('#alarmOFFPhone').on('click', function() {
 			uid: $('#uid_off_phone').val(),
 			status: 'OFF'
 		}
+	}).done(function(data) {
+		var serverMsg = data.msg;
+		showResult(self, serverMsg);
+	});
+});
+
+$('#alarmOFFClock').on('click', function() {
+	var self = this;
+	
+	$.ajax({
+		type: 'GET',
+		url: '/alarm/' + $('#aid_off_clock').val() + '?cid=' +  $('#cid_off_clock').val() + '&status=OFF'		
 	}).done(function(data) {
 		var serverMsg = data.msg;
 		showResult(self, serverMsg);

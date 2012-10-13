@@ -1,8 +1,25 @@
 
-var express = require('express');
-//var request = require('request');
+var flag = {
+	LOG: 'true',
+	GCM: 'true',
+	PUSHER: 'true'
+}
+
+// node.js core
 var path = require('path');
 var fs = require('fs');
+
+// google cloud messaging to phone
+var gcm = new (require('gcm').GCM)('AIzaSyDE-wlLfIDo8eyB8h2tQph30fqj1mf0CUQ'); // api Key
+
+// pusher.com to clock
+var pusher = new (require('node-pusher'))({
+  appId: '27999',
+  key: '81a20baa40945ce4b0a6',
+  secret: '9cad8056337cdeb8d68b'
+});
+
+// mongodb 
 var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
@@ -16,20 +33,24 @@ var AlarmSchema = new mongoose.Schema({
     aid: String,
     type: String,
     time: Date,
-    member : [{uid: String, status: String}]       
+    members : [{uid: String, status: String}]       
 });
 
 var User = mongoose.model('User', UserSchema);
 var Alarm = mongoose.model('Alarm', AlarmSchema);
-//var db = mongoose.connect('mongodb://localhost/ghf');
 var db = mongoose.connect('mongodb://admin:admin@ds033617-a.mongolab.com:33617/ghf');
+//var db = mongoose.connect('mongodb://localhost/ghf');
+
+// web server framework
+var express = require('express');
 
 var clientPath = function() {
     var _root = path.resolve(__dirname, '..');	
 	return {		
 		js: _root + '/js',
 		css: _root + '/css',
-		start: _root + '/index.html'		
+		start: _root + '/index.html'	,
+		root: _root
 	}
 }
 
@@ -37,48 +58,307 @@ var app = express();
 app.configure(function() {	
 	app.use('/js', express['static'](clientPath().js));	
 	app.use('/css', express['static'](clientPath().css));	
+	app.use('/', express['static'](clientPath().root + '/clock'));
 	app.use(express.bodyParser());
 });
-console.log('Server started...');
+log('Server started.');
 
 // create User
 app.post('/user', function(req, res) {
-	console.log(req.body);
+	log('create user');
+	//var uid = req.body.uid;
+	var uid = req.body.uname.split('@')[0];	
 	
-	var requestBody = req.body;		
-	var uid = requestBody.uname.split('@')[0];
-	
-    User.findOne({uid: uid}, function(err, doc) {
+    User.findOne({uid: uid}, function(err, user) {
     	if (err) {
-    		
-    	} else if (null == doc) {			
-    		var newUser = {
-				uid: uid,
-				uname: requestBody.uname,
-				rid: requestBody.rid,
-				cid: requestBody.cid}
-				
-			new User(newUser).save(function(err, data) {
+		
+    	} else if (null == user) { // new user
+			new User({
+				uname: req.body.uname,
+				uid: req.body.uid,				
+				rid: req.body.rid,
+				cid: req.body.cid			
+			}).save(function(err, newUser) {
+				log(newUser);
 				if (err) {
 				
 				} else {
-					var ret = JSON.clone(data);
-					ret.msg = "success";
-    				res.json(200, ret); 
+    				res.json(200, newUser); 
 				}				
 			});   		
-    	} else { // already exist
-			var ret = JSON.clone(doc);
-			ret.msg = "already exist";
-			res.json(400, ret);	
+    	} else { // already exist			
+			res.json(400, user);	
     	}
     }); 
 });
 
+// set alarm
+app.post('/user/:uid/alarm', function(req, res) {
+	log('set alarm');
+	var rb = req.body;
+	var master = req.params.uid;
+	var aid = master + '_' + rb.type + '_' + rb.time;
+	var members = [];
+	
+	if (1 == rb.members.length) {  // private
+		members.push({
+			uid: req.params.uid,
+			status: "ON"
+			//status: rb.members[0].status		
+		});
+	} else { // group		
+		for (i = 0; i < rb.members.length; i++) {			
+			members.push({
+				uid: rb.members[i].uid,
+				status: (rb.members[i].uid == master)? "ON" : "OFF" // default is OFF except master
+				// status: rb.members[i].status
+			});
+		}
+	}
+
+	new Alarm({
+		aid: aid,
+		type: rb.type,
+		time: rb.time,
+		members: members
+	}).save(function(err, newAlarm) {
+		if (err) {
+		
+		} else {
+			log(newAlarm);
+			
+			for (i = 0; i < newAlarm.members.length; i++) {				
+				User.findOne({uid: newAlarm.members[i].uid}, function(err, user) {
+					var msgToPhone = {
+						registration_id: user.rid, 
+						'data.type': 'alarmRequest',
+						'data.aid': newAlarm.aid,
+						'data.time': newAlarm.time,
+						'data.members': newAlarm.members
+					}
+					
+					if (user.uid != master) {
+						sendGCM(msgToPhone);
+					}
+					
+					var msgToClock = {
+						aid: newAlarm.aid,
+						type: newAlarm.type,
+						time: newAlarm.time
+					}
+					sendPusher(user.cid, 'alarmSET', msgToClock);	
+				});			
+			}			
+    		res.json(200, newAlarm); 
+		}
+	});	
+});
+
+// group alarm accept
+app.post('/accept/:aid/:uid', function(req, res) {
+	confirmAlarm(req, res, 'ON');	
+});
+
+// group alarm reject
+app.post('/reject/:aid/:uid', function(req, res) {
+	confirmAlarm(req, res, 'OFF');	
+});
+
+function confirmAlarm(req, res, state) {
+	var filter = {
+		aid: req.params.aid,
+		'members.uid': req.params.uid
+	}
+	
+	Alarm.update(filter, {$set: {'members.$.status': state}}, function(err, data) {
+		if (err) {
+			res.json(400, {msg: 'error'});
+		} else if (data != 0) {
+			res.json(200, {msg: 'success'});		
+		} else {
+			res.json(400, {msg: 'not found'});
+		}		
+	});
+}
+
+// get alarm list
+app.get('/alarms', function(req, res) {
+	Alarm.find({}, function(err, alarmList) {		
+		res.json(200, alarmList);
+	});
+});
+
+// get alarm list from clock
+app.get('/alarmlist', function(req, res) {	// /alarmlist?cid=1
+	User.findOne({cid: req.query.cid}, function(err, user) {
+		if (err) {
+			res.json(400, {msg: 'error'});
+		} else if (null != user) {
+			var uid = user.uid;
+			
+			Alarm.find({'members.uid': uid}, function(err, alarm) {											
+				var msgToClock = [];				
+				for (i = 0; i < alarm.length; i++) {				
+					msgToClock.push({
+						aid: alarm[i].aid,
+						type: alarm[i].type,
+						time: alarm[i].time.getTime()						
+					});
+				}
+				
+				log({'ret': msgToClock});				
+				res.json(200, {'ret': msgToClock});
+			});			
+		}
+	});	
+});
+
+// alarm off from phone 
+app.put('/alarm/:aid', function(req, res) {
+	var filter = {
+		aid: req.params.aid,
+		'members.uid': req.body.uid
+	}
+	updateAlarm(filter, req, res);
+});
+
+// alarm off from clock
+app.get('/alarm/:aid', function(req, res) { // /alarm/:aid?cid=1	
+	User.findOne({cid: req.query.cid}, function(err, user) {
+		var filter = {
+			aid: req.params.aid,
+			'members.uid': user.uid
+		}
+		updateAlarm(filter, req, res);		
+	});
+});
+
+function updateAlarm(filter, req, res) {	
+	Alarm.update(filter, {$set: {'members.$.status': 'OFF'}}, function(err, data) {
+		if (err) {
+			res.json(400, {msg: 'error'});
+		} else if (data != 0) {
+			Alarm.findOne({aid: req.params.aid}, function(err, alarm) {
+				if (err) {	
+				
+				} else {		
+					for (i = 0; i < alarm.members.length; i++) {
+						if (alarm.members[i].uid != filter['members.uid']) {							
+							User.findOne({uid: alarm.members[i].uid}, function(err, user) {													
+								var msgToPhone = {
+									registration_id: user.rid, 
+									'data.type': 'alarmUpdate',
+									'data.aid': alarm.aid,
+									'data.time': alarm.time,
+									'data.members': alarm.members,
+									'data.master': filter['members.uid'],
+									'data.offTime': (new Date()).getTime()
+								}								
+								sendGCM(msgToPhone);
+								log('Sending GCM to ' + alarm.members[i].uid);								
+							});							
+						}						
+					}					
+					
+					log(alarm.members);
+					
+					var allOff = true;					
+					for (i = 0; i < alarm.members.length; i++) {
+						if (alarm.members[i].status == 'ON') {
+							allOff = false;
+							break;
+						}					
+					}
+					if (allOff) { // alarm off using push
+						log('all alarms are off'); 
+						offPrivateAlarm(alarm);							
+					}
+					res.json(200, {msg: 'success'});
+				}			
+			});			
+		} else {
+			res.json(400, {msg: 'fail'});
+		}		
+	});
+}
+
+function offPrivateAlarm(alarm) {
+	for (i = 0; i < alarm.members.length; i++) {		
+		User.findOne({uid: alarm.members[i].uid} , function(err, user) {
+			if (err) {
+			
+			} else {
+				// phone off using GCM
+				var msgToPhone = {
+					registration_id: user.rid, 
+					'data.aid': alarm.aid,
+					'data.msg': 'alarmOFF',
+					'data.offTime': (new Date()).getTime()
+				};				
+				sendGCM(msgToPhone);
+				log('Sending to GCM ' + msgToPhone);
+				
+				// clock off using pusher
+				var msgToClock = {
+					aid: alarm.aid
+				}
+				sendPusher(user.cid, 'alarmOFF', msgToClock);
+				log('Sending to Pusher ' + msgToClock);
+			}
+		});
+	}
+}
+
+app.listen(process.env.PORT || process.env.C9_PORT || 9090);
+///////////////////////////
+// admin page
+app.get('/', function(req, res) {
+	res.sendfile(clientPath().start);
+});
+
+// mock clock
+app.get('/clock', function(req, res) {
+	res.sendfile(clientPath().root + '/clock/clock.html');
+});
+
+app.post('/flag', function(req, res) {
+	flag.LOG = req.body.LOG;
+	flag.GCM = req.body.GCM;
+	flag.PUSHER = req.body.PUSHER;
+	
+	console.log(flag);
+	res.json(200, flag);
+});
+
+function log(info) {		
+	if (flag.LOG == 'true') {
+		console.log(info);
+	}
+}
+
+function sendGCM(msg) {
+	if (flag.GCM == 'true') {
+		gcm.send(msg, function(err, messageId) {
+			if (err) {
+				console.log("Something has gone wrong!");
+			} else {
+				console.log("Sent with message ID: ", messageId);
+			}
+		});	
+	}	
+}
+
+function sendPusher(channel, event, msg) {
+	if (flag.PUSHER == 'true') {		
+		pusher.trigger(channel, event, msg);	
+	}
+}
+
 // show Users
 app.get('/users', function(req, res) {
 	User.find({}, function(err, data) {
-		console.log(data);
+		log(data);
+		
 		res.json(200, data);
 	});
 });
@@ -95,54 +375,6 @@ app.delete('/user/:uid', function(req, res) {
 	});	
 });
 
-// set alarm
-app.post('/user/:uid/alarm', function(req, res) {
-	var requestBody = req.body;
-	var aid = req.params.uid + '_' + requestBody.type + '_' + requestBody.time;
-	var member = [];
-	
-	if (1 == requestBody.member.length) {  // private
-		member.push({
-			uid: req.params.uid,
-			status: requestBody.member[0].status			
-		});
-	} else { // group
-		var len = requestBody.member.length;
-		for (i = 0; i < len; i++) {
-			member.push({
-				uid: requestBody.member[i].uid,
-				status: requestBody.member[i].status			
-			});
-		}	
-	}
-	
-	var newAlarm = {
-		aid: aid,
-		type: requestBody.type,
-		time: requestBody.time,
-		member: member
-	}
-	console.log(newAlarm);
-	new Alarm(newAlarm).save(function(err, data) {
-		if (err) {
-		
-		} else {
-			console.log(data);
-			var ret = JSON.clone(data);
-			ret.msg = "success";
-    		res.json(200, ret); 
-		}
-	});	
-});
-
-// show alarms
-app.get('/alarms', function(req, res) {
-	Alarm.find({}, function(err, data) {
-		//console.log(data);
-		res.json(200, data);
-	});
-});
-
 // remove alarm
 app.delete('/alarm/:aid', function(req, res) {
 	Alarm.remove({aid: req.params.aid}, function(err, data) {
@@ -154,188 +386,6 @@ app.delete('/alarm/:aid', function(req, res) {
 		}		
 	});	
 });
-
-
-app.put('/alarm/:aid', function(req, res) {	
-	var filter = {
-		aid: req.params.aid,
-		'member.uid': req.body.uid
-	}
-	console.log(filter);
-	Alarm.update(filter, {$set: {'member.$.status': 'OFF'}}, function(err, data) {		
-		if (err) {
-			res.json(400, {msg: 'fail'});
-		} else if (data != 0) {
-			Alarm.findOne({aid: req.params.aid}, function(err, data) {
-				if (err) {
-				
-				} else {
-					
-					var allOff = true;
-					console.log(data.member);
-					for (i = 0; i < data.member.length; i++) {
-						if (data.member[i].status == 'ON') {
-							allOff = false;
-							break;
-						}					
-					}
-					if (allOff) {
-						console.log('all off'); // go to push
-					}
-					res.json(200, {msg: 'success'});
-				}			
-			});			
-		} else {
-			res.json(400, {msg: 'fail'});
-		}		
-	});
-});
-/*
-Alarm.update({aID: '2nd', 'member.uID': 'kwanlae'}, {$set: {'member.$.status': 'ON'}}, function(err, data, raw) {
-	if (err) {
-		console.log(err);
-	} else {
-		console.log('updated...');
-		console.log(raw);
-		Alarm.findOne({aID: '2nd'}, function(err, data) {
-			for (i = 0; i < data.member.length; i++) {
-				console.log(data.member[i].status);
-			}
-		});
-	}   
-});
-*/
-
-///////////////////////////
-app.get('/', function(req, res) {
-	res.sendfile(clientPath().start);
-});
-
-app.get('/phoneNumber/:phoneNumber', function(req, res) {	
-    console.log("API received:phone number is " + req.params.phoneNumber);
-	res.sendfile(path.resolve(__dirname, '..') + '/aboutMe.html');
-});
-
-/*
-app.get('/profile', function(req, res) {	
-	var aboutMeUrl;
-	var phoneNumber = req.query.phoneNumber;	
-	console.log(phoneNumber);
-	
-	User.findOne({'phoneNumber' : phoneNumber}, function(err, doc) {	
-		if (err) {
-			
-		} else {			
-			try {
-				aboutMeUrl = 'http://about.me/' + doc.profileID;
-				console.log(aboutMeUrl);
-				
-				var url = 'https://api.about.me/api/v2/json/user/view/'
-						+ doc.profileID
-						+ '?client_id=327f64c34e821f59a398e0fd6946bd21f72850a3&extended=true';
-				request.get(url, function(error, response, body) {		
-					console.log(response.statusCode);
-					res.send(body);
-				});				
-			} catch (exception) {
-				console.log("unregistered user");
-				var anonymousUser = {
-					background: "",
-					display_name: "Anonymous Caller",
-					bio: ""
-				}				
-				res.send(anonymousUser);								
-			}				
-		}		
-	});	
-});
-*/
-app.get('/signIn', function(req, res) {	
-    console.log('sign in process...');
-    
-    var userID = req.query.userID;
-	var userPW = req.query.pw;	
-	
-	var plainText = userID + ";" + userPW;
-	var primaryKey = crypto.createHash('sha1').update(plainText).digest('hex');
-	
-	if (primaryKey == "66c91c382a0555626a0e0ec634b04d2e30a0211f") { // in case of admin
-		User.find({}, function(err, data){
-        	res.json(data);
-    	});
-	} else {
-		User.findOne({primaryKey: primaryKey}, function(err, doc) {
-			res.send(doc);		
-		});	
-	}	
-});
-
-app.get('/signUp', function(req, res) {
-	console.log('sign up process...');	
-
-    var userID = req.query.userID;    
-    User.findOne({'userID': userID}, function(err, doc) {
-    	if (err) {
-    		
-    	} else if (doc == null) {
-    		
-    		var userData = {
-    			'userID': userID
-    		}
-    		var user = new User(userData);
-    		user.save(function(err, data) {    			
-    			if (err) {
-    				
-    			} else {				
-    				var temp = JSON.clone(data);					
-    				temp.responseCode = 200;
-    				temp.responseText = "Available ID";
-    				console.log(temp);					
-    				res.send(temp); 
-    			}
-    		});    		
-    	} else { // already exist    		
-    		var temp = JSON.clone(doc);
-    		temp.responseCode = 400;
-    		temp.responseText = "Already existing ID";
-    		console.log(temp);
-			res.send(temp);	
-    	}
-    });  
-});
-
-app.get('/signUpSubmit', function(req, res) {
-	var userID = req.query.userID;
-	var userPW = req.query.pw;
-	var phoneNumber = req.query.phoneNumber;
-	var profileID = req.query.aboutMeID;
-	
-	var plainText = userID + ";" + userPW;
-	
-	var userData = {		
-		primaryKey : crypto.createHash('sha1').update(plainText).digest('hex'),
-		// userID: userID, // it doesn't matter whether or not existing'
-		profileID: profileID,
-		phoneNumber: phoneNumber
-	}	
-	
-	console.log(userData);	
-	User.update({userID: userID}, userData, {upsert: true}, function() {
-		console.log("updated");		
-		res.send("success");
-	});	
-});
-
-app.get('/delete', function(req, res) {
-	var userID = req.query.userID;	
-	
-	User.remove({userID: userID}, function() {
-		console.log("deleted " + userID);
-		res.send("done");
-	});	
-});
-
-app.listen(process.env.PORT || process.env.C9_PORT || 9090);
 
 // util
 JSON.clone = function(o) {

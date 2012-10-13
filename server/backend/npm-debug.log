@@ -1,0 +1,63 @@
+info it worked if it ends with ok
+verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+verbose cli   'install',
+verbose cli   'gcm' ]
+info using npm@1.1.1
+info using node@v0.6.11
+verbose config file C:\Users\architect\.npmrc
+verbose config file C:\Program Files\nodejs\etc\npmrc
+verbose config file C:\Program Files\nodejs\node_modules\npm\npmrc
+verbose mkdir done: C:\Users\architect\AppData\Roaming\npm 755
+verbose mkdir done: C:\nodeProject\ghf 755
+verbose caching C:\nodeProject\ghf\package.json
+verbose loadDefaults AL@0.0.1
+verbose caching C:\nodeProject\ghf\node_modules\express\package.json
+verbose loadDefaults express@3.0.0rc4
+verbose caching C:\nodeProject\ghf\node_modules\mongoose\package.json
+verbose loadDefaults mongoose@3.1.2
+verbose from cache C:\nodeProject\ghf\package.json
+verbose cache add [ 'gcm', null ]
+silly cache add: name, spec, args [ undefined, 'gcm', [ 'gcm', null ] ]
+verbose parsed url { pathname: 'gcm', path: 'gcm', href: 'gcm' }
+verbose addNamed [ 'gcm', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'gcm', '', false ]
+verbose raw, before any munging gcm
+verbose url resolving [ 'https://registry.npmjs.org/', './gcm' ]
+verbose url resolved https://registry.npmjs.org/gcm
+verbose etag "D5E1GGGFYI6O0GZLF65PU7U5V"
+http GET https://registry.npmjs.org/gcm
+http 304 https://registry.npmjs.org/gcm
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"D5E1GGGFYI6O0GZLF65PU7U5V"',
+silly get cb     date: 'Tue, 18 Sep 2012 15:10:46 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag gcm from cache
+verbose mkdir done: C:\Users\architect\AppData\Roaming\npm-cache\gcm 755
+silly name, range, hasData 2 [ 'gcm', '', true ]
+silly versions [ 'gcm', [] ]
+ERR! Error: No compatible version found: gcm
+ERR! No valid targets found.
+ERR! Perhaps not compatible with your version of node?
+ERR!     at installTargetsError (C:\Program Files\nodejs\node_modules\npm\lib\cache.js:488:10)
+ERR!     at next_ (C:\Program Files\nodejs\node_modules\npm\lib\cache.js:438:17)
+ERR!     at next (C:\Program Files\nodejs\node_modules\npm\lib\cache.js:415:44)
+ERR!     at C:\Program Files\nodejs\node_modules\npm\lib\cache.js:408:5
+ERR!     at saved (C:\Program Files\nodejs\node_modules\npm\lib\utils\npm-registry-client\get.js:147:7)
+ERR!     at Object.oncomplete (C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\graceful-fs.js:231:7)
+ERR! You may report this log at:
+ERR!     <http://github.com/isaacs/npm/issues>
+ERR! or email it to:
+ERR!     <npm-@googlegroups.com>
+ERR! 
+ERR! System Windows_NT 6.1.7601
+ERR! command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "gcm"
+ERR! cwd C:\nodeProject\ghf\backend
+ERR! node -v v0.6.11
+ERR! npm -v 1.1.1
+ERR! message No compatible version found: gcm
+ERR! message No valid targets found.
+ERR! message Perhaps not compatible with your version of node?
+verbose exit [ 1, true ]
