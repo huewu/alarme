@@ -29,5 +29,7 @@ ARDUINO_LIBS += Adafruit-RGB-LCD-Shield-Library
 ARDUINO_LIBS += Adafruit_NFCShield_I2C
 ARDUINO_LIBS += ArduinoPusherClient
 ARDUINO_LIBS += ArduinoTime
+ARDUINO_LIBS += HttpClient
+ARDUINO_LIBS += aJson
 
 include ../Arduino-Makefile/arduino-mk/Arduino.mk 
