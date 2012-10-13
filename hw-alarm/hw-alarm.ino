@@ -30,6 +30,7 @@ Nfc             nfc;
 Pusher          pusher;
 Heroku          heroku;
 
+ArrayList* arrayList;
 
 /*
 ISR(TIMER1_COMPA_vect)
@@ -81,7 +82,16 @@ void loop(void)
     clk.update();
     nfc.test();
     pusher.monitor();
-    heroku.get_response();
+    //heroku.get_response();
+    heroku.setAlarmOff("KL_GROUP_1349530819326", "clock1");
+    String alarms = heroku.getAlarmList("clock1");
+    heroku.parseAlarmList(alarms);
+  
+    Serial.println("...");
+    for (int i=0; i<arrayList->getSize(); i++){
+       Item * item = arrayList->getItem(i);
+       debug.println(item->getAid());
+    } 
 
     lcd.test();
     lcd.select_line(1);

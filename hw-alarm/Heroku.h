@@ -14,6 +14,9 @@
 #define _HEROKU_H_
 
 #include "NetClient.h"
+#include <HttpClient.h>
+#include <aJSON.h>
+#include "arraylist.h"
 
 class Heroku
 {
@@ -25,6 +28,12 @@ class Heroku
 
         void init(void);
         void get_response(void);
+
+	String getHttpBody(const char* host, int port, const char* path);
+	String getAlarmList(String cid);
+	boolean setAlarmOff(String aid, String cid);
+
+
 };
 
 #endif //_HEROKU_H_
