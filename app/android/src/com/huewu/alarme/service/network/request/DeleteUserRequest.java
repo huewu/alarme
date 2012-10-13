@@ -5,7 +5,7 @@ import com.huewu.libs.network.JsonRequest;
 
 public class DeleteUserRequest extends JsonRequest<UserInfo>{
 
-	private static final String URL = "http://ghfal.herokuapp.com/user/";
+	private static final String URL = NetworkEnv.HOST + "user/";
 
 	public DeleteUserRequest(UserInfo user) {
 		super(Method.DELETE, URL + user.uid);

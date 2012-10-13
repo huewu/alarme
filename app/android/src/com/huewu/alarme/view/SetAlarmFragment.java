@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 /**
@@ -36,6 +37,7 @@ public class SetAlarmFragment extends Fragment{
 	private TimePicker mTimePicker = null;
 	private DatePicker mDatePicker = null;
 	private Button mSetAlarm = null;
+	private ImageButton mSetGroupAlarm = null;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +47,7 @@ public class SetAlarmFragment extends Fragment{
 		mSetAlarm = (Button) view.findViewById(R.id.set_alarm);
 		mTimePicker = (TimePicker) view.findViewById(R.id.set_time);	
 		mDatePicker = (DatePicker) view.findViewById(R.id.set_date);
-		
+		mSetGroupAlarm = (ImageButton) view.findViewById(R.id.group_alarm);
 		return view;
 	}
 	
@@ -81,6 +83,13 @@ public class SetAlarmFragment extends Fragment{
 				mEventCallback.onSetAlarm(newAlarm);
 			}
 		});
+		
+		mSetGroupAlarm.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mEventCallback.onSelectMember();
+			}
+		});		
 	}
 
 	@Override

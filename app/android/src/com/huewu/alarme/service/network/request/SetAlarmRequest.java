@@ -5,7 +5,7 @@ import com.huewu.libs.network.JsonRequest;
 
 public class SetAlarmRequest extends JsonRequest<AlarmInfo>{
 	
-	public final static String URL_FORMT = "http://ghfal.herokuapp.com/user/%s/alarm";
+	public final static String URL_FORMT = NetworkEnv.HOST + "user/%s/alarm";
 
 
 	public SetAlarmRequest(AlarmInfo alarm) {

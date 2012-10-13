@@ -8,6 +8,10 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.huewu.alarme.db.AlarmePreference;
 
 public class GCMIntentService extends GCMBaseIntentService {
+	
+	public static final String ACTION_ALARM_OFF = "ACTION_ALARM_OFF";
+	public static final String ACTION_ALARM_REQUEST = "ACTION_ALARM_REQUEST";
+	public static final String ACTION_ALARM_UPDATE = "ACTION_ALARM_UPDATE";
 
 	@Override
 	protected void onError(Context arg0, String arg1) {
@@ -48,7 +52,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if(type == null)
 			return;
 		
-		if( type.equals("")){
+		if( type.equals("alarmOFF")){
+			Intent i = new Intent(ACTION_ALARM_OFF);
+			sendBroadcast(i);
 			//handle setOffAlarm.
 		}else if( type.equals("")){
 			//handle requestAlarm.

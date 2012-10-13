@@ -11,7 +11,7 @@ import com.huewu.libs.network.JsonRequest;
 
 public class OffAlarmRequest extends JsonRequest<AlarmInfo>{
 	
-	public final static String URL_FORMT = "http://ghfal.herokuapp.com/alarm/%s";
+	public final static String URL_FORMT = NetworkEnv.HOST + "alarm/%s";
 	public final static String POST_FORMT = "uid=%s&status=OFF";
 
 	public OffAlarmRequest(Context ctx, AlarmInfo alarm) {

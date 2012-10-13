@@ -1,7 +1,5 @@
 package com.huewu.alarme;
 
-import java.util.Calendar;
-
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -11,7 +9,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -23,8 +20,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gcm.GCMRegistrar;
+import com.huewu.alarme.controller.SelectMemberFragment;
 import com.huewu.alarme.db.AlarmePreference;
 import com.huewu.alarme.db.AlarmeProvider;
 import com.huewu.alarme.model.AlarmInfo;
@@ -34,8 +33,8 @@ import com.huewu.alarme.service.AlarmeService.LocalBinder;
 import com.huewu.alarme.service.IAlarmService;
 import com.huewu.alarme.util.Util;
 import com.huewu.alarme.view.AlarmsListFragment;
-import com.huewu.alarme.view.SetAlarmFragment;
 import com.huewu.alarme.view.IAlarmeUIEvent;
+import com.huewu.alarme.view.SetAlarmFragment;
 import com.huewu.alarme.view.SyncFragment;
 import com.huewu.alarme.view.WelcomeFragment;
 import com.huewu.libs.network.JsonRequest;
@@ -248,6 +247,8 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 				SyncFragment f = (SyncFragment) getSupportFragmentManager().findFragmentByTag("loading");
 				if(f != null)
 					f.dismiss();
+				
+				Toast.makeText(Launcher.this, "Fail to set an alarm: " + e.toString() , Toast.LENGTH_LONG);
 			}
 		});
 	}
@@ -282,6 +283,21 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 		case 2:
 			break;
 		}
+	}
+	
+	@Override
+	public void onSelectMember() {
+		showSelectMemberFragment();
+	}
+
+	private void showSelectMemberFragment() {
+		
+		Fragment f = getSupportFragmentManager().findFragmentByTag("loading");
+		if (f == null) {
+			SelectMemberFragment frag = new SelectMemberFragment();
+			//frag.show(getSupportFragmentManager(), "loading");
+		}
+		
 	}
 
 	@Override

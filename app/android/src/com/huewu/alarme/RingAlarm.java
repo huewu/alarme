@@ -1,24 +1,22 @@
 package com.huewu.alarme;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.google.android.gcm.GCMBaseIntentService;
-import com.huewu.alarme.db.AlarmePreference;
 import com.huewu.alarme.db.AlarmeProvider;
 import com.huewu.alarme.model.AlarmInfo;
 import com.huewu.alarme.service.AlarmeService;
@@ -27,6 +25,7 @@ import com.huewu.alarme.service.IAlarmService;
 
 public class RingAlarm extends Activity implements ServiceConnection {
 	
+	protected static final String TAG = "RingAlarm";
 	private Button mAlarmOff = null;
 	private IAlarmService mService = null;
 	private Ringtone mRingtone = null;
@@ -38,6 +37,7 @@ public class RingAlarm extends Activity implements ServiceConnection {
 		
 		//should connect to a alarmeservice...
 		initAlarmeService();
+		initGCMMEssageReceiver();
 	}
 	
 	@Override
@@ -60,13 +60,13 @@ public class RingAlarm extends Activity implements ServiceConnection {
 				//send update alarm msg to server.
 				AlarmInfo alarm = AlarmeProvider.findAlarm(aid);
 				mService.offAlaram(alarm, null);
-				mute();
+//				mute();
+//				finish();
 			}
 		});
 		
 		ring();
 	}
-	
 	
 	private void ring() {
 		
@@ -107,11 +107,25 @@ public class RingAlarm extends Activity implements ServiceConnection {
 		mService = ((LocalBinder)service).getService();	
 	}
 
-
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
 		mService = null;
 	}
-
+	
+	private void initGCMMEssageReceiver() {
+		
+		IntentFilter filter = new IntentFilter(GCMIntentService.ACTION_ALARM_OFF);
+		filter.addCategory(Intent.CATEGORY_DEFAULT);
+		
+		registerReceiver(new BroadcastReceiver(){
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				Log.d(TAG, "Recv Alarm Off GCM Event. Mute Alarm Now!!");
+				mute();
+				RingAlarm.this.finish();
+			}
+			
+		}, filter);
+	}
 
 }//end of class

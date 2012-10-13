@@ -5,7 +5,7 @@ import com.huewu.libs.network.JsonRequest;
 
 public class CreateUserRequest extends JsonRequest<UserInfo> {
 	
-	public final static String URL = "http://ghfal.herokuapp.com/user";
+	public final static String URL = NetworkEnv.HOST + "user";
 	
 	//send message to clock server.
 	//POST /user 
