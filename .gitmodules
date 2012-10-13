@@ -16,3 +16,9 @@
 [submodule "Adafruit-RGB-LCD-Shield-Library"]
 	path = Adafruit-RGB-LCD-Shield-Library
 	url = https://github.com/adafruit/Adafruit-RGB-LCD-Shield-Library.git
+[submodule "HttpClient"]
+	path = HttpClient
+	url = git://github.com/amcewen/HttpClient.git
+[submodule "aJson"]
+	path = aJson
+	url = git://github.com/interactive-matter/aJson.git
