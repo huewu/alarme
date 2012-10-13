@@ -63,9 +63,9 @@ void init_timer1()
 void setup(void)
 {
     debug.init();
-    debug.on();
-    debug.println("Alarme v0.1 - Social Alarm Project");
-    debug.println("Google HackFair 2012 in Seoul");
+    debug.off();
+    //debug.println("Alarme v0.1 - Social Alarm Project");
+    //debug.println("Google HackFair 2012 in Seoul");
 
     lcd.init();
     net.init();
@@ -89,12 +89,12 @@ void loop(void)
     //heroku.get_response();
     //heroku.setAlarmOff("KL_GROUP_1349530819326", "clock1");
     //Serial.println("...");
+    /*
     for (int i=0; i<arrayList->getSize(); i++){
        Item * item = arrayList->getItem(i);
        debug.println(item->getAid());
     } 
-
-
+    */
     lcd.check_button();
     lcd.select_line(1);
     lcd.print("                "); // clear second line of LCD
