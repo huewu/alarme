@@ -24,6 +24,8 @@ const unsigned int  PORT = 8888;
 const int           NTP_PACKET_SIZE = 48;   // NTP time stamp is in the first 48 bytes of the message
 byte                packetBuffer[NTP_PACKET_SIZE];
 
+static const unsigned long timeZoneOffset = 3600L*9;    // GMT to KST
+
 void Ntp::init(void)
 {
     while (!udp.begin(PORT)) {
@@ -61,9 +63,7 @@ unsigned long Ntp::sync(void)
         debug.print("Unix time = ");
         debug.println(epoch);                               
 
-        // convert UTC into KST
-        epoch += 3600*9;
-
+        epoch += timeZoneOffset;
         parse_time(epoch);
 
         return epoch;

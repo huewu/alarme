@@ -20,6 +20,8 @@ const int kNetworkTimeout = 30*1000;
 const int kNetworkDelay = 1000;
 char host[] = "192.168.77.8";
 int port = 9090;
+//char host[] = "ghfal.herokuapp.com";
+//int port = 80;
 
 void Heroku::init(void)
 {
@@ -142,7 +144,7 @@ Item * Heroku::parseAlarm(aJsonObject* object){
     aJsonObject* type = aJson.getObjectItem(object, "type");
     Item * item = new Item();
     item->setAid(aid->valuestring);
-    item->setTime(time->valueint);
+    item->setTime(time->valuestring);
     item->setType(type->valuestring);
     return item;
 
@@ -186,6 +188,5 @@ void Heroku::parseAlarmList(String arg){
 
     }
     free(jsonStr);
-
 }
 

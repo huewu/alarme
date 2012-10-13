@@ -1,3 +1,15 @@
+/*
+ *  Alarme Project for Google HackFair 2012 in Seoul
+ *  Arduino hardware alarm sketch
+ *      
+ *  Kwanlae Kim <voidopennet@gmail.com>
+ *  Chanseok Yang <huewu.yang@gmail.com>
+ *  Jinserk Baik <jinserk.baik@gmail.com>
+ *  Wonseok Yang <before30@gmail.com>
+ *
+ *  Copyright (c) 2012, all rights reserved.
+ */
+
 #include "Arduino.h"
 #include "arraylist.h"
 
@@ -48,11 +60,11 @@ Item::getAid(){
 }
 
 void 
-Item::setTime(int time){
-  _time = time;
+Item::setTime(char* time){
+  _time = atol(time);
 }
 
-int 
+unsigned long 
 Item::getTime(){
   return _time;
 }

@@ -14,10 +14,16 @@
 #include "LcdDisplay.h"
 #include "arraylist.h"
 #include "Clock.h"
+#include "Heroku.h"
 
 extern SerialDebug  debug;
 extern LcdDisplay   lcd;
 extern ArrayList*   arrayList;
+extern bool alarm;
+extern Heroku heroku;
+extern char* cid;
+
+static const unsigned long timeZoneOffset = 3600L*9;
 
 void Clock::init(Ntp& ntp)
 {
@@ -34,11 +40,14 @@ void Clock::update(void)
     bool flag = false;
     for (int i = 0; i < arrayList->getSize(); ++i) {
         Item* p = arrayList->getItem(i);
-        if (p->isAlive() && (now() < p->getTime()))
+        if (p->isAlive() && (now() >= (p->getTime()+timeZoneOffset)))
             flag = true;    
     }
 
     if (flag) ring_alarm();
+
+    debug.print("current time:");
+    debug.println(now());
 }
 
 void Clock::display_clock(void)
@@ -67,7 +76,8 @@ void Clock::print_digits(int digits)
 void Clock::ring_alarm(void)
 {
     lcd.select_line(1);
-    lcd.print("Ring Alarm !!!!!");
+    lcd.print("Ring Alarm .....");
+    alarm = true;
 }
 
 void Clock::stop_alarm(void)
@@ -77,8 +87,11 @@ void Clock::stop_alarm(void)
 
     for (int i = 0; i < arrayList->getSize(); ++i) {
         Item* p = arrayList->getItem(i);
-        if (p->isAlive() && (now() < p->getTime()))
-            p->setAlive(false);    
+        if (p->isAlive() && (now() >= (p->getTime()+timeZoneOffset))){
+            p->setAlive(false);   
+            heroku.setAlarmOff(p->getAid(), cid);
+        }
     }
+    alarm = false;
 }
 

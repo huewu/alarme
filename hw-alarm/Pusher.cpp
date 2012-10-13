@@ -11,14 +11,17 @@
  */
 
 #include "SerialDebug.h"
+#include "LcdDisplay.h"
 #include "Pusher.h"
 #include "arraylist.h"
 #include "aJSON.h"
-//#include "clock.h"
+#include "Clock.h"
 
 extern SerialDebug  debug;
+extern LcdDisplay   lcd;
 extern ArrayList * arrayList;
-//extern Clock clk;
+extern Clock clk;
+extern char* cid;
 
 void Pusher::init(void)
 {
@@ -34,7 +37,7 @@ void Pusher::init(void)
 
 void Pusher::bind_event(void)
 {
-    pc.subscribe("cid");
+    pc.subscribe(cid);
     pc.bind("alarmSET", set_alarm);
     pc.bind("alarmOFF", dismiss_alarm);
 }
@@ -51,25 +54,36 @@ void Pusher::monitor(void)
 
 void Pusher::set_alarm(String data)
 {
+    Serial.println(data);
     // parsing data by using json
     char *jsonStr = (char *)malloc(data.length() + 1);
     data.toCharArray(jsonStr, data.length() + 1);
 
     aJsonObject* root = aJson.parse(jsonStr);
     if (root != NULL){
-        aJsonObject* aid = aJson.getObjectItem(root, "aid");
-        aJsonObject* time = aJson.getObjectItem(root, "time");
-        aJsonObject* type = aJson.getObjectItem(root, "type");
+        aJsonObject* dd = aJson.getObjectItem(root, "data");
 
-        Item* item = new Item();
-        item->setAid(aid->valuestring);
-        item->setTime(time->valueint);
-        item->setType(type->valuestring);
-        item->setAlive(true);
+        aJsonObject* root2 = aJson.parse(dd->valuestring);
+        aJsonObject* aid = aJson.getObjectItem(root2, "aid");
+        aJsonObject* time = aJson.getObjectItem(root2, "time");
+        aJsonObject* type = aJson.getObjectItem(root2, "type");
 
-        arrayList->addItem(item);
+        if (aid != NULL && time != NULL && type != NULL){
+
+            Item* item = new Item();
+            item->setAid(aid->valuestring);
+            item->setTime(time->valuestring);
+            item->setType(type->valuestring);
+            item->setAlive(true);
+            Serial.println(aid->valuestring);
+            Serial.println(time->valuestring);
+            arrayList->addItem(item);
+        }
+
     }
    // debug.println(data);
+    lcd.select_line(1);
+    lcd.print("Alarm set ......");
 
     free(jsonStr);
 }
@@ -78,7 +92,8 @@ void Pusher::dismiss_alarm(String data)
 {
     // turn off alarm
     // ....
-    //clk.stop_alarm();
+    debug.println(data);
+    clk.stop_alarm();
 
     char *jsonStr = (char *)malloc(data.length() + 1);
     data.toCharArray(jsonStr, data.length() + 1);
@@ -86,7 +101,9 @@ void Pusher::dismiss_alarm(String data)
     aJsonObject* root = aJson.parse(jsonStr);
   
     if (root != NULL){
-        aJsonObject* aid = aJson.getObjectItem(root, "aid");
+        aJsonObject* dd = aJson.getObjectItem(root, "data");
+        aJsonObject* root2 = aJson.parse(dd->valuestring);
+        aJsonObject* aid = aJson.getObjectItem(root2, "aid");
 
         for (int i=0; i<arrayList->getSize(); i++){
             Item* item = arrayList->getItem(i);
