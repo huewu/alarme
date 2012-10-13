@@ -36,35 +36,35 @@ void LcdDisplay::test(void)
 {
     // set the cursor to column 0, line 1
     // (note: line 1 is the second row, since counting begins with 0):
-    lcd.setCursor(0, 1);
+    //lcd.setCursor(0, 1);
     // print the number of seconds since reset:
     lcd.print(millis()/1000);
 
     uint8_t buttons = lcd.readButtons();
 
     if (buttons) {
-        lcd.clear();
-        lcd.setCursor(0,0);
+        select_line(1);
         if (buttons & BUTTON_UP) {
             lcd.print("UP ");
-            lcd.setBacklight(RED);
+            //lcd.setBacklight(RED);
         }
         if (buttons & BUTTON_DOWN) {
             lcd.print("DOWN ");
-            lcd.setBacklight(YELLOW);
+            //lcd.setBacklight(YELLOW);
         }
         if (buttons & BUTTON_LEFT) {
             lcd.print("LEFT ");
-            lcd.setBacklight(GREEN);
+            //lcd.setBacklight(GREEN);
         }
         if (buttons & BUTTON_RIGHT) {
             lcd.print("RIGHT ");
-            lcd.setBacklight(TEAL);
+            //lcd.setBacklight(TEAL);
         }
         if (buttons & BUTTON_SELECT) {
             lcd.print("SELECT ");
-            lcd.setBacklight(VIOLET);
+            //lcd.setBacklight(VIOLET);
         }
+        delay(200);
     }
 }
 

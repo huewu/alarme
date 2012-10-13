@@ -83,6 +83,7 @@ void loop(void)
     pusher.monitor();
     heroku.get_response();
 
+    lcd.test();
     lcd.select_line(1);
     lcd.print("                "); // clear second line of LCD
 }
