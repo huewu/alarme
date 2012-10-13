@@ -127,7 +127,7 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, Servic
 
 		String accountName = Util.getCurrentUserAccount(this);
 		String regId = GCMRegistrar.getRegistrationId(this);
-		String cId = "1234";
+		String cId = "clock1";
 
 		user = new UserInfo(accountName, regId, cId);
 		mService.createUser(user, new ResponseListener<UserInfo>() {
