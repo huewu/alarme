@@ -42,7 +42,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	private void parseGCMMessage(Intent msg){
+		Log.d(TAG, "Bundle: " + msg.getExtras());
 		String type = msg.getStringExtra("msg");
+		
+		if(type == null)
+			return;
 		
 		if( type.equals("")){
 			//handle setOffAlarm.

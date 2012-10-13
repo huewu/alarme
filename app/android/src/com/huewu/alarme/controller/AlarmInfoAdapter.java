@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 public class AlarmInfoAdapter extends ArrayAdapter<AlarmInfo>{
 	
@@ -21,12 +22,17 @@ public class AlarmInfoAdapter extends ArrayAdapter<AlarmInfo>{
 		if( convertView == null ){
 			convertView = initView();
 		}
-		setUpView();
+		setUpView(convertView, getItem(position));
 		return convertView;
 	}
 
-	private void setUpView() {
+	private void setUpView(View v, AlarmInfo alarm) {
+		TextView tv = (TextView) v.findViewById(R.id.alarm_time);
+		tv.setText(alarm.time);
 		
+		//TODO check group / private alarm.
+		
+		//TODO if already passed alarm. disable it.
 	}
 
 	private View initView() {

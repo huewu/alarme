@@ -20,6 +20,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.huewu.alarme.db.AlarmePreference;
@@ -66,6 +69,14 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 		bindService(new Intent(this, AlarmeService.class), this, Context.BIND_AUTO_CREATE);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//set default menus. 
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options, menu);
+		return true;
+	};
+
 	private void setUpActionbar() {
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);		
@@ -100,6 +111,18 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 		//for initial user. show welcome fragment.
 		//for already registered user, show alarm fragment.
 		showSetAlarmFragment();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch(item.getItemId()){
+		case R.id.menu_alarm_list:
+			showAlarmsListFragment();
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void registerUser() {
@@ -160,7 +183,10 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 	private void showAlarmsListFragment() {
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(R.id.workspace, new AlarmsListFragment(), "wlecome");
+
+		ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right, R.anim.slide_in, R.anim.slide_out);
+		ft.replace(R.id.workspace, new AlarmsListFragment(), "alarms");
+		ft.addToBackStack(null);
 		ft.commit();
 	}
 	
@@ -184,6 +210,11 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 
 			@Override
 			public void onRequsetReady(JsonRequest<?> req) {
+				Fragment f = getSupportFragmentManager().findFragmentByTag("loading");
+				if (f == null) {
+					SyncFragment frag = new SyncFragment("Connection to server...");
+					frag.show(getSupportFragmentManager(), "loading");
+				}
 			}
 
 			@Override
@@ -194,20 +225,29 @@ public class Launcher extends FragmentActivity implements IAlarmeUIEvent, TabLis
 			@Override
 			public void onRequestResponse(JsonRequest<?> req, AlarmInfo alarm) {
 				AlarmeProvider.addAlarm(alarm);
-
+				
 				//register alarm job.
+				Intent i = new Intent(Launcher.this, RingAlarm.class);
+				i.putExtra("aid", alarm.aid);
+				
 				AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 				PendingIntent pi = PendingIntent.getActivity(Launcher.this, 0, 
-						new Intent(Launcher.this, RingAlarm.class), 0, null);
+						i, Intent.FLAG_ACTIVITY_NEW_TASK );
 				am.set(AlarmManager.RTC_WAKEUP, alarm.getTime(), pi);
 			}
 
 			@Override
 			public void onRequestFinished(JsonRequest<?> req) {
+				SyncFragment f = (SyncFragment) getSupportFragmentManager().findFragmentByTag("loading");
+				if(f != null)
+					f.dismiss();
 			}
 
 			@Override
 			public void onRequestFailed(JsonRequest<?> req, Exception e) {
+				SyncFragment f = (SyncFragment) getSupportFragmentManager().findFragmentByTag("loading");
+				if(f != null)
+					f.dismiss();
 			}
 		});
 	}

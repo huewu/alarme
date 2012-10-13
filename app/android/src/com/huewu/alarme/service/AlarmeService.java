@@ -83,7 +83,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 		//Request Body: JSON
 		//{ alarmId: aid, status: off }
 		
-		JsonRequest<?> req = RequestFactory.createOffAlarmRequest( alarm, callback );
+		JsonRequest<?> req = RequestFactory.createOffAlarmRequest( this, alarm, callback );
 		mNewtorkWorekr.sendRequest(req);
 	}
 

@@ -1,5 +1,7 @@
 package com.huewu.alarme.service.network.request;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.huewu.alarme.model.AlarmInfo;
@@ -39,9 +41,9 @@ public class RequestFactory {
 		return req;
 	}
 	
-	public static OffAlarmRequest createOffAlarmRequest(AlarmInfo alarm,
+	public static OffAlarmRequest createOffAlarmRequest(Context ctx, AlarmInfo alarm,
 			ResponseListener listener) {
-		OffAlarmRequest req = new OffAlarmRequest(alarm);
+		OffAlarmRequest req = new OffAlarmRequest(ctx, alarm);
 		req.setResponseListener(listener);
 		req.setDecoder(new AlarmInfoDecoder());
 		return req;

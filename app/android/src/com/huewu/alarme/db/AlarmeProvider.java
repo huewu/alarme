@@ -20,4 +20,13 @@ public class AlarmeProvider {
 	public static void backupAlarms( AlarmInfo[] alarms ){
 	}
 
+	public static AlarmInfo findAlarm(String aid) {
+		for(AlarmInfo alarm : mAlarmArray){
+			if(alarm.aid.equals(aid))
+				return alarm;
+		}
+		
+		return null;
+	}
+
 }//end of class

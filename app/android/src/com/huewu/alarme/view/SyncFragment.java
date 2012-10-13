@@ -35,6 +35,7 @@ public class SyncFragment extends DialogFragment {
 		
 		ProgressDialog dialog = new ProgressDialog(getActivity());
 		dialog.setIndeterminate(true);
+		dialog.setTitle("Waiting...");
 		dialog.setMessage(mMessage);
 		dialog.setCancelable(false);
 		return dialog;
