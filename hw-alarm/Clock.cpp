@@ -12,10 +12,12 @@
 
 #include "SerialDebug.h"
 #include "LcdDisplay.h"
+#include "arraylist.h"
 #include "Clock.h"
 
 extern SerialDebug  debug;
 extern LcdDisplay   lcd;
+extern ArrayList*   arrayList;
 
 void Clock::init(Ntp& ntp)
 {
@@ -28,6 +30,15 @@ void Clock::init(Ntp& ntp)
 void Clock::update(void)
 {
     display_clock();
+
+    bool flag = false;
+    for (int i = 0; i < arrayList->getSize(); ++i) {
+        Item* p = arrayList->getItem(i);
+        if (p->isAlive() && (now() < p->getTime()))
+            flag = true;    
+    }
+
+    if (flag) ring_alarm();
 }
 
 void Clock::display_clock(void)
@@ -51,5 +62,23 @@ void Clock::print_digits(int digits)
     if (digits < 10)
         lcd.print('0');
     lcd.print(digits);
+}
+
+void Clock::ring_alarm(void)
+{
+    lcd.select_line(1);
+    lcd.print("Ring Alarm !!!!!");
+}
+
+void Clock::stop_alarm(void)
+{
+    lcd.select_line(1);
+    lcd.print("Stop Alarm .....");
+
+    for (int i = 0; i < arrayList->getSize(); ++i) {
+        Item* p = arrayList->getItem(i);
+        if (p->isAlive() && (now() < p->getTime()))
+            p->setAlive(false);    
+    }
 }
 

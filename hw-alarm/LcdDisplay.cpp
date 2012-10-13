@@ -12,6 +12,7 @@
 
 #include <Arduino.h>
 #include "LcdDisplay.h"
+#include "Clock.h"
 
 // These #defines make it easy to set the backlight color
 #define RED     0x1
@@ -22,6 +23,8 @@
 #define TEAL    0x6
 #define WHITE   0x7
 
+extern Clock clk;
+
 void LcdDisplay::init(void)
 {
     // set up the LCD's number of columns and rows: 
@@ -30,6 +33,18 @@ void LcdDisplay::init(void)
 
     select_line(0);
     print("  Alarme  v0.1  ");
+}
+
+void LcdDisplay::check_button(void)
+{
+    lcd.print(millis()/1000);
+    uint8_t buttons = lcd.readButtons();
+
+    if (buttons) {
+        if (buttons) {
+            clk.stop_alarm();    
+        }
+    }
 }
 
 void LcdDisplay::test(void)

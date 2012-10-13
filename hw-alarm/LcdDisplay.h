@@ -25,6 +25,7 @@ class LcdDisplay
         LcdDisplay() {}
 
         void init(void);
+        void check_button(void);
         void test(void);
 
         size_t print(const String& s)         { lcd.print(s); }

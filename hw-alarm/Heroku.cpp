@@ -24,7 +24,6 @@ int port = 9090;
 void Heroku::init(void)
 {
 
-   arrayList = new ArrayList();
 /*
     while (!hc.connect("google.com", 80)) {
         debug.println("Heroku connection is failed.");
@@ -59,7 +58,7 @@ Heroku::setAlarmOff(String aid, String cid){
 
 
   String resultBody = getHttpBody(host, 9090, pathChar);
-  //Serial.println(resultBody);
+  Serial.println(resultBody);
   char *jsonStr = (char *)malloc(resultBody.length() + 1);
 
   resultBody.toCharArray(jsonStr, resultBody.length() + 1);
@@ -143,7 +142,22 @@ Heroku::getHttpBody(const char* host, int port, const char* path){
   return body;
 }
 
-void parseAlarmList(String arg){
+Item * Heroku::parseAlarm(aJsonObject* object){
+
+      aJsonObject* aid = aJson.getObjectItem(object, "aid");
+      aJsonObject* time = aJson.getObjectItem(object, "time");
+      aJsonObject* type = aJson.getObjectItem(object, "type");
+      Item * item = new Item();
+      item->setAid(aid->valuestring);
+      item->setTime(time->valueint);
+      item->setType(type->valuestring);
+    return item;
+
+}
+
+
+
+void Heroku::parseAlarmList(String arg){
   char *jsonStr = (char *)malloc(arg.length() + 1);
   arg.toCharArray(jsonStr, arg.length() + 1);
 
@@ -159,7 +173,7 @@ void parseAlarmList(String arg){
         aJsonObject* ret = aJson.getArrayItem(retArray, (char)i);
         result++;
         if (ret != NULL){
-          aJsonObject* aid = aJson.getObjectItem(ret, "aid");
+ /*         aJsonObject* aid = aJson.getObjectItem(ret, "aid");
           aJsonObject* time = aJson.getObjectItem(ret, "time");
           aJsonObject* type = aJson.getObjectItem(ret, "type");
           Item * item = new Item();
@@ -167,7 +181,9 @@ void parseAlarmList(String arg){
           item->setTime(time->valueint);
           item->setType(type->valuestring);
            arrayList->addItem(item);
-
+*/
+            Item* item = parseAlarm(ret);
+           arrayList->addItem(item);
         } else {
           break;
         }

@@ -33,7 +33,8 @@ class Heroku
 	String getAlarmList(String cid);
 	boolean setAlarmOff(String aid, String cid);
 
-
+    void parseAlarmList(String arg);
+    Item * parseAlarm(aJsonObject* object);
 };
 
 #endif //_HEROKU_H_

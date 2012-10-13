@@ -26,6 +26,9 @@ class Clock
 
         void display_clock(void);
         void print_digits(int digits);
+
+        void ring_alarm(void);
+        void stop_alarm(void);
 };
 
 #endif //_CLOCK_H_
