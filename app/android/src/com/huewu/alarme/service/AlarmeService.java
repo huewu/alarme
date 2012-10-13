@@ -63,7 +63,7 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 	}
 
 	@Override
-	public void setAlaram(AlarmInfo alarm, ResponseListener callback){
+	public void setAlarm(AlarmInfo alarm, ResponseListener callback){
 		//send message to clock server.
 		//POST /user/:uid/alarm
 		//Request Body: JSON
@@ -85,16 +85,6 @@ public class AlarmeService extends Service implements IAlarmService, OnAlarmGCML
 		
 		JsonRequest<?> req = RequestFactory.createOffAlarmRequest( this, alarm, callback );
 		mNewtorkWorekr.sendRequest(req);
-	}
-
-	@Override
-	public void setGroupAlarm( AlarmInfo alarm, UserInfo[] members, ResponseListener callback){
-		//create new group alarm to clock server.
-		//POST /user/:uid/alarm
-		//Request Body: JSON
-		//{ type: group, time: long?, users: { { userId: me,  status: on}, { userId: friend, status: off }  } }
-		//Response Body: JSON
-		//{ alarmId: aid }
 	}
 	
 	@Override

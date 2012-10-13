@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="friends">
+        <item>huewu.yang@gmail.com</item>
+        <item>before30@gmail.com</item>
+        <item>jinserk@gmail.com</item>
+        <item>klkim@gmail.com</item>
+    </string-array>
+</resources>

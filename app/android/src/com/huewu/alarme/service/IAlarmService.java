@@ -22,19 +22,13 @@ public interface IAlarmService {
 	 * create a new alarm in clock server
 	 * @param alarm
 	 */
-	void setAlaram( AlarmInfo alarm, ResponseListener callback );
+	void setAlarm( AlarmInfo alarm, ResponseListener callback );
 
 	/**
 	 * delete an alarm from clock server.
 	 * @param alarm
 	 */
 	void offAlaram( AlarmInfo alarm, ResponseListener callback );
-
-	/**
-	 * create a new group alarm in clock server (this phone is a master)
-	 * @param alarm
-	 */
-	void setGroupAlarm( AlarmInfo alarm, UserInfo[] members, ResponseListener callback );
 
 	/**
 	 * update a group alarm info in server (change alarm status of this phone - uid)

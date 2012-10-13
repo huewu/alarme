@@ -1,6 +1,8 @@
 package com.huewu.alarme.db;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import com.huewu.alarme.model.AlarmInfo;
 
@@ -18,6 +20,7 @@ public class AlarmeProvider {
 	}
 	
 	public static void backupAlarms( AlarmInfo[] alarms ){
+		
 	}
 
 	public static AlarmInfo findAlarm(String aid) {

@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clock</title>
+</head>
+<body>
+	<h2>This is a Clock</h2>
+	<input id='channel' type='text' placeholder="channel(cid)" value='clock1' />
+	<input id='event' type='text' placeholder="event('alarmOFF')" value='alarmOFF' />
+	<input id='connect' type='button' value='connet to Pusher' />			
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>	
+	<script type="text/javascript" src="http://js.pusher.com/1.12/pusher.min.js"></script>
+	<script type="text/javascript">
+  <!--
+    // Enable pusher logging - don't include this in production
+    Pusher.log = function(message) {
+      if (window.console && window.console.log) window.console.log(message);
+    };
+
+    // Flash fallback logging - don't include this in production
+    WEB_SOCKET_DEBUG = true;
+ -->
+	$('#connect').on('click', function() {
+		var pusher = new Pusher('81a20baa40945ce4b0a6');
+		var channel = pusher.subscribe($('#channel').val());
+		channel.bind($('#event').val(), function(data) {
+		  alert(data.msg);
+		});
+	});    
+  </script>
+</body>
+</html>

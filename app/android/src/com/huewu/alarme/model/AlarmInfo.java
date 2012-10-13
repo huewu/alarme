@@ -9,17 +9,21 @@ import com.huewu.alarme.util.Util;
  * @author huewu.yang
  *
  */
-public class AlarmInfo extends JsonModel {
+public class AlarmInfo extends JsonModel implements Comparable<AlarmInfo> {
 	
 	public static final String PRIVATE_ALARM = "PRIVATE";
 	public static final String GROUP_ALARM = "GROUP";
 	
+	public static final String STATUS_OFF = "OFF";
+	public static final String STATUS_ON = "ON";
+	
 	public String aid;
 	public String type;
 	public String time;
-	public AlarmMember[] member;
+	public String offTime;
+	public AlarmMember[] members;
+	public String status = STATUS_ON;
 	
-	private long mTimeInMs = -1;
 	private UserInfo mOwner = null;
 	
 	/**
@@ -31,10 +35,9 @@ public class AlarmInfo extends JsonModel {
 	}
 	
 	public AlarmInfo( UserInfo owner, long alarmTimeMs ){
-		mTimeInMs = alarmTimeMs;
-		time = Util.getTimeString(alarmTimeMs);
+		time = String.valueOf(alarmTimeMs / 1000);
 		type = PRIVATE_ALARM;
-		member = new AlarmMember[]{ new AlarmMember(owner, AlarmMember.STATUS_ON ) };
+		members = new AlarmMember[]{ new AlarmMember(owner, AlarmMember.STATUS_ON ) };
 		mOwner = owner;
 	}
 	
@@ -43,10 +46,7 @@ public class AlarmInfo extends JsonModel {
 	}
 	
 	public long getTime(){
-		if(mTimeInMs == -1){
-			mTimeInMs = Util.getTime(time);
-		}
-		return mTimeInMs;
+		return Long.valueOf(time) * 1000;
 	}
 	
 	@Override
@@ -56,14 +56,19 @@ public class AlarmInfo extends JsonModel {
 			postStr = String.format("type=%s&time=%s&members[0][uid]=%s&members[0][status]=%s", 
 					URLEncoder.encode(type,"utf-8"),
 					URLEncoder.encode(time,"utf-8"),
-					URLEncoder.encode(member[0].uid,"utf-8"),
-					URLEncoder.encode(member[0].status,"utf-8")
+					URLEncoder.encode(members[0].uid,"utf-8"),
+					URLEncoder.encode(members[0].status,"utf-8")
 					);
 		}catch(Exception e){
 			return "";
 		}
 		
 		return postStr;
+	}
+
+	@Override
+	public int compareTo(AlarmInfo another) {
+		return (int) (another.getTime() - this.getTime());
 	}
 
 }//end of class

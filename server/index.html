@@ -5,8 +5,29 @@
 	<title>Alarme Server Test Page</title>
 	<link rel='stylesheet' type='text/css' href='css/style.css' />	
 </head>
-<body>		
-	<h1>Alarme Server Test Page</h1>	
+<body>	
+	<div>
+		<label>LOG</label>
+		<select id='log'>
+			<option selected="selected" value='true'>TRUE</option>    
+			<option value='false'>FALSE</option>			
+		</select><p>
+		
+		<label>GCM</label>
+		<select id='gcm'>
+			<option value='true'>TRUE</option>    			
+			<option selected="selected" value='false'>FALSE</option>			
+		</select><p>
+		
+		<label>PUSHER</label>
+		<select id='pusher'>
+			<option value='true'>TRUE</option>    			
+			<option selected="selected" value='false'>FALSE</option>						
+		</select>
+		<input id='setFlags' type='button' value='set FLAGs' />		
+	</div>
+	
+	<h1>Alarme Server Test Page Oct. 13</h1>	
 	
 	<div class='testCase'>
 		<h3>User Creation</h3>
