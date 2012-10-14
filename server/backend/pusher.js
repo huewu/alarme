@@ -1,10 +1,9 @@
-
 var Pusher = require('node-pusher');
 
 var pusher = new Pusher({
-  appId: '27999',
-  key: '81a20baa40945ce4b0a6',
-  secret: '9cad8056337cdeb8d68b'
+  appId: '',
+  key: '',
+  secret: ''
 });
 
 var channel = 'clock1';
