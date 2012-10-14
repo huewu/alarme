@@ -1,4 +1,3 @@
-
 var flag = {
 	LOG: 'true',
 	GCM: 'true',
@@ -10,13 +9,13 @@ var path = require('path');
 var fs = require('fs');
 
 // google cloud messaging to phone
-var gcm = new (require('gcm').GCM)('AIzaSyDE-wlLfIDo8eyB8h2tQph30fqj1mf0CUQ'); // api Key
+var gcm = new (require('gcm').GCM)(''); // api Key
 
 // pusher.com to clock
 var pusher = new (require('node-pusher'))({
-  appId: '27999',
-  key: '81a20baa40945ce4b0a6',
-  secret: '9cad8056337cdeb8d68b'
+  appId: '',
+  key: '',
+  secret: ''
 });
 
 // mongodb 
