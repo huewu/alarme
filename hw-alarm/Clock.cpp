@@ -23,7 +23,7 @@ extern bool alarm;
 extern Heroku heroku;
 extern char* cid;
 
-static const unsigned long timeZoneOffset = 3600L*9;
+static const uint16_t timeZoneOffset = 3600L*9;
 
 void Clock::init(Ntp& ntp)
 {
@@ -31,11 +31,12 @@ void Clock::init(Ntp& ntp)
     while (timeStatus() == timeNotSet); // wait until time sync from NTP
     lcd.select_line(1);
     lcd.print("Time synced.....");
+    display();
 }
 
 void Clock::update(void)
 {
-    display_clock();
+    display();
 
     bool flag = false;
     for (int i = 0; i < arrayList->getSize(); ++i) {
@@ -50,20 +51,20 @@ void Clock::update(void)
     debug.println(now());
 }
 
-void Clock::display_clock(void)
+void Clock::display(void)
 {
     lcd.select_line(0);
-    lcd.print(" ");
-    lcd.print(month());
-    lcd.print("/");
-    lcd.print(day());
-    lcd.print(" ");
+    lcd.print(' ');
+    print_digits(month());
+    lcd.print('/');
+    print_digits(day());
+    lcd.print(' ');
     print_digits(hour());
-    lcd.print(":");
+    lcd.print(':');
     print_digits(minute());
-    lcd.print(":");
+    lcd.print(':');
     print_digits(second());
-    lcd.print(" ");
+    lcd.print(' ');
 }
 
 void Clock::print_digits(int digits)
@@ -82,8 +83,10 @@ void Clock::ring_alarm(void)
 
 void Clock::stop_alarm(void)
 {
-    lcd.select_line(1);
-    lcd.print("Stop Alarm .....");
+    if (alarm) {
+        lcd.select_line(1);
+        lcd.print("Stop Alarm .....");
+    }
 
     for (int i = 0; i < arrayList->getSize(); ++i) {
         Item* p = arrayList->getItem(i);

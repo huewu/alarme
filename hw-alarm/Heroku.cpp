@@ -12,9 +12,11 @@
 
 #include "SerialDebug.h"
 #include "Heroku.h"
+#include "Clock.h"
 
 extern SerialDebug  debug;
-extern ArrayList* arrayList;
+extern ArrayList*   arrayList;
+extern Clock        clk;
 
 const int kNetworkTimeout = 30*1000;
 const int kNetworkDelay = 1000;
@@ -24,7 +26,8 @@ int port = 9090;
 //int port = 80;
 
 void Heroku::init(void)
-{
+{ 
+    clk.display();
     /*
     while (!hc.connect("google.com", 80)) {
         debug.println("Heroku connection is failed.");

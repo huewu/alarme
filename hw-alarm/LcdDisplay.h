@@ -38,7 +38,8 @@ class LcdDisplay
         size_t print(const long s)            { lcd.print(s); }
         size_t print(const double s)          { lcd.print(s); }
 
-        void select_line(const byte l)        { lcd.setCursor(0, l); }
+        void select_line(const byte r)              { lcd.setCursor(0, r); }
+        void setCursor(const byte l, const byte r)  { lcd.setCursor(l, r); }
 };
 
 #endif //_LCD_DISPLAY_H_

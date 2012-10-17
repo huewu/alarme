@@ -32,5 +32,6 @@ ARDUINO_LIBS += ArduinoTime
 ARDUINO_LIBS += HttpClient
 ARDUINO_LIBS += aJson
 ARDUINO_LIBS += aJson/utility
+ARDUINO_LIBS += MsTimer2
 
 include ../Arduino-Makefile/arduino-mk/Arduino.mk 

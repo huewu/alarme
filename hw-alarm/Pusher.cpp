@@ -29,9 +29,13 @@ void Pusher::init(void)
 
     while (!pc.connect(privatekey)) {
         debug.println("pusher connection failed.");
-        delay(1000);
+        delay(500);
+        clk.display();
     }
     debug.println("pusher connection successful.");
+    lcd.select_line(1);
+    lcd.print("Pusher connected");
+    clk.display();
     bind_event();
 }
 

@@ -22,10 +22,10 @@ class Clock
         Clock() {}
 
         void init(Ntp& ntp);
-        void update(void);
 
-        void display_clock(void);
-        void print_digits(int digits);
+        void update(void);
+        static void display(void);
+        static void print_digits(int digits);
 
         void ring_alarm(void);
         void stop_alarm(void);

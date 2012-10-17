@@ -13,12 +13,14 @@
 #include "SerialDebug.h"
 #include "LcdDisplay.h"
 #include "Nfc.h"
+#include "Clock.h"
 
 #define IRQ   (18)
 #define RESET (3)  // Not connected by default on the NFC Shield
 
 extern SerialDebug  debug;
 extern LcdDisplay   lcd;
+extern Clock        clk;
 
 Nfc::Nfc()
  : dev(IRQ, RESET)
@@ -34,7 +36,7 @@ void Nfc::init(void)
         debug.print("Didn't find PN53x board");
         lcd.select_line(1);
         lcd.print("NFC init failed ");
-        while (1); // halt
+        while (1) clk.display(); // halt
     }
 
     // Got ok data, print it out!
@@ -51,8 +53,11 @@ void Nfc::init(void)
     dev.setPassiveActivationRetries(0x00);
     // configure board to read RFID tags
     dev.SAMConfig();
+    clk.display();
 
     debug.println("Waiting for an ISO14443A card");
+    lcd.select_line(1);
+    lcd.print("NFC initialized.");
 }
 
 void Nfc::test(void)
