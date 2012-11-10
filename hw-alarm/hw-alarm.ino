@@ -17,7 +17,7 @@
 #include "Network.h"
 #include "Ntp.h"
 #include "Clock.h"
-#include "NFC.h"
+//#include "NFC.h"
 #include "Pusher.h"
 #include "Heroku.h"
 #include "pitches.h"
@@ -28,7 +28,7 @@ Network         net;
 
 Clock           clk;
 Ntp             ntp;
-Nfc             nfc;
+//Nfc             nfc;
 
 Pusher          pusher;
 Heroku          heroku;
@@ -51,6 +51,7 @@ int noteDurations[] = {
 
 void doAlarm(void)
 {
+    /*
     for (int thisNote = 0; thisNote < 9; thisNote++) {
         // to calculate the note duration, take one second 
         // divided by the note type.
@@ -64,10 +65,12 @@ void doAlarm(void)
         delay(pauseBetweenNotes);
         // stop the tone playing:
         noTone(49);
+    */
         clk.display();
         lcd.check_button();
-        if (!alarm) break;
-    }
+        if (!alarm) // break;
+            debug.println("Alarm OFF");
+    //}
 }
 
 void setup(void)
@@ -82,21 +85,20 @@ void setup(void)
 
     ntp.init();
     clk.init(ntp);
-    nfc.init();
+    //nfc.init();
 
     pusher.init();
     heroku.init();
     String alarms = heroku.getAlarmList(cid);
     heroku.parseAlarmList(alarms);
 
-    //MsTimer2::set(200, Clock::display_clock);
-    //MsTimer2::start();
+    //alarm = true;
 }
 
 void loop(void)
 {
     clk.update();
-    nfc.test();
+    //nfc.test();
     pusher.monitor();
     //heroku.get_response();
     //heroku.setAlarmOff("KL_GROUP_1349530819326", cid);

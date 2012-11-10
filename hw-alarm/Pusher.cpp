@@ -97,7 +97,6 @@ void Pusher::dismiss_alarm(String data)
     // turn off alarm
     // ....
     debug.println(data);
-    clk.stop_alarm();
 
     char *jsonStr = (char *)malloc(data.length() + 1);
     data.toCharArray(jsonStr, data.length() + 1);
@@ -117,5 +116,7 @@ void Pusher::dismiss_alarm(String data)
     }
 
     free(jsonStr);
+
+    clk.do_stop_alarm();
 }
 

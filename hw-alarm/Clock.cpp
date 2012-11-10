@@ -81,20 +81,35 @@ void Clock::ring_alarm(void)
     alarm = true;
 }
 
-void Clock::stop_alarm(void)
+void Clock::report_stop_alarm(void)
 {
-    if (alarm) {
-        lcd.select_line(1);
-        lcd.print("Stop Alarm .....");
-    }
-
     for (int i = 0; i < arrayList->getSize(); ++i) {
         Item* p = arrayList->getItem(i);
         if (p->isAlive() && (now() >= (p->getTime()+timeZoneOffset))){
-            p->setAlive(false);   
+            //p->setAlive(false);   
             heroku.setAlarmOff(p->getAid(), cid);
         }
     }
-    alarm = false;
+    //alarm = false;
+}
+
+void Clock::do_stop_alarm(void)
+{
+    bool allStatus = true;
+    for (int i = 0; i < arrayList->getSize(); ++i) {
+        Item* p = arrayList->getItem(i);
+        if ((now() >= (p->getTime()+timeZoneOffset)) && p->isAlive()){
+            allStatus = false;
+        }
+    }
+
+    if (allStatus) {
+        if (alarm) {
+            lcd.select_line(1);
+            lcd.print("Stop Alarm .....");
+        }
+
+        alarm = false;
+    }
 }
 

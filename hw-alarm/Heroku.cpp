@@ -20,9 +20,9 @@ extern Clock        clk;
 
 const int kNetworkTimeout = 30*1000;
 const int kNetworkDelay = 1000;
-char host[] = "192.168.77.8";
+char host[] = "192.168.100.168";
 int port = 9090;
-//char host[] = "ghfal.herokuapp.com";
+//char host[] = "ghfalarme.herokuapp.com";
 //int port = 80;
 
 void Heroku::init(void)
@@ -55,17 +55,21 @@ void Heroku::get_response(void)
 boolean 
 Heroku::setAlarmOff(String aid, String cid){
     String path = "/alarm/";
-    path = path + aid +"?cid=" + cid + "&status=OFF";
+    path = path + aid +"?cid=" + cid + "&status=OFF&uid=joe2";
+
+    debug.println(path);
 
     char *pathChar = (char *)malloc(path.length() + 1);
     path.toCharArray(pathChar, path.length() + 1);
 
 
-    String resultBody = getHttpBody(host, 9090, pathChar);
+    String resultBody = getHttpBody(host, port, pathChar);
     Serial.println(resultBody);
     char *jsonStr = (char *)malloc(resultBody.length() + 1);
 
     resultBody.toCharArray(jsonStr, resultBody.length() + 1);
+
+    debug.println(resultBody);
 
     aJsonObject* root = aJson.parse(jsonStr);
     if (root != NULL) {
@@ -140,8 +144,9 @@ Heroku::getHttpBody(const char* host, int port, const char* path){
     return body;
 }
 
-Item * Heroku::parseAlarm(aJsonObject* object){
-
+Item*
+Heroku::parseAlarm(aJsonObject* object)
+{
     aJsonObject* aid = aJson.getObjectItem(object, "aid");
     aJsonObject* time = aJson.getObjectItem(object, "time");
     aJsonObject* type = aJson.getObjectItem(object, "type");
@@ -153,9 +158,9 @@ Item * Heroku::parseAlarm(aJsonObject* object){
 
 }
 
-
-
-void Heroku::parseAlarmList(String arg){
+void
+Heroku::parseAlarmList(String arg)
+{
     char *jsonStr = (char *)malloc(arg.length() + 1);
     arg.toCharArray(jsonStr, arg.length() + 1);
 

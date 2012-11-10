@@ -42,7 +42,7 @@ void LcdDisplay::check_button(void)
 
     if (buttons) {
         if (buttons) {
-            clk.stop_alarm();    
+            clk.report_stop_alarm();    
         }
     }
 }
