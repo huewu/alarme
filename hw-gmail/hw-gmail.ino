@@ -1,80 +1,123 @@
-/*
- *  Alarme Project for Google HackFair 2012 in Seoul
- *  Arduino hardware gmail notifier and printer sketch
- *      
- *  Kwanlae Kim <voidopennet@gmail.com>
- *  Chanseok Yang <huewu.yang@gmail.com>
- *  Jinserk Baik <jinserk.baik@gmail.com>
- *  Wonseok Yang <before30@gmail.com>
- *
- *  Copyright (c) 2012, all rights reserved.
- */
+/*************************************************************************
+  This is an Arduino library for the Adafruit Thermal Printer.
+  Pick one up at --> http://www.adafruit.com/products/597
+  These printers use TTL serial to communicate, 2 pins are required.
 
-#include <Ethernet.h>
-#include <PusherClient.h>
+  Adafruit invests time and resources providing this open source code.
+  Please support Adafruit and open-source hardware by purchasing products
+  from Adafruit!
 
-// function local declarations
-void setup_led();
-void setup_pusherclient();
-void do_led();
-void do_pusherclient();
-void get_notification(String data);
+  Written by Limor Fried/Ladyada for Adafruit Industries.
+  MIT license, all text above must be included in any redistribution.
+ *************************************************************************/
 
-// initialize PusherClient using WebSocketClient library
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-PusherClient client;
+// If you're using Arduino 1.0 uncomment the next line:
+#include "SoftwareSerial.h"
+// If you're using Arduino 23 or earlier, uncomment the next line:
+//#include "NewSoftSerial.h"
 
-void setup() {
-    setup_led();
-    setup_pusherclient();
+#include "Adafruit_Thermal.h"
+#include "adalogo.h"
+#include "adaqrcode.h"
+#include <avr/pgmspace.h>
+
+#include "SerialDebug.h"
+#include "Network.h"
+#include "Pusher.h"
+
+SerialDebug debug;
+Network     net;
+Pusher      pusher;
+
+int printer_RX_Pin = 5;  // This is the green wire
+int printer_TX_Pin = 6;  // This is the yellow wire
+
+Adafruit_Thermal printer(printer_RX_Pin, printer_TX_Pin);
+
+void setup(){
+    debug.init();
+    debug.on();
+    debug.println("Printme v0.1");
+
+    net.init();
+    pusher.init();
+    
+  pinMode(7, OUTPUT); digitalWrite(7, LOW); // To also work w/IoTP printer
+  printer.begin();
+    /*
+   Serial.begin(9600);
+  pinMode(7, OUTPUT); digitalWrite(7, LOW); // To also work w/IoTP printer
+  printer.begin();
+
+  // The following function calls are in setup(), but do not need to be.
+  // Use them anywhere!  They're just here so they're run only one time
+  // and not printed over and over.
+  // Some functions will feed a line when called to 'solidify' setting.
+  // This is normal.
+
+  // Test inverse on & off
+  printer.inverseOn();
+  printer.println("Inverse ON");
+  printer.inverseOff();
+
+  // Test character double-height on & off
+  printer.doubleHeightOn();
+  printer.println("Double Height ON");
+  printer.doubleHeightOff();
+
+  // Set text justification (right, center, left) -- accepts 'L', 'C', 'R'
+  printer.justify('R');
+  printer.println("Right justified");
+  printer.justify('C');
+  printer.println("Center justified");
+  printer.justify('L');
+  printer.println("Left justified");
+
+  // Test more styles
+  printer.boldOn();
+  printer.println("Bold text");
+  printer.boldOff();
+
+  printer.underlineOn(); 
+  printer.println("Underlined text ");
+  printer.underlineOff();
+
+  printer.setSize('L');     // Set type size, accepts 'S', 'M', 'L'
+  printer.println("Large"); // Print line
+  printer.setSize('M');
+  printer.println("Medium");
+  printer.setSize('S');
+  printer.println("Small");
+
+  printer.justify('C');
+  printer.println("normal\nline\nspacing");
+  printer.setLineHeight(50);
+  printer.println("Taller\nline\nspacing");
+  printer.setLineHeight(); // Reset to default
+  printer.justify('L');
+
+  // Barcode examples
+  printer.feed(1);
+  // CODE39 is the most common alphanumeric barcode
+  printer.printBarcode("ADAFRUT", CODE39);
+  printer.setBarcodeHeight(100);
+  // Print UPC line on product barcodes
+  printer.printBarcode("123456789123", UPC_A);
+
+  // Print the 75x75 pixel logo in adalogo.h
+  printer.printBitmap(adalogo_width, adalogo_height, adalogo_data);
+
+  // Print the 135x135 pixel QR code in adaqrcode.h
+  printer.printBitmap(adaqrcode_width, adaqrcode_height, adaqrcode_data);
+  printer.println("Adafruit!");
+  printer.feed(1);
+
+  printer.sleep();      // Tell printer to sleep
+  printer.wake();       // MUST call wake() before printing again, even if reset
+  printer.setDefault(); // Restore printer to defaults
+*/
 }
 
-// Pin 13 has an LED connected on most Arduino boards.
-// give it a name:
-int led = 13;
-
-// the setup routine runs once when you press reset:
-void setup_led() {                
-    // initialize the digital pin as an output.
-    pinMode(led, OUTPUT);     
-}
-
-void setup_pusherclient() {
-    //Serial.begin(9600);
-    if (Ethernet.begin(mac) == 0) {
-        //Serial.println("Init Ethernet failed");
-        for(;;)
-            ;
-    }
-
-    if(client.connect("your-api-key-here")) {
-        client.bind("get_notification", get_notification);
-        client.subscribe("alarme");
-    }
-    else {
-        while(1) {}
-    }
-}
-
-// the loop routine runs over and over again forever:
 void loop() {
-    do_led();
-    do_pusherclient();
+    pusher.monitor();
 }
-
-void do_led() {
-    digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-    delay(1000);               // wait for a second
-    digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
-    delay(1000);               // wait for a second
-}
-
-void do_pusherclient() {
-    if (client.connected()) {
-        client.monitor();
-    }
-}
-
-void get_notification(String data) {
-}
-

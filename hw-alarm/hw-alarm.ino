@@ -51,7 +51,6 @@ int noteDurations[] = {
 
 void doAlarm(void)
 {
-    /*
     for (int thisNote = 0; thisNote < 9; thisNote++) {
         // to calculate the note duration, take one second 
         // divided by the note type.
@@ -65,12 +64,11 @@ void doAlarm(void)
         delay(pauseBetweenNotes);
         // stop the tone playing:
         noTone(49);
-    */
         clk.display();
         lcd.check_button();
         if (!alarm) // break;
             debug.println("Alarm OFF");
-    //}
+    }
 }
 
 void setup(void)
@@ -115,6 +113,6 @@ void loop(void)
     
     lcd.check_button();
     lcd.select_line(1);
-    lcd.print("                "); // clear second line of LCD
+    //lcd.print("                "); // clear second line of LCD
 }
 

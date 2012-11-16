@@ -20,7 +20,7 @@ extern Clock        clk;
 
 const int kNetworkTimeout = 30*1000;
 const int kNetworkDelay = 1000;
-char host[] = "192.168.100.168";
+char host[] = "192.168.77.8";
 int port = 9090;
 //char host[] = "ghfalarme.herokuapp.com";
 //int port = 80;
@@ -55,7 +55,7 @@ void Heroku::get_response(void)
 boolean 
 Heroku::setAlarmOff(String aid, String cid){
     String path = "/alarm/";
-    path = path + aid +"?cid=" + cid + "&status=OFF&uid=joe2";
+    path = path + aid +"?cid=" + cid + "&status=OFF";
 
     debug.println(path);
 
