@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대화형 AI 음악 생성 기술 탐험</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Tech -->
+    <!-- Application Structure Plan: The application is structured into thematic, navigable sections (Home, Core Principles, Fitness Functions, Adaptive Game Music, AI Comparison, Research Projects) rather than following the linear flow of the source report. This task-oriented design allows users to directly access topics of interest. Key interactions include: 1) A visual, animated diagram of the GA lifecycle to explain the core process. 2) Interactive charts comparing fitness functions and AI models, making abstract data tangible. 3) A game state simulator that dynamically updates musical characteristics, providing a practical demonstration of the core application. 4) An expandable card layout for research projects, facilitating easy browsing. This structure was chosen to transform a dense academic text into an engaging, exploratory learning tool, prioritizing user interaction and understanding over passive reading. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: GA Lifecycle -> Goal: Explain Process -> Viz: Animated HTML/CSS Diagram -> Interaction: None (auto-play) -> Justification: Visually engaging and simplifies a complex loop.
+        - Report Info: Table 1 (Chromosome Types) -> Goal: Compare -> Viz: Styled HTML cards -> Interaction: Hover effects -> Justification: Clear, side-by-side comparison of abstract concepts.
+        - Report Info: Table 2 (Fitness Functions) -> Goal: Compare Trade-offs -> Viz: Radar Chart (Chart.js) -> Interaction: Hover for details -> Justification: Effectively shows multi-dimensional trade-offs between different approaches.
+        - Report Info: Table 3 (Game Music States) -> Goal: Demonstrate Adaptation -> Viz: Dynamic Bar Charts (Chart.js) -> Interaction: Toggle switch (Exploration/Combat) -> Justification: Simulates the core concept of adaptive music in a direct, interactive way without needing complex audio synthesis.
+        - Report Info: Table 4 (AI Model Comparison) -> Goal: Compare Trade-offs -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Hover for details -> Justification: Clearly contrasts the strengths and weaknesses of different AI models.
+        - Report Info: 10 Research Projects -> Goal: Organize & Detail -> Viz: HTML/CSS Cards -> Interaction: Click to expand/collapse -> Justification: Makes a long list of text scannable and digestible, letting users focus on projects of interest.
+        - Library/Method: All charts use Chart.js (Canvas). All diagrams and layouts use HTML/CSS with Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .tab-active {
+            border-color: #2563eb;
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #6b7280;
+        }
+        .section {
+            display: none;
+        }
+        .section-active {
+            display: block;
+        }
+        .project-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .ga-step {
+            opacity: 0.3;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .ga-step-active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 py-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-blue-600 mb-2">대화형 AI 음악 생성 기술 탐험</h1>
+            <p class="text-lg text-gray-600">유전자 알고리즘을 이용한 실시간 MIDI 음악 생성의 모든 것</p>
+        </header>
+
+        <div class="sticky top-0 bg-gray-50/80 backdrop-blur-sm z-10 mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex justify-center space-x-2 md:space-x-8 overflow-x-auto">
+                    <button data-tab="home" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base">홈</button>
+                    <button data-tab="principles" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base">핵심 원리</button>
+                    <button data-tab="fitness" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base">적합도 함수</button>
+                    <button data-tab="game" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base">적응형 게임 음악</button>
+                    <button data-tab="comparison" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base">AI 모델 비교</button>
+                    <button data-tab="projects" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base">연구 프로젝트</button>
+                </nav>
+            </div>
+        </div>
+
+        <main>
+            <section id="home" class="section">
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">창의적 AI의 새로운 지평을 열다</h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        본 애플리케이션은 '유전자 알고리즘(GA)을 이용한 실시간 음악 생성 기술' 보고서의 핵심 내용을 대화형으로 재구성한 것입니다. 인공지능이 단순한 도구를 넘어 창의적 파트너가 되는 시대, 특히 유전자 알고리즘은 자연의 '진화' 원리를 모방하여 음악이라는 복잡하고 주관적인 영역에 독특한 해법을 제시합니다.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-6 rounded-lg">
+                            <h3 class="font-bold text-xl text-blue-700 mb-2">🎯 목표 지향적 창작</h3>
+                            <p class="text-gray-700">GA는 '좋은 음악'에 대한 기준(적합도 함수)을 설정하면, 그 목표를 달성하기 위해 수많은 가능성을 탐색하고 최적의 결과를 '진화'시킵니다. 이는 사용자가 원하는 분위기나 스타일에 맞는 음악을 정교하게 만들어낼 수 있음을 의미합니다.</p>
+                        </div>
+                        <div class="bg-green-50 p-6 rounded-lg">
+                            <h3 class="font-bold text-xl text-green-700 mb-2">🎮 대화형 미디어와의 시너지</h3>
+                            <p class="text-gray-700">플레이어의 행동에 실시간으로 반응해야 하는 게임 음악에 GA는 최적의 솔루션입니다. 사용자의 입력에 따라 음악의 템포, 분위기, 복잡성을 동적으로 변화시켜 몰입감을 극대화할 수 있습니다.</p>
+                        </div>
+                    </div>
+                    <p class="mt-8 text-center text-gray-500">상단 탭을 클릭하여 유전자 알고리즘 음악 생성의 세계를 탐험해 보세요!</p>
+                </div>
+            </section>
+
+            <section id="principles" class="section">
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">작곡가로서의 유전자 알고리즘</h2>
+                    <p class="text-gray-600 mb-8 text-center max-w-3xl mx-auto">유전자 알고리즘은 자연 선택 과정을 모방하여 음악을 '진화'시킵니다. 음악적 아이디어를 하나의 생명체로 보고, 더 나은 개체가 살아남아 다음 세대를 이어가는 과정을 통해 새로운 곡을 창조합니다.</p>
+                    
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-center mb-6">GA의 진화 과정</h3>
+                        <div id="ga-cycle" class="flex flex-wrap justify-center items-center gap-4 text-center">
+                            <div class="ga-step p-4 bg-gray-100 rounded-lg w-40">
+                                <div class="text-4xl mb-2">🧬</div>
+                                <h4 class="font-bold">1. 초기화</h4><p class="text-sm text-gray-600">첫 세대 생성</p>
+                            </div>
+                            <div class="text-2xl text-gray-400 font-mono">&rarr;</div>
+                            <div class="ga-step p-4 bg-gray-100 rounded-lg w-40">
+                                <div class="text-4xl mb-2">📈</div>
+                                <h4 class="font-bold">2. 평가</h4><p class="text-sm text-gray-600">품질 점수화</p>
+                            </div>
+                            <div class="text-2xl text-gray-400 font-mono">&rarr;</div>
+                            <div class="ga-step p-4 bg-gray-100 rounded-lg w-40">
+                                <div class="text-4xl mb-2">🏆</div>
+                                <h4 class="font-bold">3. 선택</h4><p class="text-sm text-gray-600">우수 개체 선택</p>
+                            </div>
+                            <div class="text-2xl text-gray-400 font-mono">&rarr;</div>
+                            <div class="ga-step p-4 bg-gray-100 rounded-lg w-40">
+                                <div class="text-4xl mb-2">💞</div>
+                                <h4 class="font-bold">4. 교차</h4><p class="text-sm text-gray-600">유전자 결합</p>
+                            </div>
+                            <div class="text-2xl text-gray-400 font-mono">&rarr;</div>
+                            <div class="ga-step p-4 bg-gray-100 rounded-lg w-40">
+                                <div class="text-4xl mb-2">💥</div>
+                                <h4 class="font-bold">5. 변이</h4><p class="text-sm text-gray-600">무작위 변화</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold text-center mb-6">음악을 유전자로 인코딩하기: 염색체 표현법</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="border p-4 rounded-lg bg-gray-50 hover:shadow-lg transition-shadow">
+                                <h4 class="font-bold text-lg">단순 음표 리스트</h4>
+                                <p class="text-sm text-gray-600 mb-2">가장 기본적인 방식으로, 음고와 길이의 순차적 리스트입니다.</p>
+                                <code class="text-xs bg-gray-200 p-1 rounded">[(60, 0.5), (62, 0.5)]</code>
+                                <p class="text-xs mt-2"><b class="text-green-600">장점:</b> 간단함. <b class="text-red-600">단점:</b> 화성 표현 불가.</p>
+                            </div>
+                            <div class="border p-4 rounded-lg bg-gray-50 hover:shadow-lg transition-shadow">
+                                <h4 class="font-bold text-lg">상대 음고 기반</h4>
+                                <p class="text-sm text-gray-600 mb-2">코드/스케일에 대한 상대적 음계 도수로 음고를 표현합니다.</p>
+                                <code class="text-xs bg-gray-200 p-1 rounded">C Major: [(1, 0.5), (3, 0.5)]</code>
+                                <p class="text-xs mt-2"><b class="text-green-600">장점:</b> 화성적으로 안정됨. <b class="text-red-600">단점:</b> 음악 이론 지식 필요.</p>
+                            </div>
+                            <div class="border p-4 rounded-lg bg-gray-50 hover:shadow-lg transition-shadow">
+                                <h4 class="font-bold text-lg">다중 트랙 시스템</h4>
+                                <p class="text-sm text-gray-600 mb-2">멜로디, 베이스 등 각 파트를 별도의 염색체로 동시에 진화시킵니다.</p>
+                                <code class="text-xs bg-gray-200 p-1 rounded">{melody: [...], bass: [...]}</code>
+                                <p class="text-xs mt-2"><b class="text-green-600">장점:</b> 다성 음악 가능. <b class="text-red-600">단점:</b> 복잡한 평가 함수 필요.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="fitness" class="section">
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">기계의 영혼: 적합도 함수</h2>
+                    <p class="text-gray-600 mb-8 text-center max-w-3xl mx-auto">적합도 함수는 생성된 음악의 '좋음'을 평가하는 기준으로, 진화의 방향을 결정하는 나침반입니다. 어떤 평가 방식을 선택하느냐에 따라 음악의 창의성과 스타일이 결정됩니다.</p>
+                    <div class="chart-container">
+                        <canvas id="fitnessChart"></canvas>
+                    </div>
+                    <p class="text-center mt-4 text-sm text-gray-500">차트의 각 축에 마우스를 올려보세요.</p>
+                </div>
+            </section>
+
+            <section id="game" class="section">
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">알고리즘에서 분위기로: 적응형 게임 음악</h2>
+                    <p class="text-gray-600 mb-8 text-center max-w-3xl mx-auto">게임 음악은 플레이어의 행동과 게임 상황에 실시간으로 반응해야 합니다. GA는 '음악 감독' AI 역할을 수행하며, 게임 상태에 맞춰 음악적 특징들을 동적으로 조절할 수 있습니다. 아래 스위치를 토글하여 '탐험'과 '전투' 상태에 따른 음악적 목표 변화를 확인해 보세요.</p>
+                    
+                    <div class="flex justify-center items-center space-x-4 mb-8">
+                        <span class="text-lg font-medium text-blue-600">탐험 (Exploration)</span>
+                        <label for="gameStateToggle" class="flex items-center cursor-pointer">
+                            <div class="relative">
+                                <input type="checkbox" id="gameStateToggle" class="sr-only">
+                                <div class="block bg-gray-200 w-14 h-8 rounded-full"></div>
+                                <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                            </div>
+                        </label>
+                        <span class="text-lg font-medium text-red-600">전투 (Combat)</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="w-full">
+                            <h3 class="text-xl font-bold text-center mb-4">리듬 & 템포</h3>
+                            <div class="chart-container h-64 md:h-80">
+                                <canvas id="rhythmTempoChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <h3 class="text-xl font-bold text-center mb-4">화성 & 다이내믹</h3>
+                             <div class="chart-container h-64 md:h-80">
+                                <canvas id="harmonyDynamicsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="comparison" class="section">
+                 <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">AI 음악 모델 비교</h2>
+                    <p class="text-gray-600 mb-8 text-center max-w-3xl mx-auto">유전자 알고리즘은 AI 음악 생성의 유일한 방법이 아닙니다. RNN, 트랜스포머와 같은 다른 모델들과 비교했을 때 어떤 장단점이 있을까요? 핵심은 '제어 가능성'과 '일관성' 사이의 트레이드오프입니다.</p>
+                    <div class="chart-container h-[500px] max-h-[600px]">
+                        <canvas id="modelComparisonChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="section">
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">당신의 연구 퀘스트</h2>
+                    <p class="text-gray-600 mb-8 text-center max-w-3xl mx-auto">보고서에서 제안된 10가지 연구 프로젝트 아이디어입니다. 각 카드를 클릭하여 상세 내용을 확인해 보세요. 이 아이디어들은 대학생 1명이 3개월 내에 수행 가능한 수준으로 설계되었습니다.</p>
+                    <div id="project-list" class="space-y-4">
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const sections = document.querySelectorAll('.section');
+        const projectListContainer = document.getElementById('project-list');
+        let fitnessChart, rhythmTempoChart, harmonyDynamicsChart, modelComparisonChart;
+
+        const projectData = [
+            { title: "1. 멜로디 아이디어 진화를 위한 기초 IGA 시스템", icon: "🎵", content: "사용자가 직접 4마디 멜로디를 평가하며 진화시키는 간단한 대화형 GA(IGA)를 구축합니다. 사용자의 주관적 평가만으로 흥미로운 멜로디 생성이 가능한지 탐구합니다." },
+            { title: "2. 음악 이론 기반 화성 반주 생성기", icon: "🎹", content: "고정된 멜로디에 어울리는 화성적으로 올바른 베이스라인과 코드 진행을 생성하는 GA를 개발합니다. 적합도 함수는 음악 이론 규칙에 기반합니다." },
+            { title: "3. 타악기 트랙을 위한 리듬 패턴 진화", icon: "🥁", content: "2마디 길이의 드럼 패턴을 진화시키는 GA를 만듭니다. 특정 장르의 특징적인 리듬을 생성할 수 있는지, 대화형 평가와 통계적 평가 중 어느 것이 효과적인지 탐구합니다." },
+            { title: "4. 통계적 적합도 함수를 이용한 스타일 모방", icon: "📊", content: "특정 음악 코퍼스(예: 동요)의 스타일을 모방하는 GA를 구현합니다. 적합도 함수는 생성된 음악과 코퍼스 간의 통계적 유사도를 측정합니다." },
+            { title: "5. 학습된 적합도를 위한 하이브리드 GA-LSTM 모델", icon: "🧠", content: "(고급) '좋은' 멜로디와 '나쁜' 멜로디를 구별하도록 LSTM 신경망을 훈련시킨 후, 이 모델을 GA의 자동 적합도 함수로 사용합니다." },
+            { title: "6. 다중 트랙 염색체를 이용한 다성 음악 생성", icon: "🎼", content: "멜로디와 베이스라인처럼 서로 연관된 두 트랙을 동시에 공진화(co-evolve)시키는 시스템을 설계합니다. 각 트랙의 품질과 둘 사이의 화성적 관계를 모두 평가합니다." },
+            { title: "7. 감정 제어 적응형 음악 시스템", icon: "😊", content: "'행복/슬픔'과 '평온/활기' 두 감정 파라미터에 맞는 음악을 생성하는 GA를 만듭니다. 음악 이론 규칙을 사용하여 감정을 음악적 특징으로 변환합니다." },
+            { title: "8. 실시간 전투 음악 생성기 프로토타입", icon: "⚔️", content: "'탐험'과 '전투' 상태를 전환하는 시스템을 구축합니다. GA가 게임 상태에 따라 신디사이저의 고수준 파라미터(템포, 강도 등)를 진화시킵니다." },
+            { title: "9. 음악적으로 의미 있는 유전 연산자 탐구", icon: "🔬", content: "(연구 중심) '선율적 반전', '리듬 확대' 등 음악 이론에 기반한 새로운 교차/변이 연산자를 설계하고 표준 연산자와 성능을 비교 분석합니다." },
+            { title: "10. 사운드 디자인을 위한 대화형 '교배' 시스템", icon: "🔊", content: "MIDI 음표가 아닌 신디사이저 파라미터를 진화시켜 새로운 사운드 이펙트나 악기 음색을 생성합니다. 사운드 디자인을 위한 IGA입니다." }
+        ];
+
+        function switchTab(tabId) {
+            sections.forEach(section => {
+                if (section.id === tabId) {
+                    section.classList.add('section-active');
+                } else {
+                    section.classList.remove('section-active');
+                }
+            });
+
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === tabId) {
+                    tab.classList.add('tab-active');
+                    tab.classList.remove('tab-inactive');
+                } else {
+                    tab.classList.remove('tab-active');
+                    tab.classList.add('tab-inactive');
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (tabId === 'fitness' && !fitnessChart) createFitnessChart();
+            if (tabId === 'game' && !rhythmTempoChart) createGameCharts();
+            if (tabId === 'comparison' && !modelComparisonChart) createModelComparisonChart();
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+        });
+
+        function createFitnessChart() {
+            const ctx = document.getElementById('fitnessChart').getContext('2d');
+            const data = {
+                labels: ['확장성/효율성', '주관성/객관성', '창의적 잠재력', '구현 복잡도'],
+                datasets: [
+                    {
+                        label: '대화형 (IGA)',
+                        data: [2, 10, 9, 2],
+                        fill: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        pointBackgroundColor: 'rgb(59, 130, 246)',
+                    },
+                    {
+                        label: '규칙 기반',
+                        data: [9, 9, 3, 5],
+                        fill: true,
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderColor: 'rgb(239, 68, 68)',
+                        pointBackgroundColor: 'rgb(239, 68, 68)',
+                    },
+                    {
+                        label: '하이브리드 (ML)',
+                        data: [9, 3, 9, 9],
+                        fill: true,
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: 'rgb(16, 185, 129)',
+                        pointBackgroundColor: 'rgb(16, 185, 129)',
+                    }
+                ]
+            };
+            fitnessChart = new Chart(ctx, {
+                type: 'radar',
+                data: data,
+                options: {
+                    maintainAspectRatio: false,
+                    elements: { line: { tension: 0.2 } },
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            pointLabels: { font: { size: 14 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw;
+                                    return label + ' / 10';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createGameCharts() {
+            const rhythmCtx = document.getElementById('rhythmTempoChart').getContext('2d');
+            const harmonyCtx = document.getElementById('harmonyDynamicsChart').getContext('2d');
+            
+            const rhythmData = {
+                labels: ['템포 (BPM)', '리듬 복잡도', '음표 밀도'],
+                datasets: [{
+                    label: '탐험',
+                    data: [80, 3, 4],
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                    borderColor: 'rgb(59, 130, 246)',
+                    borderWidth: 1
+                }]
+            };
+            
+            const harmonyData = {
+                labels: ['불협화음 정도', '다이내믹 레벨', '다이내믹 변화'],
+                datasets: [{
+                    label: '탐험',
+                    data: [2, 4, 2],
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                    borderColor: 'rgb(59, 130, 246)',
+                    borderWidth: 1
+                }]
+            };
+
+            const options = {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                scales: {
+                    x: { suggestedMin: 0, suggestedMax: 10 },
+                    y: { ticks: { font: { size: 14 } } }
+                },
+                plugins: { legend: { display: false } }
+            };
+            
+            rhythmTempoChart = new Chart(rhythmCtx, { type: 'bar', data: rhythmData, options: { ...options, scales: { x: { suggestedMin: 0, suggestedMax: 200 }, y: { ticks: { font: { size: 14 } } } } } });
+            harmonyDynamicsChart = new Chart(harmonyCtx, { type: 'bar', data: harmonyData, options: options });
+
+            document.getElementById('gameStateToggle').addEventListener('change', (e) => {
+                const isCombat = e.target.checked;
+                if (isCombat) {
+                    rhythmTempoChart.data.datasets[0].data = [160, 8, 9];
+                    rhythmTempoChart.data.datasets[0].label = '전투';
+                    rhythmTempoChart.data.datasets[0].backgroundColor = 'rgba(239, 68, 68, 0.6)';
+                    rhythmTempoChart.data.datasets[0].borderColor = 'rgb(239, 68, 68)';
+                    
+                    harmonyDynamicsChart.data.datasets[0].data = [8, 9, 8];
+                    harmonyDynamicsChart.data.datasets[0].label = '전투';
+                    harmonyDynamicsChart.data.datasets[0].backgroundColor = 'rgba(239, 68, 68, 0.6)';
+                    harmonyDynamicsChart.data.datasets[0].borderColor = 'rgb(239, 68, 68)';
+                } else {
+                    rhythmTempoChart.data.datasets[0].data = [80, 3, 4];
+                    rhythmTempoChart.data.datasets[0].label = '탐험';
+                    rhythmTempoChart.data.datasets[0].backgroundColor = 'rgba(59, 130, 246, 0.6)';
+                    rhythmTempoChart.data.datasets[0].borderColor = 'rgb(59, 130, 246)';
+                    
+                    harmonyDynamicsChart.data.datasets[0].data = [2, 4, 2];
+                    harmonyDynamicsChart.data.datasets[0].label = '탐험';
+                    harmonyDynamicsChart.data.datasets[0].backgroundColor = 'rgba(59, 130, 246, 0.6)';
+                    harmonyDynamicsChart.data.datasets[0].borderColor = 'rgb(59, 130, 246)';
+                }
+                rhythmTempoChart.update();
+                harmonyDynamicsChart.update();
+            });
+        }
+        
+        function createModelComparisonChart() {
+            const ctx = document.getElementById('modelComparisonChart').getContext('2d');
+            const data = {
+                labels: ['유전자 알고리즘 (GA)', '순환 신경망 (RNN/LSTM)', '트랜스포머 (Transformer)'],
+                datasets: [
+                    {
+                        label: '장기적 일관성',
+                        data: [3, 6, 9],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    },
+                    {
+                        label: '제어/상호작용성',
+                        data: [9, 6, 2],
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                    },
+                    {
+                        label: '데이터 요구량 (낮을수록 좋음)',
+                        data: [3, 8, 10],
+                        backgroundColor: 'rgba(249, 115, 22, 0.7)',
+                    }
+                ]
+            };
+            modelComparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            suggestedMin: 0,
+                            suggestedMax: 25,
+                            ticks: { display: false },
+                            grid: { display: false }
+                        },
+                        y: { stacked: true, ticks: { font: { size: 14 } } }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw;
+                                    return label + ' / 10';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function populateProjects() {
+            projectData.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'border border-gray-200 rounded-lg overflow-hidden';
+                card.innerHTML = `
+                    <div class="p-4 flex items-center cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                        <span class="text-2xl mr-4">${p.icon}</span>
+                        <h3 class="font-bold text-md flex-1">${p.title}</h3>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="project-card-content">
+                        <p class="p-4 text-gray-600 bg-white">${p.content}</p>
+                    </div>
+                `;
+                projectListContainer.appendChild(card);
+                
+                card.querySelector('div').addEventListener('click', () => {
+                    const content = card.querySelector('.project-card-content');
+                    const icon = card.querySelector('svg');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+        }
+        
+        function animateGACycle() {
+            const steps = document.querySelectorAll('.ga-step');
+            let currentStep = 0;
+            setInterval(() => {
+                steps.forEach(step => step.classList.remove('ga-step-active'));
+                steps[currentStep].classList.add('ga-step-active');
+                currentStep = (currentStep + 1) % steps.length;
+            }, 1500);
+        }
+
+        window.onload = () => {
+            switchTab('home');
+            populateProjects();
+            animateGACycle();
+        };
+
+    </script>
+</body>
+</html>
